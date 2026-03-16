@@ -1,0 +1,38 @@
+import type { Metadata } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
+
+export const metadata: Metadata = {
+  title: "Luxxor Group - Premium Services",
+  description: "Servicios premium, bienes raíces, seguros y consultoría legal. Luxxor Group ofrece excelencia, exclusividad y rentabilidad.",
+  openGraph: {
+    title: "Luxxor Group - Premium Services",
+    description: "Servicios premium, bienes raíces, seguros y consultoría legal en Cali, Colombia.",
+    url: "https://luxxorgroup.com",
+    siteName: "Luxxor Group",
+    locale: "es_CO",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Luxxor Group - Premium Services",
+    description: "Servicios premium, bienes raíces, seguros y consultoría legal.",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="es" className="scroll-smooth">
+      <body className={`${inter.variable} ${playfair.variable} antialiased bg-[var(--color-luxxor-dark)] text-white font-sans overflow-x-hidden`}>
+        {children}
+      </body>
+    </html>
+  );
+}

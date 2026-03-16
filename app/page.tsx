@@ -1,0 +1,29 @@
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import SobreNosotros from "@/components/SobreNosotros";
+import WhyLuxxor from "@/components/WhyLuxxor";
+import Services from "@/components/Services";
+import ValueAdded from "@/components/ValueAdded";
+import ProjectsGrid from "@/components/ProjectsGrid";
+import TestimonialsCarousel from "@/components/TestimonialsCarousel";
+import FinalCTA from "@/components/FinalCTA";
+import Footer from "@/components/Footer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-[var(--color-luxxor-dark)] selection:bg-[var(--color-luxxor-gold)] selection:text-[var(--color-luxxor-dark)] flex flex-col w-full overflow-x-hidden">
+      <Navbar />
+      <Hero />
+      <SobreNosotros />
+      <WhyLuxxor />
+      <Services />
+      <ValueAdded />
+      <ProjectsGrid />
+      <TestimonialsCarousel />
+      <FinalCTA />
+      <Footer />
+      <FloatingWhatsApp />
+    </main>
+  );
+}
