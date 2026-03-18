@@ -28,11 +28,11 @@ export default function ArchitecturalDesignSection() {
     <section className="relative w-full py-24 bg-[var(--color-luxxor-dark)] overflow-hidden border-t border-[var(--color-luxxor-gold)]/10">
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
-           variants={containerVariants}
-           initial="hidden"
-           whileInView="visible"
-           viewport={{ once: true, margin: "-100px" }}
-           className="flex flex-col lg:flex-row items-center gap-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col lg:flex-row items-center gap-16"
         >
           {/* Left Column: Video */}
           <motion.div
@@ -75,7 +75,7 @@ export default function ArchitecturalDesignSection() {
                 Del concepto a la realidad
               </span>
             </div>
-            
+
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-8 leading-tight">
               Diseño Arquitectónico Integral
             </h2>
@@ -97,10 +97,6 @@ export default function ArchitecturalDesignSection() {
                   <div className="w-[6px] h-[6px] rounded-full bg-[var(--color-luxxor-gold)] flex-shrink-0 mt-2" />
                   <span>Visualizaciones 360° interactivas para que recorras tu espacio antes de construir</span>
                 </li>
-                <li className="flex items-start gap-4">
-                  <div className="w-[6px] h-[6px] rounded-full bg-[var(--color-luxxor-gold)] flex-shrink-0 mt-2" />
-                  <span>Coordinación técnica con ingenieros y constructores para ejecución sin sorpresas</span>
-                </li>
               </ul>
               <p>
                 Este servicio es ideal tanto para remodelaciones residenciales como para nuevos proyectos, garantizando que cada detalle refleje el lujo y funcionalidad que mereces.
@@ -108,13 +104,6 @@ export default function ArchitecturalDesignSection() {
             </div>
 
             <div className="mt-10 flex flex-col items-start gap-6">
-              {/* Elemento destacado */}
-              <div className="inline-block border border-[var(--color-luxxor-gold)]/50 backdrop-blur-sm bg-[var(--color-luxxor-gold)]/5 px-8 py-4 rounded-sm hover:scale-[1.02] transition-transform duration-300">
-                <span className="text-[var(--color-luxxor-gold)] font-medium tracking-wider uppercase text-sm md:text-base">
-                  Paquete Completo de Diseño Arquitectónico
-                </span>
-              </div>
-
               {/* CTA final */}
               <Link href="#contacto" className="inline-block group">
                 <button
