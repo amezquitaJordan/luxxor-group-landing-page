@@ -1,30 +1,37 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Building2, Briefcase, ShieldCheck, Scale } from "lucide-react";
+import ServiceModal from "./ServiceModal";
 
 const services = [
   {
     id: "remodeling",
     title: "Remodelaciones Residenciales Premium",
-    description: "Transformación total o parcial de espacios, combinando arquitectura moderna y acabados de lujo.",
+    description: "Transformación total o parcial de espacios residenciales con arquitectura moderna y acabados de lujo. Incluye redistribución de ambientes, iluminación premium, materiales de alta gama y supervisión técnica completa desde el diseño 3D hasta la entrega final.",
     icon: Building2,
+    image: "/images/Remodelacion-recidencial-premium.png"
   },
   {
     id: "carpentry",
     title: "Carpintería Arquitectónica a Medida",
-    description: "Diseño y fabricación de mobiliario fijo (cocinas, clósets, paneles) con maderas y herrajes premium.",
+    description: "Diseño y fabricación de mobiliario fijo y elementos arquitectónicos (cocinas, closets, paneles, puertas, bibliotecas) con maderas seleccionadas y herrajes premium. Cada pieza es única y adaptada al espacio y estilo de vida del cliente.",
     icon: Briefcase,
+    image: "/images/Carpinteria-arquitectonica.png"
   },
   {
     id: "restoration",
     title: "Restauración de Mobiliario",
-    description: "Damos nueva vida a piezas de mobiliario de alta gama, preservando su valor y elegancia.",
+    description: "Restauramos piezas de mobiliario de alta gama preservando su valor histórico y estético. Utilizamos técnicas tradicionales combinadas con acabados modernos para devolverle vida y elegancia a muebles clásicos o contemporáneos.",
     icon: ShieldCheck,
+    image: "/images/Restauracion-mobiliaria.png"
   }
 ];
 
 export default function Services() {
+  const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -115,14 +122,24 @@ export default function Services() {
                   {service.description}
                 </p>
                 
-                <div className="mt-8 flex items-center gap-2 text-sm font-semibold tracking-wider text-[var(--color-luxxor-gold)] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-                  Descubrir <span>&rarr;</span>
-                </div>
+                <button 
+                  onClick={() => setSelectedService(service)}
+                  className="mt-8 w-max px-6 py-2 border border-[var(--color-luxxor-gold)] text-[var(--color-luxxor-gold)] text-xs font-semibold tracking-widest uppercase hover:bg-[var(--color-luxxor-gold)] hover:text-black transition-all duration-300 relative overflow-hidden group/btn flex items-center gap-2 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0"
+                >
+                  <span className="relative z-10">Descubrir</span>
+                  <span className="relative z-10 group-hover/btn:translate-x-1 transition-transform duration-300">&rarr;</span>
+                </button>
               </div>
             </motion.div>
           ))}
         </motion.div>
       </div>
+
+      <ServiceModal 
+        isOpen={!!selectedService}
+        onClose={() => setSelectedService(null)}
+        service={selectedService}
+      />
     </section>
   );
 }

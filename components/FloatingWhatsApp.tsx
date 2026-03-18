@@ -5,28 +5,28 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const messages = [
   "¿Qué esperas para hacer tu cotización?",
-  "Diseño 3D gratis antes de empezar",
-  "Transforma tu espacio en lujo hoy",
-  "Cotización sin costo en minutos"
+  "¡Diseño 3D gratis antes de empezar!",
+  "¡Transforma tu espacio en lujo hoy!",
+  "Cotización sin costo en minutos ¡Escríbenos!"
 ];
 
 const bubbleVariants = {
   hidden: { opacity: 0, y: 12, scale: 0.88 },
   visible: { opacity: 1, y: 0, scale: 1 },
-  exit: { opacity: 0, y: 12, scale: 0.88 },
 };
 
 export default function FloatingWhatsApp() {
   const [showMessage, setShowMessage] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [notificationCount, setNotificationCount] = useState(1);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
     let hideTimeout: NodeJS.Timeout;
 
     const initialTimeout = setTimeout(() => {
-      // Show first message
+      // Show first message and badge together
+      setNotificationCount(1);
       setShowMessage(true);
       hideTimeout = setTimeout(() => setShowMessage(false), 3000);
 
@@ -57,15 +57,16 @@ export default function FloatingWhatsApp() {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
     >
-      {/* Dynamic Bubble Message */}
-      <AnimatePresence>
+      {/* Dynamic Bubble Message — entrance-only animation */}
+      <AnimatePresence mode="wait">
         {showMessage && (
           <motion.div
+            key={currentIndex}
             variants={bubbleVariants}
             initial="hidden"
             animate="visible"
-            exit="exit"
-            transition={{ type: "spring", stiffness: 280, damping: 18, duration: 0.5 }}
+            exit={{ opacity: 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20, duration: 0.38 }}
             className="relative bg-white text-gray-800 rounded-2xl rounded-br-sm px-4 py-3 shadow-lg max-w-[220px]"
             style={{ transformOrigin: "bottom right" }}
           >
@@ -92,10 +93,17 @@ export default function FloatingWhatsApp() {
           className="absolute inset-0 rounded-full bg-[#25D366] opacity-30 -z-10 blur-[8px]"
         />
 
-        {/* Red notification badge */}
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md z-10">
-          {notificationCount}
-        </span>
+        {/* Red notification badge — only visible after first message */}
+        {notificationCount > 0 && (
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+            className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md z-10"
+          >
+            {notificationCount}
+          </motion.span>
+        )}
 
         {/* WhatsApp SVG Icon */}
         <svg

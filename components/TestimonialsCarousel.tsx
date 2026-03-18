@@ -47,7 +47,7 @@ export default function TestimonialsCarousel() {
         </motion.h2>
       </div>
 
-      <div className="relative flex overflow-x-hidden group">
+      <div className="relative flex overflow-x-clip overflow-y-visible pt-8 pb-4 group">
         <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[#111111] to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[#111111] to-transparent z-10 pointer-events-none" />
         
@@ -56,7 +56,7 @@ export default function TestimonialsCarousel() {
           {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
             <div
               key={index}
-              className="w-[300px] md:w-[450px] p-8 md:p-10 border border-gray-800 bg-[#151515] flex-shrink-0 cursor-default hover:border-[var(--color-luxxor-gold)] hover:shadow-[0_10px_30px_-15px_rgba(212,175,55,0.2)] transition-all duration-300 transform hover:-translate-y-2 whitespace-normal flex flex-col justify-between"
+              className="w-[300px] md:w-[450px] p-8 md:p-10 border border-gray-800 bg-[#151515] flex-shrink-0 cursor-default hover:border-[var(--color-luxxor-gold)] hover:shadow-[0_10px_30px_-15px_rgba(212,175,55,0.2)] transition-all duration-300 transform hover:-translate-y-3 hover:z-10 whitespace-normal flex flex-col justify-between relative"
             >
               <div>
                 <div className="text-[var(--color-luxxor-gold)] text-4xl font-serif mb-6 leading-none">"</div>
