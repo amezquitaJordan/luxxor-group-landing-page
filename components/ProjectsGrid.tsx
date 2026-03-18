@@ -6,21 +6,21 @@ import Image from "next/image";
 const projects = [
   {
     id: "p1",
-    title: "Remodelación Penthouse La Flora",
+    title: "Remodelación Ciudad Jardin",
     category: "Residencial Premium",
-    image: "/images/baño-lujoso.jpg",
+    image: "/images/sala-elegante-azul.jpg",
   },
   {
     id: "p2",
-    title: "Villas del Prado Pance",
+    title: "Remodelación Casa Tequendama",
     category: "Residencial Premium",
-    image: "/images/cocina-elegante-opaca.jpg",
+    image: "/images/sala-de-estar-elegante.jpg",
   },
   {
     id: "p3",
-    title: "Restauración Mobiliario Clásico",
+    title: "Restauración Cocina Clásica",
     category: "Restauración de Alta Gama",
-    image: "/images/sala-de-estar-lujosa-negro.jpg",
+    image: "/images/cocina-comedor-blanco-elegante.jpg",
   },
 ];
 
@@ -58,47 +58,49 @@ export default function ProjectsGrid() {
             </a>
           </motion.div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="group relative h-[450px] overflow-hidden cursor-pointer"
+      {/* Infinite Carousel */}
+      <div className="relative flex overflow-x-hidden group">
+        <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[var(--color-luxxor-dark)] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[var(--color-luxxor-dark)] to-transparent z-10 pointer-events-none" />
+
+        <div className="flex animate-carousel-projects group-hover:[animation-play-state:paused] w-max gap-8 px-6">
+          {[...projects, ...projects, ...projects].map((project, index) => (
+            <div
+              key={`project-${index}`}
+              className="group/card relative w-[350px] md:w-[420px] h-[450px] overflow-hidden cursor-pointer flex-shrink-0"
             >
-              {/* Image constraints */}
+              {/* Image */}
               <div className="absolute inset-0 z-0">
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover object-center transform group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  sizes="(max-width: 768px) 350px, 420px"
+                  className="object-cover object-center transform group-hover/card:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
                 />
               </div>
               
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 opacity-80 group-hover/card:opacity-90 transition-opacity duration-300" />
               
               {/* Content Box */}
               <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                <div className="transform translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
                   <p className="text-[var(--color-luxxor-gold)] text-sm tracking-widest uppercase font-semibold mb-2">
                     {project.category}
                   </p>
                   <h3 className="text-2xl font-serif text-white mb-4">
                     {project.title}
                   </h3>
-                  <div className="w-0 h-[2px] bg-[var(--color-luxxor-gold)] group-hover:w-12 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
+                  <div className="w-0 h-[2px] bg-[var(--color-luxxor-gold)] group-hover/card:w-12 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
                 </div>
               </div>
               
               {/* Gold border on hover */}
-              <div className="absolute inset-0 border border-transparent group-hover:border-[var(--color-luxxor-gold)]/50 z-30 transition-colors duration-500 pointer-events-none" />
-            </motion.div>
+              <div className="absolute inset-0 border border-transparent group-hover/card:border-[var(--color-luxxor-gold)]/50 z-30 transition-colors duration-500 pointer-events-none" />
+            </div>
           ))}
         </div>
       </div>

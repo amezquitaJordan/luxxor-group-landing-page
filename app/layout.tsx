@@ -8,6 +8,14 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 export const metadata: Metadata = {
   title: "Luxxor Group - Premium Services",
   description: "Servicios premium, bienes raíces, seguros y consultoría legal. Luxxor Group ofrece excelencia, exclusividad y rentabilidad.",
+  icons: {
+    icon: [
+      { url: "/images/favicon-3-luxxor.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/images/favicon-3-luxxor.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Luxxor Group - Premium Services",
     description: "Servicios premium, bienes raíces, seguros y consultoría legal en Cali, Colombia.",
