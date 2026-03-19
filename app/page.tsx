@@ -5,6 +5,7 @@ import WhyLuxxor from "@/components/WhyLuxxor";
 import Services from "@/components/Services";
 import ValueAdded from "@/components/ValueAdded";
 import ProjectsGrid from "@/components/ProjectsGrid";
+import BeforeAfterSection from "@/components/BeforeAfterSection";
 import ArchitecturalDesignSection from "@/components/ArchitecturalDesignSection";
 import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import FinalCTA from "@/components/FinalCTA";
@@ -20,8 +21,9 @@ export default function Home() {
       <WhyLuxxor />
       <Services />
       <ValueAdded />
-      <ProjectsGrid />
       <ArchitecturalDesignSection />
+      <ProjectsGrid />
+      <BeforeAfterSection />
       <TestimonialsCarousel />
       <FinalCTA />
       <Footer />
