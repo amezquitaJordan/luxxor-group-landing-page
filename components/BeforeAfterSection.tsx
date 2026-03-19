@@ -21,7 +21,7 @@ const projects: Project[] = [
   {
     title: "Renovación Sala Principal",
     description: "Diseño de concepto abierto con iluminación cálida.",
-    before: "/images/sala-antigua.png",
+    before: "/images/Sala-antigua.png",
     after: "/images/despues-sala.jpg",
   },
   {
@@ -33,7 +33,7 @@ const projects: Project[] = [
   {
     title: "Dormitorio Suite",
     description: "Rediseño total para máximo confort y elegancia.",
-    before: "/images/habitacion-antigua.png",
+    before: "/images/Habitacion-antigua.png",
     after: "/images/despues-dormitorio.jpg",
   }
 ];
@@ -74,7 +74,7 @@ function Card({ project }: { project: Project }) {
         className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] shadow-[0_4px_10px_rgba(0,0,0,0.5)]"
       >
         {/* Etiqueta Antes (Desktop) */}
-        <motion.div 
+        <motion.div
           className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 hidden md:block"
           style={{ opacity: useTransform(animatedHover, [0, 50], [1, 0]) }}
         >
@@ -82,7 +82,7 @@ function Card({ project }: { project: Project }) {
         </motion.div>
 
         {/* Etiqueta Antes (Mobile) */}
-        <motion.div 
+        <motion.div
           className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 md:hidden"
           initial={false}
           animate={{ opacity: isTapped ? 0 : 1 }}
