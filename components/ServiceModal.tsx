@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ServiceModalProps {
   isOpen: boolean;
@@ -17,6 +17,12 @@ interface ServiceModalProps {
 }
 
 export default function ServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
+  const [displayService, setDisplayService] = useState(service);
+
+  useEffect(() => {
+    if (service) setDisplayService(service);
+  }, [service]);
+
   // Prevent scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -29,10 +35,10 @@ export default function ServiceModal({ isOpen, onClose, service }: ServiceModalP
     };
   }, [isOpen]);
 
-  if (!service) return null;
+  if (!displayService) return null;
 
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent(`Hola, me gustaría solicitar información sobre el servicio de ${service.title}.`);
+    const message = encodeURIComponent(`Hola, me gustaría solicitar información sobre el servicio de ${displayService.title}.`);
     window.open(`https://wa.me/573170303333?text=${message}`, '_blank');
   };
 
@@ -52,10 +58,10 @@ export default function ServiceModal({ isOpen, onClose, service }: ServiceModalP
 
           {/* Modal Content */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+            exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.28, ease: "easeIn" } }}
+            transition={{ duration: 0.32, ease: [0.34, 1.56, 0.64, 1] }}
             className="relative w-full max-w-[900px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col md:flex-row h-auto md:h-[620px] rounded-none md:max-h-[calc(100vh-4rem)] max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
@@ -70,8 +76,8 @@ export default function ServiceModal({ isOpen, onClose, service }: ServiceModalP
             {/* Left Side: Image (45%) */}
             <div className="w-full md:w-[45%] h-[250px] md:h-full relative shrink-0">
               <Image
-                src={service.image}
-                alt={service.title}
+                src={displayService.image}
+                alt={displayService.title}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
@@ -87,13 +93,13 @@ export default function ServiceModal({ isOpen, onClose, service }: ServiceModalP
               
               <div className="relative z-10">
                 <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 leading-tight">
-                  {service.title}
+                  {displayService.title}
                 </h3>
                 
                 <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)] mb-6" />
                 
                 <p className="text-gray-400 font-light leading-relaxed mb-10 md:text-lg">
-                  {service.description}
+                  {displayService.description}
                 </p>
                 
                 <div className="mt-8 md:mt-auto">

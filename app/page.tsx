@@ -11,6 +11,8 @@ import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import CommercialRemodelingSection from "@/components/CommercialRemodelingSection";
+
 
 export default function Home() {
   return (
@@ -24,6 +26,7 @@ export default function Home() {
       <ArchitecturalDesignSection />
       <ProjectsGrid />
       <BeforeAfterSection />
+      <CommercialRemodelingSection />
       <TestimonialsCarousel />
       <FinalCTA />
       <Footer />

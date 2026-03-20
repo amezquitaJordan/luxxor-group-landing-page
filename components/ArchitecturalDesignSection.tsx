@@ -51,12 +51,8 @@ export default function ArchitecturalDesignSection() {
                 muted
                 loop
                 playsInline
+                controls={false}
                 className="w-full h-full object-cover relative z-10"
-                onMouseEnter={(e) => e.currentTarget.setAttribute("controls", "true")}
-                onMouseLeave={(e) => {
-                  e.currentTarget.removeAttribute("controls");
-                  // When mouse leaves, hide controls by trying to pause/play to reset state, but removing attribute is usually enough for native controls
-                }}
               />
             </div>
           </motion.div>
