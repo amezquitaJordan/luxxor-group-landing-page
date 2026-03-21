@@ -12,7 +12,7 @@ import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import CommercialRemodelingSection from "@/components/CommercialRemodelingSection";
-
+import FAQSection from "@/components/FAQSection";
 
 export default function Home() {
   return (
@@ -27,6 +27,7 @@ export default function Home() {
       <ProjectsGrid />
       <BeforeAfterSection />
       <CommercialRemodelingSection />
+      <FAQSection />
       <TestimonialsCarousel />
       <FinalCTA />
       <Footer />
