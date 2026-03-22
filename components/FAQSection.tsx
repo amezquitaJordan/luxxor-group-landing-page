@@ -29,14 +29,21 @@ export default function FAQSection() {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
-    <section className="py-24 bg-[var(--color-luxxor-dark)] text-white relative flex flex-col items-center border-t border-b border-[#2A2A2A]" id="faq">
-      {/* Background gradients */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/4 -right-1/4 w-[500px] h-[500px] bg-[var(--color-luxxor-gold)]/5 rounded-full blur-[100px]" />
-        <div className="absolute -bottom-1/4 -left-1/4 w-[500px] h-[500px] bg-[var(--color-luxxor-gold)]/5 rounded-full blur-[100px]" />
-      </div>
+    <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      {/* Fondo Premium - Textura */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
+        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
+      />
+      {/* Bordes dorados sutiles */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
 
-      <div className="max-w-4xl w-full mx-auto px-6 lg:px-8 relative z-10">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
+      
+      <div className="container mx-auto px-6 max-w-4xl relative z-10">
         <div className="text-center mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}

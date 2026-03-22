@@ -13,8 +13,17 @@ const values = [
 
 export default function ValueAdded() {
   return (
-    <section className="py-20 bg-[#151515] border-y border-gray-800 overflow-hidden">
-      <div className="container mx-auto px-6 mb-12 text-center">
+    <section className="relative w-full py-20 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      {/* Fondo Premium - Textura */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" 
+        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
+      />
+      {/* Bordes dorados sutiles */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
+
+      <div className="container mx-auto px-6 mb-12 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -39,8 +48,8 @@ export default function ValueAdded() {
       </div>
 
       <div className="relative flex overflow-x-hidden group">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#151515] to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#151515] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
         
         {/* Infinite Carousel using CSS animation for smooth loop */}
         <div className="flex animate-carousel whitespace-nowrap group-hover:[animation-play-state:paused] w-max">
