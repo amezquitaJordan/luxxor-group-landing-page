@@ -36,6 +36,10 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
     scrollToBottom();
   }, [messages, isTyping, isOpen]);
 
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('chatbot-state-change', { detail: { isOpen } }));
+  }, [isOpen]);
+
   // Handle Input Submit
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -173,12 +177,12 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
                       }`}
                     >
                       {/* Check if response shows contact buttons */}
-                      {msg.text.includes("Fue un placer") ? (
+                      {msg.text.includes("¡Gracias por tu consulta!") ? (
                          <div className="space-y-4">
-                            <p className="leading-relaxed text-[0.95rem]">{msg.text}</p>
+                            <p className="leading-relaxed text-[0.95rem]">¡Gracias por tu consulta! 😊</p>
                             <div className="flex flex-col gap-2 pt-2 border-t border-[var(--color-luxxor-gold)]/20">
-                              <a href="https://instagram.com/luxxorcol" target="_blank" rel="noreferrer" className="text-center w-full py-2 bg-[#222] hover:bg-[#333] transition-colors rounded-lg text-sm flex items-center justify-center gap-2 border border-white/10">Instagram @luxxorcol</a>
-                              <a href="https://wa.me/573187517172" target="_blank" rel="noreferrer" className="text-center w-full py-2 bg-green-600/20 hover:bg-green-600/30 text-green-400 border border-green-500/30 transition-colors rounded-lg text-sm flex items-center justify-center gap-2">WhatsApp Directo</a>
+                              <a href="https://www.instagram.com/luxxor_group/" target="_blank" rel="noreferrer" className="text-center w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:opacity-90 transition-opacity rounded-lg text-sm font-medium text-white shadow-md flex items-center justify-center gap-2">Síguenos en Instagram</a>
+                              <a href="https://wa.me/573170303333" target="_blank" rel="noreferrer" className="text-center w-full py-2.5 bg-[#25D366] hover:bg-[#128C7E] transition-colors rounded-lg text-sm font-medium text-white shadow-md flex items-center justify-center gap-2">Escríbenos por WhatsApp</a>
                             </div>
                          </div>
                       ) : (
