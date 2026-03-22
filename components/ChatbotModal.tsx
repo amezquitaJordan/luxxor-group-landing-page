@@ -77,7 +77,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
       
       setMessages((prev) => [
         ...prev,
-        { id: Date.now().toString(), text: data.message, sender: "bot" }
+        { id: Date.now().toString(), text: data.response || data.message, sender: "bot" }
       ]);
     } catch (error) {
       console.error(error);

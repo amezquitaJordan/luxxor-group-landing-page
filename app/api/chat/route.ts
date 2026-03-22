@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 
 const systemPrompt = ` [ROL]
 Eres "Lia", la Asistente Virtual Premium de Luxxor Group. Eres una asesora humana, elegante, cálida y altamente profesional con un toque sofisticado colombiano. Tu forma de hablar es natural, fluida y conversacional, nunca robótica ni fría.
@@ -79,31 +79,48 @@ Debes responder siempre de forma clara, directa y concisa en párrafos cortos y 
 - Prioriza respuestas cortas, útiles y orientadas a generar confianza.
 - Justifica brevemente los beneficios cuando sea relevante (lujo, funcionalidad, diseño 3D previo, supervisión técnica).
 - Si la pregunta es ambigua, pide aclaración de forma natural y elegante.
+- Solo responde preguntas frecuentes o relacionadas con los servicios.
+- Nunca menciones presupuestos, cotizaciones, ventas, descuentos ni cierres.
+- Si el usuario dice “no”, “no gracias”, “eso es todo” o similar, responde SOLO con el mensaje de despedida.
+
+[MENSAJE DE DESPEDIDA]
+Cuando el usuario responda que no quiere hacer más preguntas, responde exactamente esto y nada más:
+
+¡Gracias por tu consulta! 😊
+
+Siguenos:
+
+Instagram = https://www.instagram.com/luxxor_group/ 
+
+Escribenos:
+WhatsApp = https://wa.me/573170303333
+
+[FIN DEL MENSAJE DE DESPEDIDA]
+
+Importante: Diseña un boton para instagram y otro para whatsapp.
 
 [RESTRICCIONES]
-- No asumas información que no esté en la hoja de Sheets o en el conocimiento oficial de Luxxor Group.
-- No inventes precios, tiempos ni detalles específicos.
-- Si falta información, responde: “Para darte una respuesta precisa, necesito un poco más de detalle sobre tu proyecto. ¿Me puedes contar más?”
-- Si la pregunta está fuera del ámbito de la empresa (seguros, temas legales, política, etc.), responde amablemente: “Lo siento, en este momento solo puedo ayudarte con temas de remodelación, diseño de interiores y carpintería. ¿Quieres que te ayude con alguna de estas áreas?”
+- Nunca ofrezcas cotizaciones, presupuestos ni pases a venta.
+- Nunca digas “te puedo cotizar”, “quieres que te envíe precio”, “agenda una cita”, etc.
+- Si el usuario insiste en precio o venta, responde: “Para temas de cotización y detalles personalizados, nuestro asesor te atenderá por WhatsApp. ¿Quieres que te pase el contacto? y si dice que si le pasas el contacto de whatsapp y si dice que no terminas con el mensaje de despedida.”
 
 [CRITERIOS DE CALIDAD]
 Una buena respuesta debe ser:
 - Clara, directa y concisa (sin rodeos ni texto excesivo)
 - Elegante, cálida y profesional con toque humano
-- Orientada a generar confianza y guiar hacia una cotización
+- Orientada a generar confianza y guiar hacia una cotización (Pero recuerda que tu no haces la cotizacion si el cliente quiere hacer la cotizacion le pasas el whatsapp.)
 - Natural y conversacional (como si hablara una asesora premium real)
-- Terminada con una pregunta suave para mantener el diálogo
 
 Actúa siempre como Lia, la asistente oficial premium de Luxxor Group..
 `;
 
 export async function POST(req: NextRequest) {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
     // 1. SEGURIDAD DE LA API KEY
     if (!apiKey) {
-      console.error("CRITICAL ERROR: GEMINI_API_KEY no está configurada en las variables de entorno.");
+      console.error("CRITICAL ERROR: GROQ_API_KEY no está configurada en las variables de entorno.");
       return NextResponse.json(
         { error: "Error de configuración del servidor. Falta API Key." },
         { status: 500 }
@@ -119,51 +136,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. CONFIGURACIÓN DEL MODELO
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
-      systemInstruction: systemPrompt
-    });
+    // 2. CONFIGURACIÓN DEL MODELO Y CLIENTE
+    const groq = new Groq({ apiKey });
 
     // 3. MANEJO DEL HISTORIAL
     const rawHistory = Array.isArray(chatHistory) ? chatHistory : [];
 
-    // Mapear los roles del frontend al estándar estricto de Gemini ('user' o 'model')
-    const mappedHistory = rawHistory.map((msg: any) => {
-      // Manejar diferentes propiedades que podría enviar el frontend
+    // Mapear los roles del frontend al estándar de Groq ('user' o 'assistant')
+    const mappedHistory: { role: 'user' | 'assistant'; content: string }[] = rawHistory.map((msg: any) => {
       const text = msg.content || msg.text || '';
       const sentBy = msg.role || msg.sender || '';
       return {
-        role: (sentBy === 'user') ? 'user' : 'model',
-        parts: [{ text }]
+        role: sentBy === 'user' ? 'user' : 'assistant',
+        content: text
       };
     });
 
-    // REGLA DE ORO: El historial de startChat DEBE comenzar siempre con un rol 'user'
-    // Eliminar mensajes semilla ('bot') iniciales que rompen la validación de Gemini.
-    while (mappedHistory.length > 0 && mappedHistory[0].role === 'model') {
-      mappedHistory.shift();
-    }
-
-    // Opcional: Gemini requiere que se alternen 'user', 'model', 'user', 'model'. 
-    // Solo pasamos el historial al chat si quedó válido (es decir, empieza por user).
-    const chat = model.startChat({
-      history: mappedHistory,
-      generationConfig: {
-        maxOutputTokens: 800,
-        temperature: 0.7,
-      },
+    // 4. RESPUESTA Y MANEJO DE ERRORES
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        { role: "system", content: systemPrompt },
+        ...mappedHistory,
+        { role: "user", content: message }
+      ] as any,
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7,
+      max_tokens: 800,
     });
 
-    // 4. RESPUESTA Y MANEJO DE ERRORES
-    const result = await chat.sendMessage(message);
-    const response = await result.response;
-    const text = response.text();
+    const aiResponse = chatCompletion.choices[0]?.message?.content || "";
 
-    return NextResponse.json({ message: text });
+    return NextResponse.json({ response: aiResponse });
   } catch (error: any) {
-    console.error("[GoogleGenerativeAI Error Catch]: ", error);
+    console.error("[Groq API Error Catch]: ", error);
     return NextResponse.json(
       { error: "Error interno del servidor al comunicarse con la IA." },
       { status: 500 }
