@@ -113,7 +113,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-lg bg-[#111111] border border-[var(--color-luxxor-gold)]/30 shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px]"
+            className="relative w-full max-w-lg lg:max-w-5xl bg-[#111111] border border-[var(--color-luxxor-gold)]/30 shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px] lg:h-[700px]"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[var(--color-luxxor-gold)]/20 bg-gradient-to-r from-[#1a1a1a] to-[#111111]">
