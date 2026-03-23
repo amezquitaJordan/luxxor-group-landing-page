@@ -53,37 +53,39 @@ export default React.memo(function ProjectsGrid() {
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
 
-        <div className="container mx-auto px-6 lg:px-12 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <m.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              className="md:w-1/2"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)]" />
-                <span className="text-[var(--color-luxxor-gold)] tracking-widest uppercase text-sm font-semibold">
-                  Nuestros Últimos Proyectos
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-serif text-white">
-                Explora algunas de nuestras remodelaciones y diseños más recientes en Cali.
-              </h2>
-            </m.div>
-            <m.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="md:w-1/4"
-            >
-              <a href="#contacto" className="inline-block border-b-2 border-[var(--color-luxxor-gold)] text-white hover:text-[var(--color-luxxor-gold)] transition-colors duration-300 pb-1 font-semibold uppercase tracking-widest text-sm">
-                Ver Catálogo Completo
-              </a>
-            </m.div>
-          </div>
+        <div className="max-w-[1400px] w-full px-6 md:px-12 lg:px-24 mx-auto relative z-10 flex flex-col items-center">
+          {/* Section Header — Centered Premium (matching Commercial section) */}
+          <m.div
+            className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <div className="flex items-center gap-4 mb-6 justify-center">
+              <div className="w-12 h-[1px] bg-[#D4AF37]" />
+              <span className="text-[#D4AF37] text-sm uppercase tracking-[0.3em] font-medium">
+                Nuestros Últimos Proyectos
+              </span>
+              <div className="w-12 h-[1px] bg-[#D4AF37]" />
+            </div>
+
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
+              Explora Nuestras Remodelaciones y Diseños Más Recientes
+            </h2>
+
+            <p className="text-xl md:text-2xl text-white font-medium mb-6 tracking-wide drop-shadow-md">
+              Cada proyecto refleja nuestra pasión por el lujo y la excelencia
+            </p>
+
+            <p className="text-base md:text-lg text-white/70 leading-relaxed font-light mb-8">
+              Transformamos espacios residenciales y comerciales en Cali con diseño arquitectónico de alto nivel, acabados premium y atención al detalle. Descubre cómo redefinimos cada entorno.
+            </p>
+
+            <a href="#contacto" className="inline-block border-b-2 border-[#D4AF37] text-white hover:text-[#D4AF37] transition-colors duration-300 pb-1 font-semibold uppercase tracking-widest text-sm">
+              Ver Catálogo Completo
+            </a>
+          </m.div>
         </div>
 
         {/* Infinite Carousel JS */}
