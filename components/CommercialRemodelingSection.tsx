@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
-import { LazyMotion, domAnimation, m, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import React from 'react';
+import { LazyMotion, domAnimation, m } from 'framer-motion';
 import Image from 'next/image';
 
 const services = [
@@ -27,136 +27,6 @@ const services = [
   }
 ];
 
-const MagneticCard = React.memo(({ service }: { service: typeof services[0] }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Check if mobile avoiding hydration mismatch
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.matchMedia('(max-width: 768px)').matches);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 160, damping: 25 });
-  const mouseYSpring = useSpring(y, { stiffness: 160, damping: 25 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7deg', '-7deg']);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7deg', '7deg']);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current || isMobile) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-
-    // Calculate mouse position relative to center of card (-0.5 to 0.5)
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const xPct = (mouseX / width) - 0.5;
-    const yPct = (mouseY / height) - 0.5;
-
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    if (isMobile) return;
-    x.set(0);
-    y.set(0);
-    setIsHovered(false);
-  };
-
-  return (
-    <m.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
-      onClick={() => isMobile && setIsHovered(!isHovered)}
-      style={{
-        rotateX: isMobile ? 0 : rotateX,
-        rotateY: isMobile ? 0 : rotateY,
-        transformStyle: 'preserve-3d',
-      }}
-      className="relative w-full h-[400px] md:h-[450px] rounded-2xl cursor-pointer group perspective-1000"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px', amount: 0.2 }}
-      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-    >
-      {/* Background Image Container with Inner Shadow */}
-      <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-[#121212]">
-        <Image
-          src={service.image}
-          alt={service.title}
-          fill
-          loading="eager"
-          fetchPriority="high"
-          className={`object-cover transition-transform duration-700 ease-out ${isHovered ? 'scale-110' : 'scale-100'}`}
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-        {/* Deep dark gradient overlay always present for legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/60 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-black/30 pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
-      </div>
-
-      {/* Golden Glow Depth Animation */}
-      <m.div
-        className="absolute inset-0 rounded-2xl pointer-events-none shadow-[inset_0_0_0_1px_rgba(212,175,55,0.1)]"
-        animate={{
-          boxShadow: isHovered
-            ? 'inset 0 0 0 1px rgba(212,175,55,0.5), inset 0 0 60px rgba(212,175,55,0.2), 0 0 40px rgba(212,175,55,0.15)'
-            : 'inset 0 0 0 1px rgba(212,175,55,0.1), inset 0 0 0px rgba(212,175,55,0), 0 0 0px rgba(212,175,55,0)'
-        }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      />
-
-      {/* Content */}
-      <div
-        className="absolute inset-0 p-8 flex flex-col justify-end z-10"
-        style={{ transform: 'translateZ(30px)' }}
-      >
-        <m.div
-          animate={{ y: isHovered ? -10 : 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-        >
-          <h3 className="text-2xl md:text-3xl font-light tracking-wide text-[#D4AF37] mb-3">
-            {service.title}
-          </h3>
-
-          <m.p
-            initial={{ opacity: 0.8, height: 'auto' }}
-            animate={{
-              opacity: isHovered ? 1 : 0.8,
-            }}
-            transition={{ duration: 0.4 }}
-            className="text-white/90 text-sm md:text-base leading-relaxed max-w-[95%] font-light"
-          >
-            {service.description}
-          </m.p>
-        </m.div>
-
-        {/* Animated accent line */}
-        <m.div
-          className="h-[1px] bg-gradient-to-r from-[#D4AF37] to-transparent mt-6 origin-left"
-          initial={{ scaleX: 0.3, opacity: 0.5 }}
-          animate={{
-            scaleX: isHovered ? 1 : 0.3,
-            opacity: isHovered ? 1 : 0.5
-          }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        />
-      </div>
-    </m.div>
-  );
-});
 
 export default React.memo(function CommercialRemodelingSection() {
   return (
@@ -208,25 +78,68 @@ export default React.memo(function CommercialRemodelingSection() {
             </p>
           </m.div>
 
-          {/* 2x2 Grid using CSS Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full mb-20">
+          {/* 2×2 Premium Hover Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full mb-20">
             {services.map((service, index) => (
-              <MagneticCard key={index} service={service} />
+              <m.div
+                key={index}
+                initial={{ opacity: 0, y: 40, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-50px', amount: 0.15 }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group overflow-hidden will-change-transform"
+              >
+                {/* Image with hover scale + parallax */}
+                <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-[#121212]">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    loading="eager"
+                    fetchPriority="high"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  {/* Base dark gradient for text legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/50 to-transparent pointer-events-none" />
+                  {/* Hover overlay with fade */}
+                  <div className="absolute inset-0 bg-black/20 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+                </div>
+
+                {/* Golden Glow Border on Hover */}
+                <div className="absolute inset-0 rounded-2xl pointer-events-none transition-shadow duration-500 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.1)] group-hover:shadow-[inset_0_0_0_2px_rgba(212,175,55,0.5),0_0_40px_rgba(212,175,55,0.12)]" />
+
+                {/* Content */}
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10">
+                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                    <h3 className="text-2xl md:text-3xl font-light tracking-wide text-[#D4AF37] mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:text-white/95">
+                      {service.description}
+                    </p>
+                  </div>
+
+                  {/* Animated accent line */}
+                  <div className="h-[1px] bg-gradient-to-r from-[#D4AF37] to-transparent mt-6 origin-left scale-x-[0.3] opacity-50 group-hover:scale-x-100 group-hover:opacity-100 transition-all duration-500 ease-out" />
+                </div>
+              </m.div>
             ))}
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button — Large Centered */}
           <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px', amount: 0.2 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="flex justify-center"
           >
             <a
               href="https://wa.me/573138865481"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center justify-center px-10 py-5 bg-[#D4AF37] text-[#121212] font-semibold tracking-wider uppercase text-sm md:text-base overflow-hidden rounded-sm hover-lift-gold transition-all duration-300"
+              className="group relative inline-flex items-center justify-center px-12 py-6 bg-[#D4AF37] text-[#121212] font-semibold tracking-wider uppercase text-base md:text-lg overflow-hidden rounded-sm hover-lift-gold transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_40px_rgba(212,175,55,0.3)]"
             >
               <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full skew-x-12 group-hover:animate-[shine_1.5s_ease-out_infinite]" />
               <span className="relative z-10 drop-shadow-sm">Transforma tu negocio comercial ahora</span>
