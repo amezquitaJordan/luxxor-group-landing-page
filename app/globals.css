@@ -49,3 +49,19 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-luxxor-gold);
   color: var(--color-luxxor-dark);
 }
+
+/* Performance Optimizations */
+[data-framer-motion], .motion-safe * {
+  will-change: transform, opacity;
+  contain: layout style paint;
+}
+
+/* Pure CSS Hover Alternatives */
+.hover-lift-gold {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-lift-gold:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px -15px rgba(212, 175, 55, 0.3);
+  border-color: var(--color-luxxor-gold);
+}

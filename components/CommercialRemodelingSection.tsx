@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { LazyMotion, domAnimation, m, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
 const services = [
@@ -27,7 +27,7 @@ const services = [
   }
 ];
 
-const MagneticCard = ({ service }: { service: typeof services[0] }) => {
+const MagneticCard = React.memo(({ service }: { service: typeof services[0] }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -74,7 +74,7 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
   };
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
@@ -88,8 +88,8 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
       className="relative w-full h-[400px] md:h-[450px] rounded-2xl cursor-pointer group perspective-1000"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {/* Background Image Container with Inner Shadow */}
       <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-[#121212]">
@@ -97,6 +97,8 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
           src={service.image}
           alt={service.title}
           fill
+          loading="eager"
+          fetchPriority="high"
           className={`object-cover transition-transform duration-700 ease-out ${isHovered ? 'scale-110' : 'scale-100'}`}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
@@ -106,7 +108,7 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
       </div>
 
       {/* Golden Glow Depth Animation */}
-      <motion.div
+      <m.div
         className="absolute inset-0 rounded-2xl pointer-events-none shadow-[inset_0_0_0_1px_rgba(212,175,55,0.1)]"
         animate={{
           boxShadow: isHovered
@@ -121,7 +123,7 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
         className="absolute inset-0 p-8 flex flex-col justify-end z-10"
         style={{ transform: 'translateZ(30px)' }}
       >
-        <motion.div
+        <m.div
           animate={{ y: isHovered ? -10 : 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
         >
@@ -129,7 +131,7 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
             {service.title}
           </h3>
 
-          <motion.p
+          <m.p
             initial={{ opacity: 0.8, height: 'auto' }}
             animate={{
               opacity: isHovered ? 1 : 0.8,
@@ -138,11 +140,11 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
             className="text-white/90 text-sm md:text-base leading-relaxed max-w-[95%] font-light"
           >
             {service.description}
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
 
         {/* Animated accent line */}
-        <motion.div
+        <m.div
           className="h-[1px] bg-gradient-to-r from-[#D4AF37] to-transparent mt-6 origin-left"
           initial={{ scaleX: 0.3, opacity: 0.5 }}
           animate={{
@@ -152,84 +154,86 @@ const MagneticCard = ({ service }: { service: typeof services[0] }) => {
           transition={{ duration: 0.5, ease: 'easeOut' }}
         />
       </div>
-    </motion.div>
+    </m.div>
   );
-};
+});
 
-export default function CommercialRemodelingSection() {
+export default React.memo(function CommercialRemodelingSection() {
   return (
-    <section className="relative py-24 md:py-32 w-full bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden flex flex-col items-center">
-      {/* Fondo Premium - Textura */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
-        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
-      />
-      {/* Bordes dorados sutiles */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
+    <LazyMotion features={domAnimation}>
+      <section className="relative py-24 md:py-32 w-full bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden flex flex-col items-center">
+        {/* Fondo Premium - Textura */}
+        <div 
+          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
+          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
+        />
+        {/* Bordes dorados sutiles */}
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
 
-      {/* Subtle Background Glows */}
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none translate-y-1/2" />
-      <div className="absolute right-0 top-1/2 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
-      <div className="absolute left-0 top-1/4 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
+        {/* Subtle Background Glows */}
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none translate-y-1/2" />
+        <div className="absolute right-0 top-1/2 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
+        <div className="absolute left-0 top-1/4 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
 
-      <div className="max-w-[1400px] w-full px-6 md:px-12 lg:px-24 mx-auto relative z-10 flex flex-col items-center">
+        <div className="max-w-[1400px] w-full px-6 md:px-12 lg:px-24 mx-auto relative z-10 flex flex-col items-center">
 
-        {/* Section Header */}
-        <motion.div
-          className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex items-center gap-4 mb-6 justify-center">
-            <div className="w-12 h-[1px] bg-[#D4AF37]" />
-            <span className="text-[#D4AF37] text-sm uppercase tracking-[0.3em] font-medium">
-              Especialidad Comercial
-            </span>
-            <div className="w-12 h-[1px] bg-[#D4AF37]" />
+          {/* Section Header */}
+          <m.div
+            className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <div className="flex items-center gap-4 mb-6 justify-center">
+              <div className="w-12 h-[1px] bg-[#D4AF37]" />
+              <span className="text-[#D4AF37] text-sm uppercase tracking-[0.3em] font-medium">
+                Especialidad Comercial
+              </span>
+              <div className="w-12 h-[1px] bg-[#D4AF37]" />
+            </div>
+
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
+              Remodelación de Espacios Comerciales
+            </h2>
+
+            <p className="text-xl md:text-2xl text-white font-medium mb-6 tracking-wide drop-shadow-md">
+              Tu negocio merece un espacio que venda antes de que el cliente entre
+            </p>
+
+            <p className="text-base md:text-lg text-white/70 leading-relaxed font-light">
+              En Luxxor Group transformamos locales comerciales en entornos que generan confianza, aumentan ventas y proyectan exclusividad. Especializados en farmacias, boutiques, oficinas, restaurantes y clínicas, creamos diseños que combinan funcionalidad operativa con estética de alto nivel.
+            </p>
+          </m.div>
+
+          {/* 2x2 Grid using CSS Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full mb-20">
+            {services.map((service, index) => (
+              <MagneticCard key={index} service={service} />
+            ))}
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
-            Remodelación de Espacios Comerciales
-          </h2>
-
-          <p className="text-xl md:text-2xl text-white font-medium mb-6 tracking-wide drop-shadow-md">
-            Tu negocio merece un espacio que venda antes de que el cliente entre
-          </p>
-
-          <p className="text-base md:text-lg text-white/70 leading-relaxed font-light">
-            En Luxxor Group transformamos locales comerciales en entornos que generan confianza, aumentan ventas y proyectan exclusividad. Especializados en farmacias, boutiques, oficinas, restaurantes y clínicas, creamos diseños que combinan funcionalidad operativa con estética de alto nivel.
-          </p>
-        </motion.div>
-
-        {/* 2x2 Grid using CSS Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full mb-20">
-          {services.map((service, index) => (
-            <MagneticCard key={index} service={service} />
-          ))}
-        </div>
-
-        {/* CTA Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <a
-            href="https://wa.me/573138865481"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative inline-flex items-center justify-center px-10 py-5 bg-[#D4AF37] text-[#121212] font-semibold tracking-wider uppercase text-sm md:text-base overflow-hidden rounded-sm transition-transform hover:scale-[1.02] duration-300"
+          {/* CTA Button */}
+          <m.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full skew-x-12 group-hover:animate-[shine_1.5s_ease-out_infinite]" />
-            <span className="relative z-10 drop-shadow-sm">Transforma tu negocio comercial ahora</span>
-          </a>
-        </motion.div>
-      </div>
-    </section>
+            <a
+              href="https://wa.me/573138865481"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center justify-center px-10 py-5 bg-[#D4AF37] text-[#121212] font-semibold tracking-wider uppercase text-sm md:text-base overflow-hidden rounded-sm hover-lift-gold transition-all duration-300"
+            >
+              <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full skew-x-12 group-hover:animate-[shine_1.5s_ease-out_infinite]" />
+              <span className="relative z-10 drop-shadow-sm">Transforma tu negocio comercial ahora</span>
+            </a>
+          </m.div>
+        </div>
+      </section>
+    </LazyMotion>
   );
-}
+});

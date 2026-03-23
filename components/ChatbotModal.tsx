@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { X, Send, User, Sparkles, Loader2 } from "lucide-react";
 
 interface ChatbotModalProps {
@@ -15,7 +15,7 @@ interface Message {
   sender: "user" | "bot";
 }
 
-export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
+export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -99,148 +99,150 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" style={{ pointerEvents: 'auto' }}>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-          />
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence>
+        {isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" style={{ pointerEvents: 'auto' }}>
+            {/* Backdrop */}
+            <m.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
 
-          {/* Modal Content */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-lg lg:max-w-5xl bg-[#111111] border border-[var(--color-luxxor-gold)]/30 shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px] lg:h-[700px]"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[var(--color-luxxor-gold)]/20 bg-gradient-to-r from-[#1a1a1a] to-[#111111]">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--color-luxxor-gold)] to-yellow-200 flex items-center justify-center p-0.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                  <div className="w-full h-full bg-[#111] rounded-full flex flex-col items-center justify-center text-[var(--color-luxxor-gold)]">
-                    <span className="text-[10px] font-bold font-serif leading-none tracking-tighter">LX</span>
-                    <Sparkles className="w-3 h-3 mt-0.5 text-white/80" />
+            {/* Modal Content */}
+            <m.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-lg lg:max-w-5xl bg-[#111111] border border-[var(--color-luxxor-gold)]/30 shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px] lg:h-[700px]"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[var(--color-luxxor-gold)]/20 bg-gradient-to-r from-[#1a1a1a] to-[#111111]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--color-luxxor-gold)] to-yellow-200 flex items-center justify-center p-0.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                    <div className="w-full h-full bg-[#111] rounded-full flex flex-col items-center justify-center text-[var(--color-luxxor-gold)]">
+                      <span className="text-[10px] font-bold font-serif leading-none tracking-tighter">LX</span>
+                      <Sparkles className="w-3 h-3 mt-0.5 text-white/80" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-medium flex items-center gap-2">
+                      Asistente Luxxor IA
+                    </h3>
+                    <span className="text-xs text-[var(--color-luxxor-gold)] flex items-center gap-1.5 font-light">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_5px_#22c55e] animate-pulse" />
+                      En línea
+                    </span>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-white font-medium flex items-center gap-2">
-                    Asistente Luxxor IA
-                  </h3>
-                  <span className="text-xs text-[var(--color-luxxor-gold)] flex items-center gap-1.5 font-light">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_5px_#22c55e] animate-pulse" />
-                    En línea
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={onClose}
-                className="p-2 text-gray-400 hover:text-white rounded-full hover:bg-white/5 transition-colors focus:outline-none"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 scrollbar-thin scrollbar-thumb-[#333] scrollbar-track-transparent">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} font-light`}
+                <button
+                  onClick={onClose}
+                  className="p-2 text-gray-400 hover:text-white rounded-full hover:bg-white/5 transition-colors focus:outline-none"
                 >
-                  <div className={`flex max-w-[85%] gap-3 ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                    
-                    {/* Avatar */}
-                    <div className="flex-shrink-0 mt-1">
-                      {msg.sender === "bot" ? (
-                        <div className="w-8 h-8 rounded-full bg-[var(--color-luxxor-gold)] flex items-center justify-center text-[#111]">
-                          <span className="text-xs font-bold font-serif tracking-tighter">LX</span>
-                        </div>
-                      ) : (
-                        <div className="w-8 h-8 rounded-full bg-[#333] flex items-center justify-center text-gray-300">
-                          <User className="w-4 h-4" />
-                        </div>
-                      )}
-                    </div>
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-                    {/* Bubble */}
-                    <div
-                      className={`p-3.5 rounded-2xl ${
-                        msg.sender === "user"
-                          ? "bg-[#222] text-white rounded-tr-sm border border-white/5"
-                          : "bg-gradient-to-br from-[#1a1a1a] to-[#141414] text-gray-200 rounded-tl-sm border border-[var(--color-luxxor-gold)]/20 shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
-                      }`}
-                    >
-                      {/* Check if response shows contact buttons */}
-                      {msg.text.includes("¡Gracias por tu consulta!") ? (
-                         <div className="space-y-4">
-                            <p className="leading-relaxed text-[0.95rem]">¡Gracias por tu consulta! 😊</p>
-                            <div className="flex flex-col gap-2 pt-2 border-t border-[var(--color-luxxor-gold)]/20">
-                              <a href="https://www.instagram.com/luxxor_group/" target="_blank" rel="noreferrer" className="text-center w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:opacity-90 transition-opacity rounded-lg text-sm font-medium text-white shadow-md flex items-center justify-center gap-2">Síguenos en Instagram</a>
-                              <a href="https://wa.me/573170303333" target="_blank" rel="noreferrer" className="text-center w-full py-2.5 bg-[#25D366] hover:bg-[#128C7E] transition-colors rounded-lg text-sm font-medium text-white shadow-md flex items-center justify-center gap-2">Escríbenos por WhatsApp</a>
-                            </div>
-                         </div>
-                      ) : (
-                         <p className="leading-relaxed text-[0.95rem] whitespace-pre-wrap">{msg.text}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
+              {/* Chat Area */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 scrollbar-thin scrollbar-thumb-[#333] scrollbar-track-transparent">
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} font-light`}
+                  >
+                    <div className={`flex max-w-[85%] gap-3 ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                      
+                      {/* Avatar */}
+                      <div className="flex-shrink-0 mt-1">
+                        {msg.sender === "bot" ? (
+                          <div className="w-8 h-8 rounded-full bg-[var(--color-luxxor-gold)] flex items-center justify-center text-[#111]">
+                            <span className="text-xs font-bold font-serif tracking-tighter">LX</span>
+                          </div>
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-[#333] flex items-center justify-center text-gray-300">
+                            <User className="w-4 h-4" />
+                          </div>
+                        )}
+                      </div>
 
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="flex max-w-[85%] gap-3 flex-row">
-                    <div className="flex-shrink-0 mt-1">
-                      <div className="w-8 h-8 rounded-full bg-[var(--color-luxxor-gold)]/80 flex items-center justify-center text-[#111]">
-                        <Loader2 className="w-4 h-4 animate-spin text-[#111]" />
+                      {/* Bubble */}
+                      <div
+                        className={`p-3.5 rounded-2xl ${
+                          msg.sender === "user"
+                            ? "bg-[#222] text-white rounded-tr-sm border border-white/5"
+                            : "bg-gradient-to-br from-[#1a1a1a] to-[#141414] text-gray-200 rounded-tl-sm border border-[var(--color-luxxor-gold)]/20 shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
+                        }`}
+                      >
+                        {/* Check if response shows contact buttons */}
+                        {msg.text.includes("¡Gracias por tu consulta!") ? (
+                           <div className="space-y-4">
+                              <p className="leading-relaxed text-[0.95rem]">¡Gracias por tu consulta! 😊</p>
+                              <div className="flex flex-col gap-2 pt-2 border-t border-[var(--color-luxxor-gold)]/20">
+                                <a href="https://www.instagram.com/luxxor_group/" target="_blank" rel="noreferrer" className="text-center w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:opacity-90 transition-opacity rounded-lg text-sm font-medium text-white shadow-md flex items-center justify-center gap-2">Síguenos en Instagram</a>
+                                <a href="https://wa.me/573170303333" target="_blank" rel="noreferrer" className="text-center w-full py-2.5 bg-[#25D366] hover:bg-[#128C7E] transition-colors rounded-lg text-sm font-medium text-white shadow-md flex items-center justify-center gap-2">Escríbenos por WhatsApp</a>
+                              </div>
+                           </div>
+                        ) : (
+                           <p className="leading-relaxed text-[0.95rem] whitespace-pre-wrap">{msg.text}</p>
+                        )}
                       </div>
                     </div>
-                    <div className="p-4 rounded-2xl bg-[#1a1a1a] rounded-tl-sm border border-[var(--color-luxxor-gold)]/20 flex items-center gap-1.5 h-[46px]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                  </div>
+                ))}
+
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="flex max-w-[85%] gap-3 flex-row">
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-8 h-8 rounded-full bg-[var(--color-luxxor-gold)]/80 flex items-center justify-center text-[#111]">
+                          <Loader2 className="w-4 h-4 animate-spin text-[#111]" />
+                        </div>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-[#1a1a1a] rounded-tl-sm border border-[var(--color-luxxor-gold)]/20 flex items-center gap-1.5 h-[46px]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input Area */}
-            <div className="p-4 bg-[#141414] border-t border-white/10">
-              <form
-                onSubmit={handleSendMessage}
-                className="relative flex items-center gap-2"
-              >
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Escribe tu duda aquí..."
-                  className="w-full bg-[#1a1a1a] border border-[#333] focus:border-[var(--color-luxxor-gold)] text-white rounded-full pl-5 pr-12 py-3.5 outline-none transition-all placeholder:text-gray-500 font-light text-[0.95rem]"
-                  disabled={isTyping}
-                />
-                <button
-                  type="submit"
-                  disabled={!inputValue.trim() || isTyping}
-                  className="absolute right-1.5 p-2.5 bg-[var(--color-luxxor-gold)] rounded-full text-[#111] hover:bg-yellow-400 disabled:opacity-50 disabled:hover:bg-[var(--color-luxxor-gold)] transition-colors focus:outline-none"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
-              </form>
-              <div className="text-center mt-2.5">
-               <span className="text-[10px] text-gray-500 font-light">La IA puede cometer errores. Considera verificar la información importante.</span>
+                )}
+                <div ref={messagesEndRef} />
               </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
+
+              {/* Input Area */}
+              <div className="p-4 bg-[#141414] border-t border-white/10">
+                <form
+                  onSubmit={handleSendMessage}
+                  className="relative flex items-center gap-2"
+                >
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Escribe tu duda aquí..."
+                    className="w-full bg-[#1a1a1a] border border-[#333] focus:border-[var(--color-luxxor-gold)] text-white rounded-full pl-5 pr-12 py-3.5 outline-none transition-all placeholder:text-gray-500 font-light text-[0.95rem]"
+                    disabled={isTyping}
+                  />
+                  <button
+                    type="submit"
+                    disabled={!inputValue.trim() || isTyping}
+                    className="absolute right-1.5 p-2.5 bg-[var(--color-luxxor-gold)] rounded-full text-[#111] hover:bg-yellow-400 disabled:opacity-50 disabled:hover:bg-[var(--color-luxxor-gold)] transition-colors focus:outline-none"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </form>
+                <div className="text-center mt-2.5">
+                 <span className="text-[10px] text-gray-500 font-light">La IA puede cometer errores. Considera verificar la información importante.</span>
+                </div>
+              </div>
+            </m.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </LazyMotion>
   );
-}
+});

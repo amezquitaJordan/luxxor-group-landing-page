@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import React, { useState } from 'react';
+import { LazyMotion, domAnimation, m, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
 interface Project {
@@ -62,45 +62,44 @@ function Card({ project }: { project: Project }) {
   };
 
   return (
-    <motion.div
-      className="flex flex-col group cursor-pointer"
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.3 }}
+    <m.div
+      className="flex flex-col group cursor-pointer hover-lift-gold will-change-transform transition-all"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleTap}
     >
-      <motion.div
+      <m.div
         className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] shadow-[0_4px_10px_rgba(0,0,0,0.5)]"
       >
         {/* Etiqueta Antes (Desktop) */}
-        <motion.div
+        <m.div
           className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 hidden md:block"
           style={{ opacity: useTransform(animatedHover, [0, 50], [1, 0]) }}
         >
           Antes
-        </motion.div>
+        </m.div>
 
         {/* Etiqueta Antes (Mobile) */}
-        <motion.div
+        <m.div
           className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 md:hidden"
           initial={false}
           animate={{ opacity: isTapped ? 0 : 1 }}
           transition={{ duration: 0.3 }}
         >
           Antes
-        </motion.div>
+        </m.div>
 
         {/* Imagen Antes (Base) */}
         <Image
           src={project.before}
           alt={`Antes - ${project.title}`}
           fill
+          loading="lazy"
           className="object-cover"
         />
 
         {/* Imagen Después (Reveal on Hover - Desktop) */}
-        <motion.div
+        <m.div
           className="hidden md:block absolute inset-0 z-10"
           style={{ clipPath }}
         >
@@ -108,12 +107,13 @@ function Card({ project }: { project: Project }) {
             src={project.after}
             alt={`Después - ${project.title}`}
             fill
+            loading="lazy"
             className="object-cover"
           />
-        </motion.div>
+        </m.div>
 
         {/* Imagen Después (Fade on Tap - Mobile) */}
-        <motion.div
+        <m.div
           className="md:hidden absolute inset-0 z-10 pointer-events-none"
           initial={false}
           animate={{ opacity: isTapped ? 1 : 0 }}
@@ -123,33 +123,34 @@ function Card({ project }: { project: Project }) {
             src={project.after}
             alt={`Después - ${project.title}`}
             fill
+            loading="lazy"
             className="object-cover"
           />
-        </motion.div>
+        </m.div>
 
         {/* Línea divisoria dorada (Desktop) */}
-        <motion.div
+        <m.div
           className="hidden md:block absolute top-0 bottom-0 w-[2px] bg-[#D4AF37] z-20 shadow-[0_0_10px_#D4AF37]"
           style={{ left: lineLeft }}
         />
 
         {/* Etiqueta Después (Shows with reveal/fade) */}
-        <motion.div
+        <m.div
           className="absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider hidden md:block"
           style={{ opacity: useTransform(animatedHover, [50, 100], [0, 1]) }}
         >
           Después
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className="absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider md:hidden"
           initial={false}
           animate={{ opacity: isTapped ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         >
           Después
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
       {/* Contenido (Textos) */}
       <h3 className="text-[#D4AF37] text-xl font-medium mb-2 group-hover:text-white transition-colors duration-300">
@@ -158,69 +159,71 @@ function Card({ project }: { project: Project }) {
       <p className="text-gray-400 text-sm leading-relaxed">
         {project.description}
       </p>
-    </motion.div>
+    </m.div>
   );
 }
 
-export default function BeforeAfterSection() {
+export default React.memo(function BeforeAfterSection() {
   return (
-    <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
-      {/* Fondo Premium - Textura */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
-        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
-      />
-      {/* Bordes dorados sutiles */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
+    <LazyMotion features={domAnimation}>
+      <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+        {/* Fondo Premium - Textura */}
+        <div 
+          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
+          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
+        />
+        {/* Bordes dorados sutiles */}
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        {/* Cabecera */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.span
-            className="text-[#D4AF37] tracking-[0.2em] text-sm font-semibold uppercase mb-4 block"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Transformaciones Reales
-          </motion.span>
-          <motion.h2
-            className="text-3xl md:text-5xl font-light text-white mb-6 leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Antes y <span className="text-[#D4AF37] font-medium">Después</span>
-          </motion.h2>
-          <motion.p
-            className="text-gray-400 text-lg"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Descubre cómo convertimos espacios comunes en entornos de lujo
-          </motion.p>
-        </div>
-
-        {/* Grid Container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          {/* Cabecera */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <m.span
+              className="text-[#D4AF37] tracking-[0.2em] text-sm font-semibold uppercase mb-4 block"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <Card project={project} />
-            </motion.div>
-          ))}
+              Transformaciones Reales
+            </m.span>
+            <m.h2
+              className="text-3xl md:text-5xl font-light text-white mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              Antes y <span className="text-[#D4AF37] font-medium">Después</span>
+            </m.h2>
+            <m.p
+              className="text-gray-400 text-lg"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              Descubre cómo convertimos espacios comunes en entornos de lujo
+            </m.p>
+          </div>
+
+          {/* Grid Container */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+            {projects.map((project, index) => (
+              <m.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+                transition={{ duration: 0.6, delay: Math.min(index * 0.1, 0.5), ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <Card project={project} />
+              </m.div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </LazyMotion>
   );
-}
+});
