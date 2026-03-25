@@ -9,8 +9,7 @@ export default React.memo(function Hero() {
     <LazyMotion features={domAnimation}>
       <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/60 z-10" />
+        <div className="absolute inset-0 z-[0]">
           <Image
             src="/images/casa-lujosa.jpg"
             alt="Casa lujosa moderna - Remodelación residencial premium en Cali"
@@ -20,21 +19,25 @@ export default React.memo(function Hero() {
             sizes="100vw"
             className="object-cover object-center"
           />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
+        
+        {/* Asymmetrical Gradient Mask */}
+        <div className="absolute inset-0 bg-gradient-to-l from-black/50 via-black/20 to-transparent z-[1]" />
 
         {/* Content */}
-        <div className="relative z-20 container mx-auto px-6 lg:px-12 flex flex-col items-center text-center">
+        <div className="relative z-[2] container mx-auto px-6 lg:px-12 flex flex-col items-center text-center">
           <m.div
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-6 uppercase tracking-wider">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-6 uppercase tracking-wider [text-shadow:0_2px_5px_rgba(0,0,0,0.4)]">
               Transformamos tu
               <br />
               <span className="text-[var(--color-luxxor-gold)]">Espacio en Lujo</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 font-sans font-light">
+            <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 font-sans font-light [text-shadow:0_2px_5px_rgba(0,0,0,0.4)]">
               Diseño funcional y estética premium para hogares y espacios que inspiran. Remodelaciones residenciales de alto nivel en Cali, Valle del Cauca.
             </p>
             
