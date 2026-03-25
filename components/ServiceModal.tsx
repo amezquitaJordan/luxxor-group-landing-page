@@ -18,10 +18,11 @@ interface ServiceModalProps {
 }
 
 export default React.memo(function ServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
-  const [displayService, setDisplayService] = useState(service);
+  const prevService = React.useRef(service);
+  const activeService = service || prevService.current;
 
   useEffect(() => {
-    if (service) setDisplayService(service);
+    if (service) prevService.current = service;
   }, [service]);
 
   // Prevent scrolling when modal is open
@@ -36,10 +37,10 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
     };
   }, [isOpen]);
 
-  if (!displayService) return null;
+  if (!activeService) return null;
 
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent(`Hola, me gustaría solicitar información sobre el servicio de ${displayService.title}.`);
+    const message = encodeURIComponent(`Hola, me gustaría solicitar información sobre el servicio de ${activeService.title}.`);
     window.open(`https://wa.me/573170303333?text=${message}`, '_blank');
   };
 
@@ -78,8 +79,8 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
               {/* Top Side: Image */}
               <div className="w-full h-[250px] sm:h-[300px] relative shrink-0">
                 <Image
-                  src={displayService.image}
-                  alt={displayService.title}
+                  src={activeService.image}
+                  alt={activeService.title}
                   fill
                   className="object-cover"
                   sizes="(max-width: 600px) 100vw, 500px"
@@ -97,13 +98,13 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
                 
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 leading-tight">
-                    {displayService.title}
+                    {activeService.title}
                   </h3>
                   
                   <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)] mb-6" />
                   
                   <p className="text-gray-400 font-light leading-relaxed mb-10 text-base">
-                    {displayService.description}
+                    {activeService.description}
                   </p>
                   
                   <div className="mt-auto">

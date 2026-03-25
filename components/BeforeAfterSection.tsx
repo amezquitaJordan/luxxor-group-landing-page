@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LazyMotion, domAnimation, m, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { LazyMotion, domAnimation, m } from 'framer-motion';
 import Image from 'next/image';
 
 interface Project {
@@ -39,23 +39,7 @@ const projects: Project[] = [
 ];
 
 function Card({ project }: { project: Project }) {
-  const hoverValue = useMotionValue(0);
-  const animatedHover = useSpring(hoverValue, { stiffness: 180, damping: 22 });
   const [isTapped, setIsTapped] = useState(false);
-
-  // Desktop transform animations
-  // When hoverValue is 0, right 100% is inset (so width is 0).
-  // When hoverValue is 100, right 0% is inset (width is 100%).
-  const clipPath = useTransform(animatedHover, [0, 100], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  const lineLeft = useTransform(animatedHover, [0, 100], ["0%", "100%"]);
-
-  const handleMouseEnter = () => {
-    hoverValue.set(100);
-  };
-
-  const handleMouseLeave = () => {
-    hoverValue.set(0);
-  };
 
   const handleTap = () => {
     setIsTapped(!isTapped);
@@ -64,20 +48,17 @@ function Card({ project }: { project: Project }) {
   return (
     <m.div
       className="flex flex-col group cursor-pointer hover-lift-gold will-change-transform transition-all"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       onClick={handleTap}
     >
       <m.div
         className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] shadow-[0_4px_10px_rgba(0,0,0,0.5)]"
       >
         {/* Etiqueta Antes (Desktop) */}
-        <m.div
-          className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 hidden md:block"
-          style={{ opacity: useTransform(animatedHover, [0, 50], [1, 0]) }}
+        <div
+          className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 hidden md:block opacity-100 group-hover:opacity-0 transition-opacity duration-300"
         >
           Antes
-        </m.div>
+        </div>
 
         {/* Etiqueta Antes (Mobile) */}
         <m.div
@@ -99,18 +80,15 @@ function Card({ project }: { project: Project }) {
         />
 
         {/* Imagen Después (Reveal on Hover - Desktop) */}
-        <m.div
-          className="hidden md:block absolute inset-0 z-10"
-          style={{ clipPath }}
-        >
+        <div className="hidden md:block absolute inset-0 z-10 [clip-path:inset(0_100%_0_0)] group-hover:[clip-path:inset(0_0%_0_0)] transition-[clip-path] duration-500 ease-out">
           <Image
             src={project.after}
             alt={`Después - ${project.title}`}
             fill
-            loading="lazy"
+            priority={true}
             className="object-cover"
           />
-        </m.div>
+        </div>
 
         {/* Imagen Después (Fade on Tap - Mobile) */}
         <m.div
@@ -123,24 +101,20 @@ function Card({ project }: { project: Project }) {
             src={project.after}
             alt={`Después - ${project.title}`}
             fill
-            loading="lazy"
+            priority={true}
             className="object-cover"
           />
         </m.div>
 
         {/* Línea divisoria dorada (Desktop) */}
-        <m.div
-          className="hidden md:block absolute top-0 bottom-0 w-[2px] bg-[#D4AF37] z-20 shadow-[0_0_10px_#D4AF37]"
-          style={{ left: lineLeft }}
-        />
+        <div className="hidden md:block absolute top-0 bottom-0 w-[2px] bg-[#D4AF37] z-20 shadow-[0_0_10px_#D4AF37] left-0 group-hover:left-full transition-all duration-500 ease-out" />
 
         {/* Etiqueta Después (Shows with reveal/fade) */}
-        <m.div
-          className="absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider hidden md:block"
-          style={{ opacity: useTransform(animatedHover, [50, 100], [0, 1]) }}
+        <div
+          className="absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100"
         >
           Después
-        </m.div>
+        </div>
 
         <m.div
           className="absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider md:hidden"

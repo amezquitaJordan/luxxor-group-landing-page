@@ -85,7 +85,6 @@ export default React.memo(function FAQSection() {
                 className="border border-[#2a2a2a] bg-[#1a1a1a]/50 backdrop-blur-sm rounded-xl overflow-hidden"
               >
                 <m.button
-                  layout
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="w-full flex items-center justify-between p-6 text-left focus:outline-none group will-change-transform"
                 >
@@ -108,8 +107,7 @@ export default React.memo(function FAQSection() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                      style={{ willChange: "height, opacity" }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
                       <div className="p-6 pt-0 text-gray-400 leading-relaxed text-md font-light">
