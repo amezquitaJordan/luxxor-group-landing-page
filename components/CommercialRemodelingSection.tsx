@@ -33,17 +33,15 @@ export default React.memo(function CommercialRemodelingSection() {
     <LazyMotion features={domAnimation}>
       <section className="relative py-24 md:py-32 w-full bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden flex flex-col items-center">
         {/* Fondo Premium - Textura */}
-        <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
-        />
+        <div className="bg-noise" />
+        
         {/* Bordes dorados sutiles */}
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
 
-        {/* Subtle Background Glows */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none translate-y-1/2" />
+        {/* Subtle Background Glows - Optimizados */}
+        <div className="bg-glow-gold-top" />
+        <div className="bg-glow-gold-bottom" />
         <div className="absolute right-0 top-1/2 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
         <div className="absolute left-0 top-1/4 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
 
@@ -95,8 +93,7 @@ export default React.memo(function CommercialRemodelingSection() {
                     src={service.image}
                     alt={service.title}
                     fill
-                    loading="eager"
-                    fetchPriority="high"
+                    loading="lazy"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />

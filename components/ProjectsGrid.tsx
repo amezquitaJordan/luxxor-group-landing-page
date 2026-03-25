@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { LazyMotion, domAnimation, m, useMotionValue, useTransform, useAnimationFrame, useReducedMotion } from "framer-motion";
+import React from "react";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import Image from "next/image";
 
 const projects = [
@@ -26,29 +26,12 @@ const projects = [
 ];
 
 export default React.memo(function ProjectsGrid() {
-  const baseX = useMotionValue(0);
-  const x = useTransform(baseX, (v) => `${v}%`);
-  const reducedMotion = useReducedMotion();
-  const [isHovered, setIsHovered] = useState(false);
-
-  useAnimationFrame((t, delta) => {
-    if (reducedMotion || isHovered) return;
-    let moveBy = (delta / 1000) * 1.5; // slow speed, 1.5% per second
-    let newX = baseX.get() - moveBy;
-    if (newX <= -33.333) {
-      newX += 33.333; // reset
-    }
-    baseX.set(newX);
-  });
-
   return (
     <LazyMotion features={domAnimation}>
       <section id="proyectos" className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
         {/* Fondo Premium - Textura */}
-        <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" 
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
-        />
+        <div className="bg-noise" />
+        
         {/* Bordes dorados sutiles */}
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
@@ -93,11 +76,8 @@ export default React.memo(function ProjectsGrid() {
           <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
 
-          <m.div 
-            style={{ x }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="flex w-max gap-8 px-6 will-change-transform"
+          <div 
+            className="flex w-max gap-8 px-6 will-change-transform animate-carousel-projects hover:[animation-play-state:paused]"
           >
             {[...projects, ...projects, ...projects].map((project, index) => (
               <div
@@ -136,7 +116,7 @@ export default React.memo(function ProjectsGrid() {
                 <div className="absolute inset-0 border border-transparent group-hover/card:border-[var(--color-luxxor-gold)]/50 z-30 transition-colors duration-500 pointer-events-none" />
               </div>
             ))}
-          </m.div>
+          </div>
         </div>
       </section>
     </LazyMotion>

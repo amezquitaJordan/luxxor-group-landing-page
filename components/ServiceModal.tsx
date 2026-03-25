@@ -60,11 +60,11 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
 
             {/* Modal Content */}
             <m.div
-              initial={{ opacity: 0, scale: 0.92 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.28, ease: "easeIn" } }}
-              transition={{ duration: 0.32, ease: [0.34, 1.56, 0.64, 1] }}
-              className="relative w-full max-w-[900px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col md:flex-row h-auto md:h-[620px] rounded-none md:max-h-[calc(100vh-4rem)] max-h-[90vh] overflow-hidden"
+              exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.28, ease: "easeIn" } }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="relative w-full max-w-[500px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col h-auto rounded-none max-h-[90vh] overflow-hidden mx-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
@@ -75,25 +75,25 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
                 <X size={20} />
               </button>
 
-              {/* Left Side: Image (45%) */}
-              <div className="w-full md:w-[45%] h-[250px] md:h-full relative shrink-0">
+              {/* Top Side: Image */}
+              <div className="w-full h-[250px] sm:h-[300px] relative shrink-0">
                 <Image
                   src={displayService.image}
                   alt={displayService.title}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 45vw"
+                  sizes="(max-width: 600px) 100vw, 500px"
                   priority
                   placeholder="blur"
                   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOM8Ph/BAAEEwH+oYQ/1wAAAABJRU5ErkJggg=="
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#151515] via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-[#151515]/20 md:to-[#151515] pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#151515] via-transparent to-transparent pointer-events-none" />
               </div>
 
-              {/* Right Side: Content (55%) */}
-              <div className="w-full md:w-[55%] p-6 md:p-12 flex flex-col justify-center h-auto md:h-full overflow-y-auto no-scrollbar relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-luxxor-gold)]/5 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-[var(--color-luxxor-gold)]/5 rounded-full blur-3xl" />
+              {/* Bottom Side: Content */}
+              <div className="w-full p-6 sm:p-8 flex flex-col justify-center h-auto overflow-y-auto no-scrollbar relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-luxxor-gold)]/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-[var(--color-luxxor-gold)]/5 rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 leading-tight">
@@ -102,14 +102,14 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
                   
                   <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)] mb-6" />
                   
-                  <p className="text-gray-400 font-light leading-relaxed mb-10 md:text-lg">
+                  <p className="text-gray-400 font-light leading-relaxed mb-10 text-base">
                     {displayService.description}
                   </p>
                   
-                  <div className="mt-8 md:mt-auto">
+                  <div className="mt-auto">
                     <button
                       onClick={handleWhatsAppClick}
-                      className="w-full sm:w-max px-8 py-4 bg-transparent border border-[var(--color-luxxor-gold)] text-[var(--color-luxxor-gold)] font-semibold tracking-widest uppercase text-sm hover:bg-[var(--color-luxxor-gold)] hover:text-black transition-all duration-300 relative overflow-hidden group shadow-[0_0_15px_rgba(212,175,55,0.1)] hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]"
+                      className="w-full px-8 py-4 bg-transparent border border-[var(--color-luxxor-gold)] text-[var(--color-luxxor-gold)] font-semibold tracking-widest uppercase text-sm hover:bg-[var(--color-luxxor-gold)] hover:text-black transition-all duration-300 relative overflow-hidden group shadow-[0_0_15px_rgba(212,175,55,0.1)] hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]"
                     >
                       <span className="relative z-10">Solicitar información</span>
                     </button>

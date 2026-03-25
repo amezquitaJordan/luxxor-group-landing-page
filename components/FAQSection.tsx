@@ -33,17 +33,15 @@ export default React.memo(function FAQSection() {
     <LazyMotion features={domAnimation}>
       <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
         {/* Fondo Premium - Textura */}
-        <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} 
-        />
+        <div className="bg-noise" />
+        
         {/* Bordes dorados sutiles */}
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
 
-        {/* Background Decor */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
+        {/* Background Decor - Optimizados */}
+        <div className="bg-glow-gold-top" />
+        <div className="bg-glow-gold-bottom" />
         
         <div className="container mx-auto px-6 max-w-4xl relative z-10">
           <div className="text-center mb-16">
@@ -67,19 +65,22 @@ export default React.memo(function FAQSection() {
             </m.p>
           </div>
 
-          <div className="space-y-4 mb-16">
+          <m.div 
+            className="space-y-4 mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+            }}
+          >
             {FAQS.map((faq, index) => (
               <m.div 
                 key={index}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: Math.min(index * 0.1, 0.4), 
-                  ease: [0.25, 0.1, 0.25, 1],
-                  layout: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
                 }}
                 className="border border-[#2a2a2a] bg-[#1a1a1a]/50 backdrop-blur-sm rounded-xl overflow-hidden"
               >
@@ -100,15 +101,15 @@ export default React.memo(function FAQSection() {
                   </span>
                 </m.button>
                 
-                <AnimatePresence mode="wait">
+                <AnimatePresence initial={false}>
                   {openIndex === index && (
                     <m.div
-                      layout
-                      initial={{ maxHeight: 0, opacity: 0 }}
-                      animate={{ maxHeight: 800, opacity: 1 }}
-                      exit={{ maxHeight: 0, opacity: 0 }}
+                      key={`content-${index}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                      style={{ willChange: "max-height, opacity" }}
+                      style={{ willChange: "height, opacity" }}
                       className="overflow-hidden"
                     >
                       <div className="p-6 pt-0 text-gray-400 leading-relaxed text-md font-light">
@@ -119,7 +120,7 @@ export default React.memo(function FAQSection() {
                 </AnimatePresence>
               </m.div>
             ))}
-          </div>
+          </m.div>
 
           {/* CTA Button to Chatbot */}
           <m.div 

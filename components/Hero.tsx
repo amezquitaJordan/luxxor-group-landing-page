@@ -64,10 +64,8 @@ export default React.memo(function Hero() {
           className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center hidden md:flex"
         >
           <span className="text-gray-400 text-sm tracking-widest uppercase mb-2">Descubrir</span>
-          <m.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="w-[1px] h-16 bg-gradient-to-b from-[var(--color-luxxor-gold)] to-transparent"
+          <div
+            className="w-[1px] h-16 bg-gradient-to-b from-[var(--color-luxxor-gold)] to-transparent animate-scroll-bounce"
           />
         </m.div>
       </section>
