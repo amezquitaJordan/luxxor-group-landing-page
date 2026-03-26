@@ -96,19 +96,28 @@ export default React.memo(function WhyLuxxor() {
               <m.div
                 key={reason.id}
                 variants={itemVariants}
-                className="group p-8 border border-gray-800 bg-[var(--color-luxxor-dark)] hover:bg-[#1f1f1f] transition-colors duration-300 transform-gpu"
+                style={{ willChange: "box-shadow, transform" }}
+                className="group relative p-8 bg-[var(--color-luxxor-dark)] lg:hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border border-gray-800 md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:shadow-[0_0_25px_-8px_rgba(212,175,55,0.35),0_0_45px_-15px_rgba(212,175,55,0.25)] lg:border-[1px] lg:border-gray-800 lg:shadow-none md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100"
               >
-                <div className="text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Tablet Glow Animation (md a lg) */}
+                <m.div 
+                  initial={false}
+                  animate={{ boxShadow: ['0 0 10px rgba(212,175,55,0.15)', '0 0 30px rgba(212,175,55,0.35)', '0 0 10px rgba(212,175,55,0.15)'] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 pointer-events-none hidden md:block lg:hidden z-0"
+                />
+                
+                <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                   {reason.id}
                 </div>
-                <h3 className="text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                <h3 className="relative z-10 text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                   {reason.title}
                 </h3>
-                <p className="text-gray-400 font-light text-sm leading-relaxed">
+                <p className="relative z-10 text-gray-400 font-light text-sm leading-relaxed">
                   {reason.description}
                 </p>
                 
-                <div className="w-0 h-[2px] bg-[var(--color-luxxor-gold)] mt-8 group-hover:w-full transition-all duration-500 ease-out" />
+                <div className="relative z-10 w-0 h-[2px] bg-[var(--color-luxxor-gold)] mt-8 group-hover:w-full transition-all duration-500 ease-out" />
               </m.div>
             ))}
           </m.div>

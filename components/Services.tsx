@@ -103,39 +103,75 @@ export default React.memo(function Services() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:max-lg:gap-10"
           >
             {services.map((service) => (
               <m.div
                 key={service.id}
                 variants={itemVariants}
-                className="relative p-8 border border-gray-800 bg-[#151515] overflow-hidden group rounded-none flex flex-col h-full hover-lift-gold will-change-transform"
+                className="relative flex w-full h-full group/wrapper"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-luxxor-gold)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Aura Animation solo para Tablet */}
+                <m.div
+                  initial={false}
+                  animate={{ 
+                    boxShadow: [
+                      '0 0 25px -5px rgba(212,175,55,0.25), 0 0 45px -15px rgba(212,175,55,0.15)',
+                      '0 0 35px -2px rgba(212,175,55,0.35), 0 0 60px -10px rgba(212,175,55,0.25)',
+                      '0 0 25px -5px rgba(212,175,55,0.25), 0 0 45px -15px rgba(212,175,55,0.15)'
+                    ]
+                  }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 pointer-events-none hidden md:block lg:hidden z-0"
+                />
+
+                <div
+                  onClick={(e) => {
+                    if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) {
+                      e.stopPropagation();
+                      return; // No modal on tablet
+                    }
+                    setSelectedService(service);
+                  }}
+                  className="relative z-10 w-full p-8 md:max-lg:p-0 border border-gray-800 bg-[#151515] overflow-hidden group rounded-none flex flex-col md:max-lg:flex-row h-full md:max-lg:min-h-[300px] md:max-lg:h-auto hover-lift-gold will-change-transform cursor-pointer md:max-lg:cursor-default md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100 md:max-lg:hover:shadow-none"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-luxxor-gold)]/5 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Animated Glow Border */}
+                  <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-luxxor-gold)] to-transparent opacity-0 lg:group-hover:opacity-100 lg:group-hover:animate-pulse-gold transform scale-x-0 lg:group-hover:scale-x-100 transition-all duration-500 origin-center" />
                 
-                {/* Animated Glow Border */}
-                <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-luxxor-gold)] to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-pulse-gold transform scale-x-0 group-hover:scale-x-100 transition-all duration-500 origin-center" />
-                
-                <div className="relative z-10">
-                  <div className="w-16 h-16 bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-8 text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500">
+                {/* Image solely for Tablet */}
+                <div className="hidden md:max-lg:block relative w-[35%] h-auto shrink-0">
+                  <Image src={service.image} alt={service.title} fill className="object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#151515] pointer-events-none" />
+                </div>
+
+                <div className="relative z-10 flex flex-col md:max-lg:p-10 md:max-lg:w-[65%] md:max-lg:justify-center">
+                  <div className="w-16 h-16 bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-8 md:max-lg:mb-6 text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shrink-0">
                     <service.icon strokeWidth={1.5} size={32} />
                   </div>
                   
-                  <h3 className="text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                  <h3 className="text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300 md:max-lg:text-2xl md:max-lg:mb-5">
                     {service.title}
                   </h3>
                   
-                  <p className="text-gray-400 font-light leading-relaxed flex-grow">
+                  <p className="text-gray-400 font-light leading-relaxed flex-grow md:max-lg:flex-grow-0 md:max-lg:mb-8 md:max-lg:text-base">
                     {service.description}
                   </p>
                   
+                  {/* Botón oculto en Tablet */}
                   <button 
-                    onClick={() => setSelectedService(service)}
-                    className="mt-8 w-max px-6 py-2 border border-[var(--color-luxxor-gold)] text-[var(--color-luxxor-gold)] text-xs font-semibold tracking-widest uppercase hover:bg-[var(--color-luxxor-gold)] hover:text-black transition-all duration-300 relative overflow-hidden group/btn flex items-center gap-2 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0"
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
+                      setSelectedService(service); 
+                    }}
+                    className="md:max-lg:hidden mt-8 md:max-lg:mt-0 w-max px-6 py-2 border border-[var(--color-luxxor-gold)] text-[var(--color-luxxor-gold)] text-xs font-semibold tracking-widest uppercase hover:bg-[var(--color-luxxor-gold)] hover:text-black transition-all duration-300 relative overflow-hidden group/btn flex items-center gap-2 opacity-0 lg:group-hover:opacity-100 transform translate-y-4 lg:group-hover:translate-y-0 shadow-[0_0_15px_rgba(212,175,55,0.05)]"
                   >
                     <span className="relative z-10">Descubrir</span>
                     <span className="relative z-10 group-hover/btn:translate-x-1 transition-transform duration-300">&rarr;</span>
                   </button>
+                </div>
                 </div>
               </m.div>
             ))}
