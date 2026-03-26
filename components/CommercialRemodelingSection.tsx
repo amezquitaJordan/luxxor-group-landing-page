@@ -98,7 +98,7 @@ export default React.memo(function CommercialRemodelingSection() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                   {/* Base dark gradient for text legibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/50 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent pointer-events-none" />
                   {/* Hover overlay with fade */}
                   <div className="absolute inset-0 bg-black/20 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
                 </div>
@@ -109,10 +109,10 @@ export default React.memo(function CommercialRemodelingSection() {
                 {/* Content */}
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10">
                   <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-2xl md:text-3xl font-light tracking-wide text-[#D4AF37] mb-3">
+                    <h3 className="text-2xl md:text-3xl font-light tracking-wide text-[#D4AF37] mb-3 drop-shadow-md">
                       {service.title}
                     </h3>
-                    <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:text-white/95">
+                    <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:text-white/95 drop-shadow-md">
                       {service.description}
                     </p>
                   </div>

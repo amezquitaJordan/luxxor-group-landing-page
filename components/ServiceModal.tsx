@@ -65,7 +65,7 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.28, ease: "easeIn" } }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="relative w-full max-w-[500px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col h-auto rounded-none max-h-[90vh] overflow-hidden mx-auto"
+              className="relative w-full max-w-[650px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col h-auto rounded-none max-h-[90vh] overflow-hidden mx-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
@@ -83,7 +83,7 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
                   alt={activeService.title}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 600px) 100vw, 500px"
+                  sizes="(max-width: 768px) 100vw, 650px"
                   priority
                   placeholder="blur"
                   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOM8Ph/BAAEEwH+oYQ/1wAAAABJRU5ErkJggg=="

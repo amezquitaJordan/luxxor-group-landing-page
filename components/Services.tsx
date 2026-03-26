@@ -57,7 +57,9 @@ export default React.memo(function Services() {
         {/* Preload images for modal to prevent flash */}
         <div className="hidden">
           {services.map((service) => (
-            <Image key={service.id} src={service.image} alt="preload" width={10} height={10} priority />
+            <div key={service.id} className="relative w-0 h-0 overflow-hidden">
+              <Image src={service.image} alt="preload" fill sizes="(max-width: 768px) 100vw, 650px" priority />
+            </div>
           ))}
         </div>
         
