@@ -97,13 +97,13 @@ export default React.memo(function WhyLuxxor() {
                 key={reason.id}
                 variants={itemVariants}
                 style={{ willChange: "box-shadow, transform" }}
-                className="group relative p-8 bg-[var(--color-luxxor-dark)] lg:hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border border-gray-800 md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:shadow-[0_0_25px_-8px_rgba(212,175,55,0.35),0_0_45px_-15px_rgba(212,175,55,0.25)] lg:border-[1px] lg:border-gray-800 lg:shadow-none md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100"
+                className="group relative p-8 bg-[var(--color-luxxor-dark)] lg:hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border border-gray-800 md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 lg:border-[1px] lg:border-gray-800 lg:shadow-none md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100"
               >
                 {/* Tablet Glow Animation (md a lg) */}
                 <m.div 
                   initial={false}
-                  animate={{ boxShadow: ['0 0 10px rgba(212,175,55,0.15)', '0 0 30px rgba(212,175,55,0.35)', '0 0 10px rgba(212,175,55,0.15)'] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ boxShadow: ['0 0 15px rgba(212,175,55,0.15)', '0 0 35px rgba(212,175,55,0.3)', '0 0 15px rgba(212,175,55,0.15)'] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute inset-0 pointer-events-none hidden md:block lg:hidden z-0"
                 />
                 

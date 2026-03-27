@@ -72,8 +72,16 @@ export default React.memo(function ValueAdded() {
           {/* Infinite JS Carousel */}
           <m.div 
             style={{ x }}
-            onMouseEnter={() => setIsHovered(true)}
+            onMouseEnter={() => {
+              if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
+              setIsHovered(true);
+            }}
             onMouseLeave={() => setIsHovered(false)}
+            onTouchStart={() => {
+              if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
+              setIsHovered(true);
+            }}
+            onTouchEnd={() => setIsHovered(false)}
             className="flex whitespace-nowrap w-max will-change-transform"
           >
             {[...values, ...values, ...values].map((value, index) => (
