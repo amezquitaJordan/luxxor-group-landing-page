@@ -50,7 +50,20 @@ export default React.memo(function ArchitecturalDesignSection() {
               viewport={{ once: true, margin: "-50px", amount: 0.2 }}
               className="w-full lg:w-1/2 relative min-h-[500px] h-full group"
             >
-              <div className="relative z-10 w-full h-[500px] rounded-sm overflow-hidden border border-[var(--color-luxxor-gold)]/30">
+              {/* Mobile-only golden aura animation */}
+              <m.div
+                initial={false}
+                animate={{
+                  boxShadow: [
+                    '0 0 22px -6px rgba(212,175,55,0.22), 0 0 40px -16px rgba(212,175,55,0.12)',
+                    '0 0 32px -3px rgba(212,175,55,0.34), 0 0 55px -10px rgba(212,175,55,0.22)',
+                    '0 0 22px -6px rgba(212,175,55,0.22), 0 0 40px -16px rgba(212,175,55,0.12)'
+                  ]
+                }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 pointer-events-none block md:hidden z-0 rounded-sm"
+              />
+              <div className="relative z-10 w-full h-[500px] rounded-sm overflow-hidden border border-[var(--color-luxxor-gold)]/30 max-md:border-[1.5px] max-md:border-[#D4AF37]/40">
                 {/* The absolute overlay removes darkness on hover. */}
                 <div className="absolute inset-0 bg-black/20 z-20 pointer-events-none group-hover:bg-transparent transition-colors duration-500" />
                 <video

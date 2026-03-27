@@ -85,9 +85,23 @@ export default React.memo(function CommercialRemodelingSection() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group will-change-transform md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40"
+                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group will-change-transform max-md:border-[1.5px] max-md:border-[#D4AF37]/40 md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40"
               >
-                {/* Aura Animation solo para Tablet */}
+                {/* Aura Animation — Mobile only (≤767px) */}
+                <m.div
+                  initial={false}
+                  animate={{
+                    boxShadow: [
+                      '0 0 22px -6px rgba(212,175,55,0.22), 0 0 40px -16px rgba(212,175,55,0.12)',
+                      '0 0 32px -3px rgba(212,175,55,0.34), 0 0 55px -10px rgba(212,175,55,0.22)',
+                      '0 0 22px -6px rgba(212,175,55,0.22), 0 0 40px -16px rgba(212,175,55,0.12)'
+                    ]
+                  }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 pointer-events-none block md:hidden z-0 rounded-2xl"
+                />
+
+                {/* Aura Animation — Tablet only (768–1023px) */}
                 <m.div
                   initial={false}
                   animate={{ 

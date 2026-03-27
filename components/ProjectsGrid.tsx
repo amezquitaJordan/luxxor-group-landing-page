@@ -77,7 +77,7 @@ export default React.memo(function ProjectsGrid() {
           <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
 
           <div 
-            className="flex w-max gap-8 px-6 will-change-transform animate-carousel-projects hover:[animation-play-state:paused] md:max-lg:hover:[animation-play-state:running] md:max-lg:active:[animation-play-state:running]"
+            className="flex w-max gap-8 px-6 will-change-transform animate-carousel-projects lg:hover:[animation-play-state:paused]"
           >
             {[...projects, ...projects, ...projects].map((project, index) => (
               <div

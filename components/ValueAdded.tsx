@@ -78,7 +78,8 @@ export default React.memo(function ValueAdded() {
             }}
             onMouseLeave={() => setIsHovered(false)}
             onTouchStart={() => {
-              if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
+              // Never pause on mobile (< 768px); only pause on desktop hover
+              if (typeof window !== 'undefined' && window.innerWidth < 768) return;
               setIsHovered(true);
             }}
             onTouchEnd={() => setIsHovered(false)}

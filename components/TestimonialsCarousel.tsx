@@ -88,7 +88,8 @@ export default React.memo(function TestimonialsCarousel() {
             }}
             onMouseLeave={() => setIsHovered(false)}
             onTouchStart={() => {
-              if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
+              // Never pause on mobile (< 768px)
+              if (typeof window !== 'undefined' && window.innerWidth < 768) return;
               setIsHovered(true);
             }}
             onTouchEnd={() => setIsHovered(false)}

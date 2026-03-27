@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import { Building2, Briefcase, ShieldCheck, Scale } from "lucide-react";
+import { Building2, Briefcase, ShieldCheck } from "lucide-react";
 import ServiceModal from "./ServiceModal";
 import Image from "next/image";
 
@@ -103,7 +103,7 @@ export default React.memo(function Services() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:max-lg:gap-10"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:max-lg:gap-10"
           >
             {services.map((service) => (
               <m.div
@@ -111,7 +111,21 @@ export default React.memo(function Services() {
                 variants={itemVariants}
                 className="relative flex w-full h-full group/wrapper"
               >
-                {/* Aura Animation solo para Tablet */}
+                {/* ── AURA MOBILE (≤767px) ──────────────────────────────── */}
+                <m.div
+                  initial={false}
+                  animate={{
+                    boxShadow: [
+                      '0 0 22px -6px rgba(212,175,55,0.22), 0 0 40px -16px rgba(212,175,55,0.12)',
+                      '0 0 32px -3px rgba(212,175,55,0.34), 0 0 55px -10px rgba(212,175,55,0.22)',
+                      '0 0 22px -6px rgba(212,175,55,0.22), 0 0 40px -16px rgba(212,175,55,0.12)'
+                    ]
+                  }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 pointer-events-none block md:hidden z-0 rounded-[1px]"
+                />
+
+                {/* ── AURA TABLET (768–1023px) ───────────────────────────── */}
                 <m.div
                   initial={false}
                   animate={{ 
@@ -125,6 +139,36 @@ export default React.memo(function Services() {
                   className="absolute inset-0 pointer-events-none hidden md:block lg:hidden z-0"
                 />
 
+                {/* ── TARJETA MOBILE (≤767px): layout vertical ─────────── */}
+                <div className="block md:hidden relative z-10 w-full border border-[#D4AF37]/40 bg-[#151515] overflow-hidden rounded-[1px] flex-col">
+                  {/* Imagen horizontal grande arriba */}
+                  <div className="relative w-full h-52">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 767px) 100vw, 0px"
+                    />
+                    {/* Gradiente sutil inferior para fundir con el fondo */}
+                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#151515] to-transparent pointer-events-none" />
+                  </div>
+
+                  {/* Contenido: ícono + título + descripción */}
+                  <div className="p-7 flex flex-col">
+                    <div className="w-14 h-14 bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-5 text-[var(--color-luxxor-gold)] shrink-0">
+                      <service.icon strokeWidth={1.5} size={28} />
+                    </div>
+                    <h3 className="text-xl font-serif text-white mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-400 font-light leading-relaxed text-sm">
+                      {service.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* ── TARJETA TABLET + DESKTOP (≥768px): layout original ─ */}
                 <div
                   onClick={(e) => {
                     if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) {
@@ -133,7 +177,7 @@ export default React.memo(function Services() {
                     }
                     setSelectedService(service);
                   }}
-                  className="relative z-10 w-full p-8 md:max-lg:p-0 border border-gray-800 bg-[#151515] overflow-hidden group rounded-none flex flex-col md:max-lg:flex-row h-full md:max-lg:min-h-[300px] md:max-lg:h-auto hover-lift-gold will-change-transform cursor-pointer md:max-lg:cursor-default md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100 md:max-lg:hover:shadow-none"
+                  className="hidden md:relative md:z-10 md:w-full md:flex md:p-8 md:max-lg:p-0 border border-gray-800 bg-[#151515] overflow-hidden group rounded-none flex-col md:max-lg:flex-row h-full md:max-lg:min-h-[300px] md:max-lg:h-auto hover-lift-gold will-change-transform cursor-pointer md:max-lg:cursor-default md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100 md:max-lg:hover:shadow-none"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-luxxor-gold)]/5 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500" />
                   
