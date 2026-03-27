@@ -53,22 +53,12 @@ function Card({ project }: { project: Project }) {
       <m.div
         className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] shadow-[0_4px_10px_rgba(0,0,0,0.5)]"
       >
-        {/* Etiqueta Antes (Desktop) */}
+        {/* Etiqueta Antes */}
         <div
-          className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 hidden md:block opacity-100 group-hover:opacity-0 transition-opacity duration-300"
+          className={`absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 transition-opacity duration-300 ${isTapped ? 'opacity-0' : 'opacity-100'} md:group-hover:opacity-0`}
         >
           Antes
         </div>
-
-        {/* Etiqueta Antes (Mobile) */}
-        <m.div
-          className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-sm text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#D4AF37]/30 md:hidden"
-          initial={false}
-          animate={{ opacity: isTapped ? 0 : 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          Antes
-        </m.div>
 
         {/* Imagen Antes (Base) */}
         <Image
@@ -79,8 +69,10 @@ function Card({ project }: { project: Project }) {
           className="object-cover"
         />
 
-        {/* Imagen Después (Reveal on Hover - Desktop) */}
-        <div className="hidden md:block absolute inset-0 z-10 [clip-path:inset(0_100%_0_0)] group-hover:[clip-path:inset(0_0%_0_0)] transition-[clip-path] duration-500 ease-out">
+        {/* Imagen Después (Reveal on Hover / Tap) */}
+        <div className={`absolute inset-0 z-10 transition-[clip-path] duration-500 ease-out ${
+          isTapped ? '[clip-path:inset(0_0%_0_0)]' : '[clip-path:inset(0_100%_0_0)]'
+        } md:group-hover:[clip-path:inset(0_0%_0_0)]`}>
           <Image
             src={project.after}
             alt={`Después - ${project.title}`}
@@ -90,40 +82,19 @@ function Card({ project }: { project: Project }) {
           />
         </div>
 
-        {/* Imagen Después (Fade on Tap - Mobile) */}
-        <m.div
-          className="md:hidden absolute inset-0 z-10 pointer-events-none"
-          initial={false}
-          animate={{ opacity: isTapped ? 1 : 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Image
-            src={project.after}
-            alt={`Después - ${project.title}`}
-            fill
-            priority={true}
-            className="object-cover"
-          />
-        </m.div>
+        {/* Línea divisoria dorada */}
+        <div className={`absolute top-0 bottom-0 w-[2px] bg-[#D4AF37] z-20 shadow-[0_0_10px_#D4AF37] transition-all duration-500 ease-out ${
+          isTapped ? 'left-full' : 'left-0'
+        } md:group-hover:left-full`} />
 
-        {/* Línea divisoria dorada (Desktop) */}
-        <div className="hidden md:block absolute top-0 bottom-0 w-[2px] bg-[#D4AF37] z-20 shadow-[0_0_10px_#D4AF37] left-0 group-hover:left-full transition-all duration-500 ease-out" />
-
-        {/* Etiqueta Después (Shows with reveal/fade) */}
+        {/* Etiqueta Después */}
         <div
-          className="absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100"
+          className={`absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider transition-opacity duration-300 delay-100 ${
+            isTapped ? 'opacity-100' : 'opacity-0'
+          } md:group-hover:opacity-100`}
         >
           Después
         </div>
-
-        <m.div
-          className="absolute top-4 right-4 z-30 bg-[#D4AF37]/90 backdrop-blur-sm text-[#121212] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider md:hidden"
-          initial={false}
-          animate={{ opacity: isTapped ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          Después
-        </m.div>
       </m.div>
 
       {/* Contenido (Textos) */}

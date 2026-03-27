@@ -85,8 +85,22 @@ export default React.memo(function CommercialRemodelingSection() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group overflow-hidden will-change-transform"
+                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group will-change-transform md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40"
               >
+                {/* Aura Animation solo para Tablet */}
+                <m.div
+                  initial={false}
+                  animate={{ 
+                    boxShadow: [
+                      '0 0 25px -5px rgba(212,175,55,0.25), 0 0 45px -15px rgba(212,175,55,0.15)',
+                      '0 0 35px -2px rgba(212,175,55,0.35), 0 0 60px -10px rgba(212,175,55,0.25)',
+                      '0 0 25px -5px rgba(212,175,55,0.25), 0 0 45px -15px rgba(212,175,55,0.15)'
+                    ]
+                  }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 pointer-events-none hidden md:block lg:hidden z-0 rounded-2xl"
+                />
+
                 {/* Image with hover scale + parallax */}
                 <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-[#121212]">
                   <Image
