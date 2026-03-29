@@ -27,6 +27,7 @@ const reasons = [
 ];
 
 export default React.memo(function WhyLuxxor() {
+  // Variants compartidos (Tablet + Desktop)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -41,6 +42,28 @@ export default React.memo(function WhyLuxxor() {
       opacity: 1,
       y: 0,
       transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] as const }
+    }
+  };
+
+  // Variants EXCLUSIVOS para Mobile (xs + sm, hasta 767px) — stagger secuencial premium
+  const mobileContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.05 }
+    }
+  };
+
+  const mobileItemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.25, 0.1, 0.25, 1] as const,
+        delay: 0.04
+      }
     }
   };
 
@@ -85,12 +108,51 @@ export default React.memo(function WhyLuxxor() {
             </p>
           </m.div>
 
+          {/* ── MOBILE (hasta 767px): stagger secuencial, una tarjeta a la vez ── */}
+          <m.div
+            variants={mobileContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-30px", amount: 0.15 }}
+            className="flex md:hidden flex-col gap-12 pt-6"
+          >
+            {reasons.map((reason) => (
+              <m.div
+                key={reason.id}
+                variants={mobileItemVariants}
+                style={{ willChange: "opacity, transform" }}
+                className="group relative p-8 bg-[var(--color-luxxor-dark)] transition-all duration-500 transform-gpu border-[1.5px] border-[#D4AF37]/40"
+              >
+                {/* Mobile & Tablet Glow Animation (hasta lg) */}
+                <m.div 
+                  initial={false}
+                  animate={{ boxShadow: ['0 0 15px rgba(212,175,55,0.15)', '0 0 35px rgba(212,175,55,0.3)', '0 0 15px rgba(212,175,55,0.15)'] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 pointer-events-none lg:hidden z-0"
+                />
+                
+                <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                  {reason.id}
+                </div>
+                <h3 className="relative z-10 text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                  {reason.title}
+                </h3>
+                <p className="relative z-10 text-gray-400 font-light text-sm leading-relaxed">
+                  {reason.description}
+                </p>
+                
+                <div className="relative z-10 w-0 h-[2px] bg-[var(--color-luxxor-gold)] mt-8 group-hover:w-full transition-all duration-500 ease-out" />
+              </m.div>
+            ))}
+          </m.div>
+
+          {/* ── TABLET + DESKTOP (768px+): comportamiento original sin cambios ── */}
           <m.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 lg:gap-8 pt-6 lg:pt-0"
+            className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 lg:gap-8 pt-6 lg:pt-0"
           >
             {reasons.map((reason) => (
               <m.div
