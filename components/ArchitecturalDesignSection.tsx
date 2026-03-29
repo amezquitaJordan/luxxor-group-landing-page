@@ -61,9 +61,9 @@ export default React.memo(function ArchitecturalDesignSection() {
                   ]
                 }}
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 pointer-events-none block md:hidden z-0 rounded-sm"
+                className="absolute inset-0 pointer-events-none block z-0 rounded-sm"
               />
-              <div className="relative z-10 w-full h-[500px] rounded-sm overflow-hidden border border-[var(--color-luxxor-gold)]/30 max-md:border-[1.5px] max-md:border-[#D4AF37]/40">
+              <div className="relative z-10 w-full h-[500px] rounded-sm overflow-hidden border-[1.5px] border-[#D4AF37]/40">
                 {/* The absolute overlay removes darkness on hover. */}
                 <div className="absolute inset-0 bg-black/20 z-20 pointer-events-none group-hover:bg-transparent transition-colors duration-500" />
                 <video

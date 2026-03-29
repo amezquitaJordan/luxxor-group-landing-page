@@ -85,7 +85,7 @@ export default React.memo(function CommercialRemodelingSection() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group will-change-transform max-md:border-[1.5px] max-md:border-[#D4AF37]/40 md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40"
+                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group will-change-transform border-[1.5px] border-[#D4AF37]/40 lg:hover:-translate-y-2 lg:hover:scale-[1.01] transition-transform duration-500 ease-[0.25,0.1,0.25,1]"
               >
                 {/* Aura Animation — Mobile only (≤767px) */}
                 <m.div
@@ -112,7 +112,7 @@ export default React.memo(function CommercialRemodelingSection() {
                     ]
                   }}
                   transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 pointer-events-none hidden md:block lg:hidden z-0 rounded-2xl"
+                  className="absolute inset-0 pointer-events-none hidden md:block z-0 rounded-2xl"
                 />
 
                 {/* Image with hover scale + parallax */}

@@ -95,6 +95,9 @@ export default React.memo(function ProjectsGrid() {
                     className="object-cover object-center transform group-hover/card:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
                   />
                 </div>
+
+                {/* Dark tinting overlay — Tablet & Desktop only (md+) for premium depth */}
+                <div className="absolute inset-0 hidden md:block bg-black/25 z-[5] pointer-events-none" />
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 opacity-80 group-hover/card:opacity-90 transition-opacity duration-300" />
