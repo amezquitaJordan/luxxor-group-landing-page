@@ -52,7 +52,7 @@ export default React.memo(function CommercialRemodelingSection() {
             className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+            viewport={{ once: false, margin: '-50px', amount: 0.2 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <div className="flex items-center gap-4 mb-6 justify-center">
@@ -83,7 +83,7 @@ export default React.memo(function CommercialRemodelingSection() {
                 key={index}
                 initial={{ opacity: 0, y: 40, scale: 0.97 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: '-50px', amount: 0.15 }}
+                viewport={{ once: false, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group will-change-transform border-[1.5px] border-[#D4AF37]/40 lg:hover:-translate-y-2 lg:hover:scale-[1.01] transition-transform duration-500 ease-[0.25,0.1,0.25,1]"
               >
@@ -156,7 +156,7 @@ export default React.memo(function CommercialRemodelingSection() {
           <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+            viewport={{ once: false, margin: '-50px', amount: 0.2 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="flex justify-center"
           >

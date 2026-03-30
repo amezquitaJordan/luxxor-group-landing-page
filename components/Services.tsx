@@ -68,7 +68,7 @@ export default React.memo(function Services() {
             <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
               transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               className="flex items-center justify-center gap-4 mb-6"
             >
@@ -81,7 +81,7 @@ export default React.memo(function Services() {
             <m.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
               className="text-4xl md:text-5xl font-serif text-white mb-6"
             >
@@ -90,7 +90,7 @@ export default React.memo(function Services() {
             <m.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
               className="text-gray-400 font-light text-lg"
             >
@@ -102,7 +102,7 @@ export default React.memo(function Services() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+            viewport={{ once: false, margin: "-50px", amount: 0.2 }}
             className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:max-lg:gap-10"
           >
             {services.map((service) => (

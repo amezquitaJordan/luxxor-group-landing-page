@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { MotionProvider } from "@/components/MotionProvider";
+import ScrollFeatures from "@/components/ScrollFeatures";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -40,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className={`${inter.variable} ${playfair.variable} antialiased bg-[var(--color-luxxor-dark)] text-white font-sans overflow-x-hidden`}>
+        <ScrollFeatures />
         <MotionProvider>
           {children}
         </MotionProvider>

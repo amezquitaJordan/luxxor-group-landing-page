@@ -42,7 +42,7 @@ export default React.memo(function ProjectsGrid() {
             className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px', amount: 0.2 }}
+            viewport={{ once: false, margin: '-50px', amount: 0.2 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <div className="flex items-center gap-4 mb-6 justify-center">

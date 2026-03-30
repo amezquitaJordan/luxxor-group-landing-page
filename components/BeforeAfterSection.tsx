@@ -125,7 +125,7 @@ export default React.memo(function BeforeAfterSection() {
               className="text-[#D4AF37] tracking-[0.2em] text-sm font-semibold uppercase mb-4 block"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
               transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             >
               Transformaciones Reales
@@ -134,7 +134,7 @@ export default React.memo(function BeforeAfterSection() {
               className="text-3xl md:text-5xl font-light text-white mb-6 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
             >
               Antes y <span className="text-[#D4AF37] font-medium">Después</span>
@@ -143,7 +143,7 @@ export default React.memo(function BeforeAfterSection() {
               className="text-gray-400 text-lg"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             >
               Descubre cómo convertimos espacios comunes en entornos de lujo
@@ -157,7 +157,7 @@ export default React.memo(function BeforeAfterSection() {
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+                viewport={{ once: false, margin: "-50px", amount: 0.2 }}
                 transition={{ duration: 0.6, delay: Math.min(index * 0.1, 0.5), ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <Card project={project} />
