@@ -96,14 +96,17 @@ export default React.memo(function ProjectsGrid() {
                   />
                 </div>
 
-                {/* Dark tinting overlay — Tablet & Desktop only (md+) for premium depth */}
-                <div className="absolute inset-0 hidden md:block bg-black/25 z-[5] pointer-events-none" />
+                {/* Dark tinting overlay — Permanente y premium en todas las resoluciones */}
+                <div className="absolute inset-0 bg-black/[0.32] z-[5] pointer-events-none" />
+
+                {/* Vignette (lente de lujo) */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#0000002A_30%,transparent_70%)] z-[6] pointer-events-none" />
                 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 opacity-80 group-hover/card:opacity-90 transition-opacity duration-300" />
+                {/* Overlay Degradado inferior — legible pero con más luz en zona superior */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/[0.88] via-black/[0.55] to-transparent z-10 opacity-80 group-hover/card:opacity-90 transition-opacity duration-300 pointer-events-none" />
                 
                 {/* Content Box */}
-                <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+                <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end pointer-events-none">
                   <div className="transform translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
                     <p className="text-[var(--color-luxxor-gold)] text-sm tracking-widest uppercase font-semibold mb-2">
                       {project.category}
@@ -115,8 +118,9 @@ export default React.memo(function ProjectsGrid() {
                   </div>
                 </div>
                 
-                {/* Gold border on hover */}
-                <div className="absolute inset-0 border border-transparent group-hover/card:border-[var(--color-luxxor-gold)]/50 z-30 transition-colors duration-500 pointer-events-none" />
+                {/* Gold frame + aura */}
+                <div className="absolute inset-0 border border-[#D4AF37]/45 group-hover/card:border-[#D4AF37]/80 z-30 transition-all duration-500 pointer-events-none" />
+                <div className="absolute inset-0 border border-transparent group-hover/card:shadow-[0_0_30px_-8px_rgba(212,175,55,0.45)] z-30 transition-shadow duration-500 pointer-events-none" />
               </div>
             ))}
           </div>
