@@ -39,7 +39,7 @@ export default React.memo(function ArchitecturalDesignSection() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, margin: "-50px", amount: 0.2 }}
+            viewport={{ once: false, amount: 0 }}
             className="flex flex-col lg:flex-row items-center gap-16"
           >
             {/* Left Column: Video */}
@@ -47,7 +47,7 @@ export default React.memo(function ArchitecturalDesignSection() {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, amount: 0 }}
               className="w-full lg:w-1/2 relative min-h-[500px] h-full group"
             >
               {/* Mobile-only golden aura animation */}
@@ -82,7 +82,7 @@ export default React.memo(function ArchitecturalDesignSection() {
             <m.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, margin: "-50px", amount: 0.2 }}
+              viewport={{ once: false, amount: 0 }}
               transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               className="w-full lg:w-1/2 flex flex-col justify-center"
             >
