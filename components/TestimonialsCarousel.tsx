@@ -83,16 +83,11 @@ export default React.memo(function TestimonialsCarousel() {
           <m.div 
             style={{ x }}
             onMouseEnter={() => {
-              if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
+              // Solo pausar en Desktop (≥1024px) — nunca en Mobile ni Tablet
+              if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
               setIsHovered(true);
             }}
             onMouseLeave={() => setIsHovered(false)}
-            onTouchStart={() => {
-              // Never pause on mobile (< 768px)
-              if (typeof window !== 'undefined' && window.innerWidth < 768) return;
-              setIsHovered(true);
-            }}
-            onTouchEnd={() => setIsHovered(false)}
             className="flex whitespace-nowrap w-max gap-6 px-6 will-change-transform"
           >
             {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (

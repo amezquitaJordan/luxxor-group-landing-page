@@ -27,7 +27,7 @@ const reasons = [
 ];
 
 export default React.memo(function WhyLuxxor() {
-  // Variants compartidos (Tablet + Desktop)
+  // Variants Desktop (lg+) — comportamiento original
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -45,8 +45,8 @@ export default React.memo(function WhyLuxxor() {
     }
   };
 
-  // Variants EXCLUSIVOS para Mobile (xs + sm, hasta 767px) — stagger secuencial premium
-  const mobileContainerVariants = {
+  // Variants EXCLUSIVOS para Mobile + Tablet (hasta 1023px) — stagger secuencial premium
+  const mobileTabletContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -54,15 +54,14 @@ export default React.memo(function WhyLuxxor() {
     }
   };
 
-  const mobileItemVariants = {
+  const mobileTabletItemVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.7,
-        ease: [0.25, 0.1, 0.25, 1] as const,
-        delay: 0.04
+        ease: [0.25, 0.1, 0.25, 1] as const
       }
     }
   };
@@ -108,18 +107,18 @@ export default React.memo(function WhyLuxxor() {
             </p>
           </m.div>
 
-          {/* ── MOBILE (hasta 767px): stagger secuencial, una tarjeta a la vez ── */}
+          {/* ── MOBILE + TABLET (hasta 1023px): stagger secuencial premium, una tarjeta a la vez ── */}
           <m.div
-            variants={mobileContainerVariants}
+            variants={mobileTabletContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-30px", amount: 0.15 }}
-            className="flex md:hidden flex-col gap-12 pt-6"
+            viewport={{ once: true, margin: "-60px", amount: 0.1 }}
+            className="flex lg:hidden flex-col md:grid md:grid-cols-2 gap-12 pt-6"
           >
             {reasons.map((reason) => (
               <m.div
                 key={reason.id}
-                variants={mobileItemVariants}
+                variants={mobileTabletItemVariants}
                 style={{ willChange: "opacity, transform" }}
                 className="group relative p-8 bg-[var(--color-luxxor-dark)] transition-all duration-500 transform-gpu border-[1.5px] border-[#D4AF37]/40"
               >
@@ -146,29 +145,21 @@ export default React.memo(function WhyLuxxor() {
             ))}
           </m.div>
 
-          {/* ── TABLET + DESKTOP (768px+): comportamiento original sin cambios ── */}
+          {/* ── DESKTOP (1024px+): comportamiento original sin cambios ── */}
           <m.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-            className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 lg:gap-8 pt-6 lg:pt-0"
+            className="hidden lg:grid lg:grid-cols-4 gap-8 pt-0"
           >
             {reasons.map((reason) => (
               <m.div
                 key={reason.id}
                 variants={itemVariants}
                 style={{ willChange: "box-shadow, transform" }}
-                className="group relative p-8 bg-[var(--color-luxxor-dark)] lg:hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu max-lg:border-[1.5px] max-lg:border-[#D4AF37]/40 lg:border-[1px] lg:border-gray-800 lg:shadow-none max-lg:hover:translate-y-0 max-lg:hover:scale-100"
+                className="group relative p-8 bg-[var(--color-luxxor-dark)] hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border-[1px] border-gray-800 shadow-none"
               >
-                {/* Mobile & Tablet Glow Animation (hasta lg) */}
-                <m.div 
-                  initial={false}
-                  animate={{ boxShadow: ['0 0 15px rgba(212,175,55,0.15)', '0 0 35px rgba(212,175,55,0.3)', '0 0 15px rgba(212,175,55,0.15)'] }}
-                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 pointer-events-none lg:hidden z-0"
-                />
-                
                 <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                   {reason.id}
                 </div>

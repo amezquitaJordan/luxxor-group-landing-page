@@ -18,12 +18,12 @@ export default React.memo(function ValueAdded() {
   const reducedMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
 
-  useAnimationFrame((t, delta) => {
+  useAnimationFrame((_t, delta) => {
     if (reducedMotion || isHovered) return;
-    let moveBy = (delta / 1000) * 1.5; // similar speed to 60s
+    let moveBy = (delta / 1000) * 1.5;
     let newX = baseX.get() - moveBy;
     if (newX <= -33.333) {
-      newX += 33.333; // reset loop
+      newX += 33.333;
     }
     baseX.set(newX);
   });
@@ -73,16 +73,11 @@ export default React.memo(function ValueAdded() {
           <m.div 
             style={{ x }}
             onMouseEnter={() => {
-              if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
+              // Solo pausar en Desktop (≥1024px) — nunca en Mobile ni Tablet
+              if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
               setIsHovered(true);
             }}
             onMouseLeave={() => setIsHovered(false)}
-            onTouchStart={() => {
-              // Never pause on mobile (< 768px); only pause on desktop hover
-              if (typeof window !== 'undefined' && window.innerWidth < 768) return;
-              setIsHovered(true);
-            }}
-            onTouchEnd={() => setIsHovered(false)}
             className="flex whitespace-nowrap w-max will-change-transform"
           >
             {[...values, ...values, ...values].map((value, index) => (
