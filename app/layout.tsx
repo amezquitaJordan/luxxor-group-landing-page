@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { MotionProvider } from "@/components/MotionProvider";
 import ScrollFeatures from "@/components/ScrollFeatures";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -45,6 +46,7 @@ export default function RootLayout({
         <MotionProvider>
           {children}
         </MotionProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
