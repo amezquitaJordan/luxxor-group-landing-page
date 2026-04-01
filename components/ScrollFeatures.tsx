@@ -5,7 +5,9 @@ import { LazyMotion, domAnimation, m, useScroll, useTransform, AnimatePresence }
 
 export default function ScrollFeatures() {
   const { scrollYProgress } = useScroll();
-  const [showBackToTop, setBackToTop] = useState(false);
+  const [isScrolledPastHalf, setIsScrolledPastHalf] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [isBodyHidden, setIsBodyHidden] = useState(false);
 
   // Transform scaleX for the progress bar based on scroll position
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
@@ -15,15 +17,33 @@ export default function ScrollFeatures() {
   useEffect(() => {
     // Show back-to-top button when scrolled past 50% of the page
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      // If we scroll past 50%
-      if (latest > 0.5) {
-        setBackToTop(true);
-      } else {
-        setBackToTop(false);
-      }
+      setIsScrolledPastHalf(latest > 0.5);
     });
     return () => unsubscribe();
   }, [scrollYProgress]);
+
+  useEffect(() => {
+    // Listen for chatbot state
+    const handleChatbotState = (e: Event) => {
+      // @ts-ignore
+      setIsChatbotOpen(e.detail?.isOpen || false);
+    };
+    window.addEventListener("chatbot-state-change", handleChatbotState);
+
+    // Watch for document body overflow changes (used by ServiceModal and others)
+    setIsBodyHidden(document.body.style.overflow === "hidden");
+    const observer = new MutationObserver(() => {
+      setIsBodyHidden(document.body.style.overflow === "hidden");
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ["style"] });
+
+    return () => {
+      window.removeEventListener("chatbot-state-change", handleChatbotState);
+      observer.disconnect();
+    };
+  }, []);
+
+  const showBackToTop = isScrolledPastHalf && !isChatbotOpen && !isBodyHidden;
 
   const scrollToTop = () => {
     window.scrollTo({
