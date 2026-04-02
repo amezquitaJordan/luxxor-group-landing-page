@@ -133,14 +133,49 @@ export default React.memo(function WhyLuxxor() {
            * propias variantes (mobileTabletContainerVariants) para escalabilidad de tiempos. 
            * Esta sección será ocultada en lg y más (mediante className='lg:hidden') 
            */}
-          {/* ── MOBILE + TABLET (hasta 1023px): stagger secuencial premium, una tarjeta a la vez ── */}
+          {/* ── MOBILE EXCLUSIVE (hasta 767px): Animación repetible al scroll ── */}
+          <div className="flex flex-col md:hidden gap-12 pt-6">
+            {reasons.map((reason, index) => (
+              <m.div
+                key={reason.id}
+                initial={{ opacity: 0, y: 40, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, margin: '-50px', amount: 0.15 }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ willChange: "opacity, transform" }}
+                className="group relative p-8 bg-[var(--color-luxxor-dark)] transition-all duration-500 transform-gpu border-[1.5px] border-[#D4AF37]/40"
+              >
+                {/* Mobile Glow Animation */}
+                <m.div 
+                  initial={false}
+                  animate={{ boxShadow: ['0 0 15px rgba(212,175,55,0.15)', '0 0 35px rgba(212,175,55,0.3)', '0 0 15px rgba(212,175,55,0.15)'] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 pointer-events-none z-0"
+                />
+                
+                <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 transition-opacity duration-300">
+                  {reason.id}
+                </div>
+                <h3 className="relative z-10 text-xl font-serif text-white mb-4 transition-colors duration-300">
+                  {reason.title}
+                </h3>
+                <p className="relative z-10 text-gray-400 font-light text-sm leading-relaxed">
+                  {reason.description}
+                </p>
+                
+                <div className="relative z-10 w-0 h-[2px] bg-[var(--color-luxxor-gold)] mt-8 transition-all duration-500 ease-out" />
+              </m.div>
+            ))}
+          </div>
+
+          {/* ── TABLET EXCLUSIVE (768px hasta 1023px): Stagger secuencial intocable ── */}
           <m.div
             variants={mobileTabletContainerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "50px 0px", amount: 0.05 }}
             style={{ willChange: "opacity, transform" }}
-            className="flex lg:hidden flex-col md:grid md:grid-cols-2 gap-12 pt-6 transform-gpu"
+            className="hidden md:grid md:grid-cols-2 lg:hidden gap-12 pt-6 transform-gpu"
           >
             {reasons.map((reason) => (
               <m.div
@@ -149,7 +184,7 @@ export default React.memo(function WhyLuxxor() {
                 style={{ willChange: "opacity, transform" }}
                 className="group relative p-8 bg-[var(--color-luxxor-dark)] transition-all duration-500 transform-gpu border-[1.5px] border-[#D4AF37]/40"
               >
-                {/* Mobile & Tablet Glow Animation (hasta lg) */}
+                {/* Tablet Glow Animation */}
                 <m.div 
                   initial={false}
                   animate={{ boxShadow: ['0 0 15px rgba(212,175,55,0.15)', '0 0 35px rgba(212,175,55,0.3)', '0 0 15px rgba(212,175,55,0.15)'] }}
