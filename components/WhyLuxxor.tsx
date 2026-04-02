@@ -32,7 +32,7 @@ export default React.memo(function WhyLuxxor() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 }
+      transition: { staggerChildren: 0.22 }
     }
   };
 
@@ -41,7 +41,7 @@ export default React.memo(function WhyLuxxor() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] as const }
+      transition: { duration: 0.75, ease: [0.25, 0.1, 0.25, 1] as const }
     }
   };
 
@@ -50,7 +50,7 @@ export default React.memo(function WhyLuxxor() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.05 }
+      transition: { staggerChildren: 0.18, delayChildren: 0.08 }
     }
   };
 
@@ -112,7 +112,8 @@ export default React.memo(function WhyLuxxor() {
             variants={mobileTabletContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-60px", amount: 0.1 }}
+            viewport={{ once: true, margin: "-80px 0px -40px 0px", amount: 0.25 }}
+            style={{ willChange: "opacity, transform" }}
             className="flex lg:hidden flex-col md:grid md:grid-cols-2 gap-12 pt-6"
           >
             {reasons.map((reason) => (
@@ -150,14 +151,15 @@ export default React.memo(function WhyLuxxor() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px", amount: 0.2 }}
+            viewport={{ once: true, margin: "-80px 0px -40px 0px", amount: 0.25 }}
+            style={{ willChange: "opacity, transform" }}
             className="hidden lg:grid lg:grid-cols-4 gap-8 pt-0"
           >
             {reasons.map((reason) => (
               <m.div
                 key={reason.id}
                 variants={itemVariants}
-                style={{ willChange: "box-shadow, transform" }}
+                style={{ willChange: "opacity, transform" }}
                 className="group relative p-8 bg-[var(--color-luxxor-dark)] hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border-[1px] border-gray-800 shadow-none"
               >
                 <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
