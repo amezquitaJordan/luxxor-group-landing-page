@@ -62,29 +62,9 @@ export default React.memo(function WhyLuxxor() {
   };
 
   /* 
-   * Variantes de animación EXCLUSIVAS para Mobile + Tablet (hasta 1023px)
-   * Logra un flujo más lento o secuencial para una mejor apreciación en patallas tactiles.
+   * Nota: Las variantes antiguas de Tablet/Mobile se eliminaron en favor de 
+   * animaciones en-sitio directas.
    */
-  // Variants EXCLUSIVOS para Mobile + Tablet (hasta 1023px) — stagger secuencial premium
-  const mobileTabletContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0 }
-    }
-  };
-
-  const mobileTabletItemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.85,
-        ease: [0.25, 0.1, 0.25, 1] as const
-      }
-    }
-  };
 
   return (
     <LazyMotion features={domAnimation}>
@@ -169,20 +149,16 @@ export default React.memo(function WhyLuxxor() {
           </div>
 
           {/* ── TABLET EXCLUSIVE (768px hasta 1023px): Stagger secuencial intocable ── */}
-          <m.div
-            variants={mobileTabletContainerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "50px 0px", amount: 0.05 }}
-            style={{ willChange: "opacity, transform" }}
-            className="hidden md:grid md:grid-cols-2 lg:hidden gap-12 pt-6 transform-gpu"
-          >
-            {reasons.map((reason) => (
+          <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-12 pt-6 transform-gpu">
+            {reasons.map((reason, index) => (
               <m.div
                 key={reason.id}
-                variants={mobileTabletItemVariants}
+                initial={{ opacity: 0, y: 40, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, margin: '-50px', amount: 0.15 }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 bg-[var(--color-luxxor-dark)] transition-all duration-500 transform-gpu border-[1.5px] border-[#D4AF37]/40"
+                className="group relative p-8 bg-[var(--color-luxxor-dark)] transform-gpu border-[1.5px] border-[#D4AF37]/40"
               >
                 {/* Tablet Glow Animation */}
                 <m.div 
@@ -205,7 +181,7 @@ export default React.memo(function WhyLuxxor() {
                 <div className="relative z-10 w-0 h-[2px] bg-[var(--color-luxxor-gold)] mt-8 group-hover:w-full transition-all duration-500 ease-out" />
               </m.div>
             ))}
-          </m.div>
+          </div>
 
           {/* 
            * Renderizado Desktop: Se utiliza la capa principal con comportamientos 
