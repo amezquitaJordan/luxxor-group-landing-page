@@ -75,7 +75,7 @@ export default React.memo(function WhyLuxxor() {
   };
 
   const mobileTabletItemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
@@ -138,7 +138,7 @@ export default React.memo(function WhyLuxxor() {
             variants={mobileTabletContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, margin: "-80px 0px -40px 0px", amount: 0.3 }}
+            viewport={{ once: true, margin: "50px 0px", amount: 0.05 }}
             style={{ willChange: "opacity, transform" }}
             className="flex lg:hidden flex-col md:grid md:grid-cols-2 gap-12 pt-6 transform-gpu"
           >
