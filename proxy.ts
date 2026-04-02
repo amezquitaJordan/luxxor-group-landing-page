@@ -13,11 +13,11 @@ export function proxy(request: NextRequest) {
   // 1. CONTENT-SECURITY-POLICY (CSP)
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com https://va.vercel-scripts.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' blob: data: https://images.unsplash.com https://img.youtube.com https://i.ytimg.com https://raw.githubusercontent.com;
     font-src 'self' https://fonts.gstatic.com;
-    connect-src 'self';
+    connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com;
     frame-src 'self' https://www.youtube.com;
     object-src 'none';
     base-uri 'self';
