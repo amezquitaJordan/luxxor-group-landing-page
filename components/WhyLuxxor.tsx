@@ -100,11 +100,12 @@ export default React.memo(function WhyLuxxor() {
 
         <div className="max-w-[1400px] w-full px-6 md:px-12 lg:px-24 mx-auto relative z-10 flex flex-col items-center">
           <m.div
-            className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center"
+            className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center transform-gpu"
+            style={{ willChange: "opacity, transform" }}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            viewport={{ once: false, margin: "-80px 0px -40px 0px", amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <div className="flex items-center gap-4 mb-6 justify-center">
               <div className="w-12 h-[1px] bg-[#D4AF37]" />
@@ -137,9 +138,9 @@ export default React.memo(function WhyLuxxor() {
             variants={mobileTabletContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "50px", amount: 0.1 }}
+            viewport={{ once: false, margin: "-80px 0px -40px 0px", amount: 0.3 }}
             style={{ willChange: "opacity, transform" }}
-            className="flex lg:hidden flex-col md:grid md:grid-cols-2 gap-12 pt-6"
+            className="flex lg:hidden flex-col md:grid md:grid-cols-2 gap-12 pt-6 transform-gpu"
           >
             {reasons.map((reason) => (
               <m.div
@@ -180,9 +181,9 @@ export default React.memo(function WhyLuxxor() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px 0px -40px 0px", amount: 0.25 }}
+            viewport={{ once: false, margin: "-80px 0px -40px 0px", amount: 0.3 }}
             style={{ willChange: "opacity, transform" }}
-            className="hidden lg:grid lg:grid-cols-4 gap-8 pt-0"
+            className="hidden lg:grid lg:grid-cols-4 gap-8 pt-0 transform-gpu"
           >
             {reasons.map((reason) => (
               <m.div
