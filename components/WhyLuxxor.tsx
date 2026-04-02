@@ -143,7 +143,7 @@ export default React.memo(function WhyLuxxor() {
                 viewport={{ once: false, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 bg-[var(--color-luxxor-dark)] transition-all duration-500 transform-gpu border-[1.5px] border-[#D4AF37]/40"
+                className="group relative p-8 bg-[var(--color-luxxor-dark)] transform-gpu border-[1.5px] border-[#D4AF37]/40"
               >
                 {/* Mobile Glow Animation */}
                 <m.div 
