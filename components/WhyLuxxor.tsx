@@ -50,17 +50,17 @@ export default React.memo(function WhyLuxxor() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.18, delayChildren: 0.08 }
+      transition: { staggerChildren: 0.22, delayChildren: 0.08 }
     }
   };
 
   const mobileTabletItemVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.7,
+        duration: 0.85,
         ease: [0.25, 0.1, 0.25, 1] as const
       }
     }
@@ -112,8 +112,7 @@ export default React.memo(function WhyLuxxor() {
             variants={mobileTabletContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px 0px -40px 0px", amount: 0.25 }}
-            style={{ willChange: "opacity, transform" }}
+            viewport={{ once: true, margin: "-120px 0px -60px 0px", amount: 0.35 }}
             className="flex lg:hidden flex-col md:grid md:grid-cols-2 gap-12 pt-6"
           >
             {reasons.map((reason) => (
