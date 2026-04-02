@@ -1,3 +1,11 @@
+/*
+ * Archivo: components/ChatbotModal.tsx
+ * Componente: ChatbotModal
+ * Propósito: Interfaz del asistente virtual ("Lia") potenciado por IA (Gemini/API custom).
+ * Permite a los usuarios interactuar con el bot y recibir respuestas en tiempo real.
+ * Emite eventos globales (chatbot-state-change) para orquestar la UI con otros componentes 
+ * (ej: FloatingWhatsApp).
+ */
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -15,6 +23,14 @@ interface Message {
   sender: "user" | "bot";
 }
 
+/*
+ * Componente principal ChatbotModal
+ * Props: isOpen, onClose.
+ * Estado interno: 
+ *  - messages: Historial de la conversación (usuario vs bot).
+ *  - inputValue: Texto escrito por el usuario actualmente.
+ *  - isTyping: Indicador de carga realista tipo humano.
+ */
 export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -40,6 +56,13 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
     window.dispatchEvent(new CustomEvent('chatbot-state-change', { detail: { isOpen } }));
   }, [isOpen]);
 
+  /* 
+   * Manejador central del envío de mensajes:
+   * 1. Añade el mensaje localmente.
+   * 2. Prepara el historial ajustando el rol para cumplir con los requisitos de la API.
+   * 3. Llama al endpoint (/api/chat) de manera asincrónica simulando tiempo humano de tipeo.
+   * 4. Ajusta la lista añadiendo el nuevo mensaje de bot finalmente.
+   */
   // Handle Input Submit
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault();

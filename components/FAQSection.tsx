@@ -1,3 +1,9 @@
+/*
+ * Archivo: components/FAQSection.tsx
+ * Componente: FAQSection
+ * Propósito: Sección interactiva tipo Acordeón con preguntas y respuestas comunes. 
+ * Además de ello funciona como segundo enganche para levantar y mostrar el componente ChatbotModal.
+ */
 "use client";
 
 import React, { useState } from "react";
@@ -25,6 +31,13 @@ const FAQS = [
   }
 ];
 
+/*
+ * Componente principal FAQSection
+ * Estado:
+ *  - openIndex: Mantiene el índice numérico del elemento desplegado, predeterminado a 0 (el primero).
+ *  - isChatOpen: Administra si el Chatbot de IA está visible en la pantalla activándose 
+ *    desde el botón principal de final de bloque de FAQS.
+ */
 export default React.memo(function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [isChatOpen, setIsChatOpen] = useState(false);

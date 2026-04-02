@@ -1,3 +1,10 @@
+/*
+ * Archivo: components/CommercialRemodelingSection.tsx
+ * Componente: CommercialRemodelingSection
+ * Propósito: Muestra el enfoque B2B o "Especialidad Comercial" de la firma.
+ * Utiliza cuadrículas responsivas (2x2 en escritorio) con efectos premium superpuestos 
+ * (paralaje e intensos bordes dorados en hover).
+ */
 'use client';
 
 import React from 'react';
@@ -28,6 +35,12 @@ const services = [
 ];
 
 
+/*
+ * Componente principal CommercialRemodelingSection
+ * Renderiza el portafolio B2B iterando sobre el array "services".
+ * No maneja estados globales, utiliza animaciones de interpolación CSS y propiedades 
+ * directas de Framer Motion como 'whileInView'.
+ */
 export default React.memo(function CommercialRemodelingSection() {
   return (
     <LazyMotion features={domAnimation}>

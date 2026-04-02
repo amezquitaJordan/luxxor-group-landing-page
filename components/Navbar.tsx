@@ -1,8 +1,17 @@
+/*
+ * Archivo: components/Navbar.tsx
+ * Componente: Navbar
+ * Propósito: Barra de navegación responsiva, fija ("fixed") y opaca 
+ * para el desplazamiento fácil del portal de manera accesible.
+ * Interacciones: Ingresa suavemente desde arriba al montar el componente 
+ * con Framer Motion (initial y: -100).
+ */
 "use client";
 
 import React from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 
+/* Renderiza la barra con efecto "glassmorphism" o vidrio oscurecido + borde dorado inferior. */
 export default React.memo(function Navbar() {
   return (
     <LazyMotion features={domAnimation}>

@@ -1,3 +1,9 @@
+/*
+ * Archivo: components/BeforeAfterSection.tsx
+ * Componentes: Card, BeforeAfterSection
+ * Propósito: Demuestra casos de éxito visibles mostrando el estado previo 
+ * y final de ciertos espacios utilizando un efecto visual de "cortina" o barrido.
+ */
 'use client';
 
 import React, { useState } from 'react';
@@ -38,6 +44,13 @@ const projects: Project[] = [
   }
 ];
 
+/*
+ * Componente Card local
+ * Propósito: Administra independientemente el estado interactivo (Tap/Hover) 
+ * de cada elemento iterado de la lista de proyectos.
+ * Estado: 
+ *  - isTapped: Alterna la visibilidad en dispositivos móviles/táctiles, simulando el hover de escritorio.
+ */
 function Card({ project }: { project: Project }) {
   const [isTapped, setIsTapped] = useState(false);
 
@@ -108,6 +121,11 @@ function Card({ project }: { project: Project }) {
   );
 }
 
+/*
+ * Componente principal BeforeAfterSection
+ * Mapea los proyectos en memoria limitados y los encapsula en componentes Card.
+ * Añade animaciones de "stagger" simulado multiplicando los delays por su índice temporal.
+ */
 export default React.memo(function BeforeAfterSection() {
   return (
     <LazyMotion features={domAnimation}>

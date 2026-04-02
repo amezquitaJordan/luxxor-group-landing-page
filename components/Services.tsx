@@ -1,3 +1,10 @@
+/*
+ * Archivo: components/Services.tsx
+ * Componente: Services
+ * Propósito: Destacar los tres servicios principales nivel Premium de la marca. 
+ * Controla la presentación responsiva, mostrando vistas distintas según dispositivo 
+ * e integrando el ServiceModal.tsx para ver detalles extendidos.
+ */
 "use client";
 
 import React, { useState } from "react";
@@ -30,6 +37,12 @@ const services = [
   }
 ];
 
+/*
+ * Componente principal Services
+ * Estado: 
+ *  - selectedService: Controla el servicio actualmente visible en el modal 
+ *    emergente para profundizar en detalles al interactuar (click).
+ */
 export default React.memo(function Services() {
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
 
@@ -222,6 +235,11 @@ export default React.memo(function Services() {
           </m.div>
         </div>
 
+        {/*
+         * Renderizado del componente modal global de Servicios.
+         * Recibe un booleano (isOpen), una función de cierre (onClose) 
+         * y la información del servicio clickeado (service).
+         */}
         <ServiceModal 
           isOpen={!!selectedService}
           onClose={() => setSelectedService(null)}

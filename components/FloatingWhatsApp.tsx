@@ -1,3 +1,10 @@
+/*
+ * Archivo: components/FloatingWhatsApp.tsx
+ * Componente: FloatingWhatsApp
+ * Propósito: Muestra el botón flotante permanente de WhatsApp con mensajes emergentes (burbujas) 
+ * que incentivan el contacto ("Call To Action" o CTA dinámico).
+ * Interacciones: Se oculta automáticamente si el ChatbotModal entra a escena.
+ */
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -15,6 +22,14 @@ const bubbleVariants = {
   visible: { opacity: 1, y: 0, scale: 1 },
 };
 
+/*
+ * Componente FloatingWhatsApp Memorizado
+ * Estado: 
+ *  - showMessage: Visibilidad de la burbuja activa de texto.
+ *  - currentIndex: Posición del mensaje actual en el arreglo.
+ *  - notificationCount: Número mostrado sobre el globo simulando notificaciones.
+ *  - isChatbotOpen: Determina si debe ocultarse al activarse el evento `chatbot-state-change`.
+ */
 export default React.memo(function FloatingWhatsApp() {
   const [showMessage, setShowMessage] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,6 +45,7 @@ export default React.memo(function FloatingWhatsApp() {
     return () => window.removeEventListener('chatbot-state-change', handleChatbotState);
   }, []);
 
+  /* Hook para alternar la visibilidad de los mensajes cada X segundos en bucle cerrado. */
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
     let hideTimeout: NodeJS.Timeout;

@@ -1,3 +1,10 @@
+/*
+ * Archivo: components/ProjectsGrid.tsx
+ * Componente: ProjectsGrid
+ * Propósito: Muestra un carrusel dinámico e "infinito" con imágenes y descripciones de 
+ * proyectos residenciales clave realizados por Luxxor Group. 
+ * Animaciones: Utiliza TailwindCSS (animación continua) y framer-motion para las transiciones.
+ */
 "use client";
 
 import React from "react";
@@ -25,6 +32,11 @@ const projects = [
   },
 ];
 
+/*
+ * Componente principal ProjectsGrid (memorizado).
+ * Carece de props explícitas. Manipula un array interno "projects".
+ * Presenta un diseño horizontal tipo Carrusel aprovechando animaciones nativas CSS de scroll.
+ */
 export default React.memo(function ProjectsGrid() {
   return (
     <LazyMotion features={domAnimation}>
@@ -71,6 +83,10 @@ export default React.memo(function ProjectsGrid() {
           </m.div>
         </div>
 
+        {/* 
+         * Contenedor Carrusel Animado
+         * El contenedor genera el efecto de bucle infinito utilizando copias repetidas de los arreglos.
+         */}
         {/* Infinite Carousel JS */}
         <div className="relative flex overflow-x-hidden group">
           <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10 pointer-events-none" />

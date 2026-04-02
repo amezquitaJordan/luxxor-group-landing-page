@@ -1,3 +1,10 @@
+/*
+ * Archivo: components/ServiceModal.tsx
+ * Componente: ServiceModal
+ * Propósito: Muestra los detalles extendidos de un servicio premium específico en un formato 
+ * modal (ventana superpuesta), bloqueando el scroll de fondo y ofreciendo un CTA directo.
+ * Animación: Framer Motion (AnimatePresence) para transiciones de entrada y salida pulidas.
+ */
 "use client";
 
 import React from "react";
@@ -17,6 +24,16 @@ interface ServiceModalProps {
   } | null;
 }
 
+/*
+ * Componente principal ServiceModal
+ * Props:
+ *  - isOpen: booleano que determina si el modal está visible.
+ *  - onClose: función callback para cerrar el modal.
+ *  - service: objeto con la información detallada del servicio seleccionado.
+ * Hooks/Estado: 
+ *  - Mantiene referencia del último servicio (prevService) para permitir 
+ *    transiciones de cierre suaves sin que el contenido desaparezca de golpe.
+ */
 export default React.memo(function ServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
   const prevService = React.useRef(service);
   const activeService = service || prevService.current;
@@ -25,6 +42,10 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
     if (service) prevService.current = service;
   }, [service]);
 
+  /* 
+   * Previene el scroll del cuerpo de la página (<body>) cuando el modal está activo
+   * para asegurar una experiencia aislada libre de ruidos visuales.
+   */
   // Prevent scrolling when modal is open
   useEffect(() => {
     if (isOpen) {

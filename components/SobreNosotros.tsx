@@ -1,9 +1,20 @@
+/*
+ * Archivo: components/SobreNosotros.tsx
+ * Componente: SobreNosotros
+ * Propósito: Muestra la sección informativa "Sobre Nosotros", presentando 
+ * una imagen destacada junto con un badge de experiencia, y texto descriptivo.
+ */
 "use client";
 
 import React from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import Image from "next/image";
 
+/*
+ * Componente principal SobreNosotros
+ * Renderiza la sección en un grid responsivo (1 columna en móvil, 2 en lg+).
+ * Utiliza viewport={once: true} para animar solo la primera vez que se hace scroll.
+ */
 export default React.memo(function SobreNosotros() {
   return (
     <LazyMotion features={domAnimation}>

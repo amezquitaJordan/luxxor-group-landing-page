@@ -1,9 +1,20 @@
+/*
+ * Archivo: components/FinalCTA.tsx
+ * Componente: FinalCTA
+ * Propósito: El "Call To Action" o bloque final previo al Footer. 
+ * Contiene elementos gráficos de estímulo diseñados para provocar el click al contacto.
+ */
 "use client";
 
 import React from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
+/*
+ * Componente principal FinalCTA
+ * Se fundamenta en un recuadro de vidrio con opacidad de desenfoque (backdrop-blur-md) 
+ * superpuesto bajo dos grandes esferas animadas sin fin rotando (animate-pulse-gold).
+ */
 export default React.memo(function FinalCTA() {
   return (
     <LazyMotion features={domAnimation}>

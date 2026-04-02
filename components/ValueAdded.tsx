@@ -1,3 +1,9 @@
+/*
+ * Archivo: components/ValueAdded.tsx
+ * Componente: ValueAdded
+ * Propósito: Una de las barras visuales estilo "marquee / cinta sin fin" 
+ * listando diferenciadores rápidos y de alto valor de la entidad de forma repetitiva.
+ */
 "use client";
 
 import React, { useState } from "react";
@@ -12,6 +18,11 @@ const values = [
   "Materiales Importados y Nacionales",
 ];
 
+/* 
+ * Componente principal ValueAdded
+ * Reutiliza las características avanzadas de movimiento dinámico de Framer Motion 
+ * (useAnimationFrame + useMotionValue) similares a TestimonialsCarousel.
+ */
 export default React.memo(function ValueAdded() {
   const baseX = useMotionValue(0);
   const x = useTransform(baseX, (v) => `${v}%`);

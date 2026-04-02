@@ -1,3 +1,9 @@
+/*
+ * Archivo: components/TestimonialsCarousel.tsx
+ * Componente: TestimonialsCarousel
+ * Propósito: Desplegar citas y reseñas de clientes. Usa un scroll automático 
+ * e infinito manipulando propiedades de animación nativa (RAF) a bajo nivel.
+ */
 "use client";
 
 import React, { useState } from "react";
@@ -21,6 +27,13 @@ const testimonials = [
   },
 ];
 
+/*
+ * Componente principal TestimonialsCarousel
+ * Hooks / Estado:
+ *  - useMotionValue, useTransform: Extrae variables de Framer Motion para controlar el CSS `x`.
+ *  - useAnimationFrame: Anima el movimiento fotograma a fotograma para efecto marquesina (marquee).
+ *  - isHovered: Detiene o reanuda el movimiento si el usuario enfoca algo dentro del arreglo de elementos.
+ */
 export default React.memo(function TestimonialsCarousel() {
   const baseX = useMotionValue(0);
   const x = useTransform(baseX, (v) => `${v}%`);

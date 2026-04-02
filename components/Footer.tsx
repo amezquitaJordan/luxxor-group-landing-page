@@ -1,7 +1,14 @@
+/*
+ * Archivo: components/Footer.tsx
+ * Componente: Footer
+ * Propósito: Pie de página central de toda la aplicación.
+ * Aloja ligas a secciones importantes, información oficial del negocio e iconos de RRSS.
+ */
 "use client";
 
 import { Instagram, MapPin, Phone, Mail } from "lucide-react";
 
+/* Componente estructurado estáticamente, utiliza marcadores HTML5 semánticos y rejilla densa (grid). */
 export default function Footer() {
   return (
     <footer className="bg-[#0a0a0a] border-t border-[var(--color-luxxor-gold)]/30 pt-20 pb-10">

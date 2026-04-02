@@ -1,3 +1,11 @@
+/*
+ * Archivo: components/WhyLuxxor.tsx
+ * Componente: WhyLuxxor
+ * Propósito: Muestra la sección "La Ventaja Luxxor", que exalta las características 
+ * únicas o motivos para elegir a Luxxor Group (cards de beneficios).
+ * Interacciones/Animaciones: Usa `framer-motion` para animaciones de entrada en scroll. 
+ * Posee configuraciones específicas (stagger) para dispositivos móviles distintos a escritorio.
+ */
 "use client";
 
 import React from "react";
@@ -26,7 +34,15 @@ const reasons = [
   }
 ];
 
+/*
+ * Componente funcional memorizado (React.memo) para prevenir renders innecesarios.
+ * No recibe Props y su estado interno es manejado estrictamente por animaciones delegadas.
+ */
 export default React.memo(function WhyLuxxor() {
+  /* 
+   * Variantes de animación para Escritorio (lg+) 
+   * Controla la aparición en bloque y aparición secuencial rápida (staggerChildren).
+   */
   // Variants Desktop (lg+) — comportamiento original
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -45,6 +61,10 @@ export default React.memo(function WhyLuxxor() {
     }
   };
 
+  /* 
+   * Variantes de animación EXCLUSIVAS para Mobile + Tablet (hasta 1023px)
+   * Logra un flujo más lento o secuencial para una mejor apreciación en patallas tactiles.
+   */
   // Variants EXCLUSIVOS para Mobile + Tablet (hasta 1023px) — stagger secuencial premium
   const mobileTabletContainerVariants = {
     hidden: { opacity: 0 },
@@ -107,6 +127,11 @@ export default React.memo(function WhyLuxxor() {
             </p>
           </m.div>
 
+          {/* 
+           * Renderizado Mobile y Tablet: Se utiliza una capa distinta con sus 
+           * propias variantes (mobileTabletContainerVariants) para escalabilidad de tiempos. 
+           * Esta sección será ocultada en lg y más (mediante className='lg:hidden') 
+           */}
           {/* ── MOBILE + TABLET (hasta 1023px): stagger secuencial premium, una tarjeta a la vez ── */}
           <m.div
             variants={mobileTabletContainerVariants}
@@ -146,6 +171,10 @@ export default React.memo(function WhyLuxxor() {
             ))}
           </m.div>
 
+          {/* 
+           * Renderizado Desktop: Se utiliza la capa principal con comportamientos 
+           * originales en hover y distribuciones en Grid (lg:grid-cols-4). 
+           */}
           {/* ── DESKTOP (1024px+): comportamiento original sin cambios ── */}
           <m.div
             variants={containerVariants}

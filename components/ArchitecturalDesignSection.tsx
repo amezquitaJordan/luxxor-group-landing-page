@@ -1,3 +1,9 @@
+/*
+ * Archivo: components/ArchitecturalDesignSection.tsx
+ * Componente: ArchitecturalDesignSection
+ * Propósito: Ofrece información detallada sobre el servicio integral de Diseño Arquitectónico.
+ * Incluye un reproductor de video sin controles (auto-play) y texto explicativo en grid.
+ */
 "use client";
 
 import React from "react";
@@ -5,6 +11,11 @@ import { LazyMotion, domAnimation, m, Variants } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+/*
+ * Componente principal ArchitecturalDesignSection
+ * Define de manera explícita las variantes de Framer Motion (containerVariants, itemVariants) 
+ * para controlar el flujo de entrada progresiva (staggering) de la estructura.
+ */
 export default React.memo(function ArchitecturalDesignSection() {
   const containerVariants = {
     hidden: { opacity: 0 },

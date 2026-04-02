@@ -1,8 +1,21 @@
+/*
+ * Archivo: components/ScrollFeatures.tsx
+ * Componente: ScrollFeatures
+ * Propósito: Administra e inyecta utilidades globales de inter-acción con el Scroll.
+ * Instancia la barra superior de progreso dorada y un botón de retorno a top (Volver Arriba).
+ */
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { LazyMotion, domAnimation, m, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
+/*
+ * Componente funcional ScrollFeatures
+ * Hooks/Estados implementados:
+ *  - scrollYProgress (Framer Motion): Obtiene un valor normalizado (0 a 1) sobre cuánto se ha desplazado el usuario.
+ *  - isChatbotOpen / isBodyHidden: Detectores para ocultar el botón 'volver arriba' cuando 
+ *    otros componentes como modales o chatbots secuestran la pantalla completa y bloquean el rebote visual.
+ */
 export default function ScrollFeatures() {
   const { scrollYProgress } = useScroll();
   const [isScrolledPastHalf, setIsScrolledPastHalf] = useState(false);

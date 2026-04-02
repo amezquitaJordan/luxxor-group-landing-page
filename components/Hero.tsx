@@ -1,9 +1,18 @@
+/*
+ * Archivo: components/Hero.tsx
+ * Componente: Hero
+ * Propósito: Es el bloque visual principal ("Above the Fold").
+ * Contiene el impacto inicial, el h1 de la página con texto masivo, 
+ * un botón CTA grande y un indicador nativo de "scroll".
+ * Utiliza Next Image superpuesto detrás de la capa de gradiente (Asymmetrical Gradient Mask).
+ */
 "use client";
 
 import React from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import Image from "next/image";
 
+/* Renderiza la cabecera interactiva y bloquea 100vh para presentar experiencia inmersiva. */
 export default React.memo(function Hero() {
   return (
     <LazyMotion features={domAnimation}>
