@@ -78,6 +78,7 @@ function Card({ project }: { project: Project }) {
           src={project.before}
           alt={`Antes - ${project.title}`}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           loading="lazy"
           className="object-cover"
         />
@@ -90,6 +91,7 @@ function Card({ project }: { project: Project }) {
             src={project.after}
             alt={`Después - ${project.title}`}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={true}
             className="object-cover"
           />

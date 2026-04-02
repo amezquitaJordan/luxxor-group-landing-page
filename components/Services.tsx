@@ -199,7 +199,7 @@ export default React.memo(function Services() {
                 
                 {/* Image solely for Tablet */}
                 <div className="hidden md:max-lg:block relative w-[35%] h-auto shrink-0">
-                  <Image src={service.image} alt={service.title} fill className="object-cover" />
+                  <Image src={service.image} alt={service.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#151515] pointer-events-none" />
                 </div>
 
