@@ -18,7 +18,9 @@ import { ArrowRight } from "lucide-react";
 export default React.memo(function FinalCTA() {
   return (
     <LazyMotion features={domAnimation}>
-      <section id="contacto" className="relative py-32 bg-[var(--color-luxxor-dark)] overflow-hidden">
+      {/* OPTIMIZACIÓN DESKTOP (lg+): py-32 (128px) se reduce en lg a py-24 (96px)
+          para que la sección final no ocupe pantalla completa en 1366×768 al 100% zoom. */}
+      <section id="contacto" className="relative py-32 lg:py-24 xl:py-28 2xl:py-32 bg-[var(--color-luxxor-dark)] overflow-hidden">
         {/* Background Graphic */}
         <div className="absolute inset-0 z-0 opacity-10 flex items-center justify-center">
           <div className="w-[800px] h-[800px] rounded-full border border-[var(--color-luxxor-gold)] absolute animate-pulse-gold scale-x-150 rotate-45" />
@@ -26,12 +28,15 @@ export default React.memo(function FinalCTA() {
         </div>
 
         <div className="container mx-auto px-6 lg:px-12 relative z-10 text-center max-w-4xl">
+          {/* OPTIMIZACIÓN DESKTOP (lg+): Padding de la caja reducido progresivamente.
+              md:p-20 (80px) era excesivo en Desktop. lg:p-12 proporciona balance visual
+              correcto en 1366×768. Escala hasta 2xl:p-20 en pantallas muy grandes. */}
           <m.div
             initial={{ opacity: 0, scale: 0.95, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="border border-gray-800 bg-[#151515]/80 backdrop-blur-md p-10 md:p-20 relative overflow-hidden"
+            className="border border-gray-800 bg-[#151515]/80 backdrop-blur-md p-10 md:p-20 lg:p-12 xl:p-16 2xl:p-20 relative overflow-hidden"
           >
             {/* Corner accents */}
             <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[var(--color-luxxor-gold)]" />
@@ -39,7 +44,10 @@ export default React.memo(function FinalCTA() {
             <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[var(--color-luxxor-gold)]" />
             <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[var(--color-luxxor-gold)]" />
 
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif text-white mb-6 uppercase tracking-wider leading-tight">
+            {/* OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+                lg:text-6xl (60px) era demasiado grande en 1366×768 al 100% zoom.
+                clamp() escala suavemente desde lg hasta 2xl manteniendo elegancia. */}
+            <h2 className="text-3xl md:text-5xl lg:text-[clamp(2rem,3.2vw,2.75rem)] xl:text-[clamp(2.25rem,3.5vw,3rem)] 2xl:text-5xl font-serif text-white mb-6 uppercase tracking-wider leading-tight">
               Eleve su estándar <br />
               <span className="text-[var(--color-luxxor-gold)]">Agende su asesoría</span>
             </h2>

@@ -40,7 +40,9 @@ const projects = [
 export default React.memo(function ProjectsGrid() {
   return (
     <LazyMotion features={domAnimation}>
-      <section id="proyectos" className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      {/* OPTIMIZACIÓN DESKTOP (lg+): Padding vertical reducido en lg/xl/2xl para
+          proporcionar secciones equilibradas en resoluciones Desktop al 100% zoom. */}
+      <section id="proyectos" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         
@@ -65,7 +67,10 @@ export default React.memo(function ProjectsGrid() {
               <div className="w-12 h-[1px] bg-[#D4AF37]" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
+            {/* OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+                lg:text-6xl (60px) era excesivamente grande en Desktop 1366/1440px al 100% zoom.
+                clamp() escala el título de forma suave entre breakpoints Desktop. */}
+            <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.75rem,3vw,2.5rem)] xl:text-[clamp(2rem,3.2vw,2.75rem)] 2xl:text-5xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
               Explora Nuestras Remodelaciones y Diseños Más Recientes
             </h2>
 

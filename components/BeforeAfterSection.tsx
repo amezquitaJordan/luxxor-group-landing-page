@@ -131,7 +131,9 @@ function Card({ project }: { project: Project }) {
 export default React.memo(function BeforeAfterSection() {
   return (
     <LazyMotion features={domAnimation}>
-      <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      {/* OPTIMIZACIÓN DESKTOP (lg+): Padding vertical reducido progresivamente en lg/xl/2xl
+          para evitar secciones demasiado altas en resoluciones Desktop al 100% zoom. */}
+      <section className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         {/* Bordes dorados sutiles */}
@@ -150,8 +152,11 @@ export default React.memo(function BeforeAfterSection() {
             >
               Transformaciones Reales
             </m.span>
+            {/* OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+                md:text-5xl sin override lg resultaba en un tamaño excesivo en Desktop.
+                clamp() proporciona escalado continuo entre 1024px y 1920px. */}
             <m.h2
-              className="text-3xl md:text-5xl font-light text-white mb-6 leading-tight"
+              className="text-3xl md:text-5xl lg:text-[clamp(1.5rem,2.5vw,2rem)] xl:text-[clamp(1.75rem,2.8vw,2.25rem)] 2xl:text-4xl font-light text-white mb-6 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-50px", amount: 0.2 }}

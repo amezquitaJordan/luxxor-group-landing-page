@@ -38,7 +38,9 @@ export default React.memo(function ArchitecturalDesignSection() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden border-t border-[var(--color-luxxor-gold)]/10">
+      {/* OPTIMIZACIÓN DESKTOP (lg+): Padding vertical reducido en lg/xl para secciones
+          proporcionadas en resoluciones 1366×768 y 1440×900 al 100% de zoom. */}
+      <section className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden border-t border-[var(--color-luxxor-gold)]/10">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         {/* Bordes dorados sutiles */}
@@ -53,13 +55,16 @@ export default React.memo(function ArchitecturalDesignSection() {
             viewport={{ once: false, amount: 0 }}
             className="flex flex-col lg:flex-row items-center gap-16"
           >
-            {/* Left Column: Video */}
+            {/* Left Column: Video
+                OPTIMIZACIÓN DESKTOP (lg+): min-h reducido progresivamente para evitar
+                columnas excesivamente altas en pantallas de 768px de alto al 100% zoom.
+                Escalado: lg=380px → xl=440px → 2xl=500px (proporcional al viewport). */}
             <m.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               viewport={{ once: false, amount: 0 }}
-              className="w-full lg:w-1/2 relative min-h-[500px] h-full group"
+              className="w-full lg:w-1/2 relative min-h-[500px] lg:min-h-[380px] xl:min-h-[440px] 2xl:min-h-[500px] h-full group"
             >
               {/* Mobile-only golden aura animation */}
               <m.div
@@ -74,7 +79,9 @@ export default React.memo(function ArchitecturalDesignSection() {
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute inset-0 pointer-events-none block z-0 rounded-sm"
               />
-              <div className="relative z-10 w-full h-[500px] rounded-sm overflow-hidden border-[1.5px] border-[#D4AF37]/40">
+              {/* OPTIMIZACIÓN DESKTOP (lg+): Altura del video reducida para respetar
+                  viewports de 768–900px de alto al 100% zoom. Escala en xl/2xl. */}
+              <div className="relative z-10 w-full h-[500px] lg:h-[380px] xl:h-[440px] 2xl:h-[500px] rounded-sm overflow-hidden border-[1.5px] border-[#D4AF37]/40">
                 {/* The absolute overlay removes darkness on hover. */}
                 <div className="absolute inset-0 bg-black/20 z-20 pointer-events-none group-hover:bg-transparent transition-colors duration-500" />
                 <video
@@ -104,7 +111,9 @@ export default React.memo(function ArchitecturalDesignSection() {
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-8 leading-tight">
+              {/* OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+                  lg:text-5xl (48px) era excesivo en resoluciones 1366/1440px al 100% zoom. */}
+              <h2 className="text-3xl md:text-4xl lg:text-[clamp(1.75rem,2.6vw,2.25rem)] xl:text-[clamp(2rem,2.8vw,2.5rem)] 2xl:text-4xl font-serif text-white mb-8 leading-tight">
                 Diseño Arquitectónico Integral
               </h2>
 

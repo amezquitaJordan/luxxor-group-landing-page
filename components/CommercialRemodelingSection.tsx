@@ -44,7 +44,10 @@ const services = [
 export default React.memo(function CommercialRemodelingSection() {
   return (
     <LazyMotion features={domAnimation}>
-      <section className="relative py-24 md:py-32 w-full bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden flex flex-col items-center">
+      {/* OPTIMIZACIÓN DESKTOP (lg+): lg:py-20 sobreescribe md:py-32 en pantallas Desktop.
+          md:py-32 (tablet) se conserva intacto. En lg+ se reduce para proporciones correctas
+          en resoluciones 1366×768 y 1440×900 al 100% zoom. */}
+      <section className="relative py-24 md:py-32 lg:py-20 xl:py-24 2xl:py-28 w-full bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden flex flex-col items-center">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         
@@ -76,7 +79,10 @@ export default React.memo(function CommercialRemodelingSection() {
               <div className="w-12 h-[1px] bg-[#D4AF37]" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
+            {/* OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+                lg:text-5xl (48px) y xl:text-6xl (60px) eran desproporcionados en Desktop.
+                clamp() garantiza escalado suave entre 1024px y 1920px al 100% zoom. */}
+            <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.75rem,2.8vw,2.25rem)] xl:text-[clamp(2rem,3vw,2.5rem)] 2xl:text-4xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
               Remodelación de Espacios Comerciales
             </h2>
 

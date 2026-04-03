@@ -135,13 +135,20 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
               className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             />
 
-            {/* Modal Content */}
+            {/*
+             * Modal Content
+             * OPTIMIZACIÓN DESKTOP (lg+): Modal redimensionado para Desktop.
+             * lg:max-w-5xl (1024px) era demasiado ancho — casi toda la pantalla en 1366px.
+             * Se reduce a xl:max-w-2xl (672px) para proporciones premium y elegantes.
+             * lg:h-[620px] + max-h evita desbordamiento en pantallas de 768px de alto.
+             * Beneficio: Modal centrado, cómodo y sin tapar el botón de WhatsApp.
+             */}
             <m.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-lg lg:max-w-5xl bg-[#111111] border border-[var(--color-luxxor-gold)]/30 shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px] lg:h-[700px]"
+              className="relative w-full max-w-lg lg:max-w-xl xl:max-w-2xl bg-[#111111] border border-[var(--color-luxxor-gold)]/30 shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px] lg:h-[620px] lg:max-h-[78vh] xl:h-[680px] xl:max-h-[82vh]"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[var(--color-luxxor-gold)]/20 bg-gradient-to-r from-[#1a1a1a] to-[#111111]">

@@ -18,7 +18,13 @@ import Image from "next/image";
 export default React.memo(function SobreNosotros() {
   return (
     <LazyMotion features={domAnimation}>
-      <section id="sobre-nosotros" className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      {/*
+       * OPTIMIZACIÓN DESKTOP (lg+): Control de espaciado vertical por breakpoint.
+       * py-24 en mobile/tablet → se reduce en lg para evitar secciones excesivamente
+       * altas en pantallas 1366×768 y 1440×900 al 100% zoom. Se escala progresivamente
+       * hasta 2xl para pantallas grandes donde el espacio adicional se justifica.
+       */}
+      <section id="sobre-nosotros" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div 
           className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
@@ -31,16 +37,22 @@ export default React.memo(function SobreNosotros() {
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             {/* Image Side */}
+            {/*
+             * OPTIMIZACIÓN DESKTOP (lg+): min-h reducido progresivamente.
+             * 500px fijo consumía demasiada altura vertical en pantallas 1366×768.
+             * Escalado: lg=420px → xl=460px → 2xl=500px (proporcional al viewport).
+             */}
             <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-80px 0px -40px 0px", amount: 0.3 }}
               transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
               style={{ willChange: "opacity, transform" }}
-              className="w-full lg:w-1/2 relative min-h-[500px] h-full transform-gpu"
+              className="w-full lg:w-1/2 relative min-h-[500px] lg:min-h-[420px] xl:min-h-[460px] 2xl:min-h-[500px] h-full transform-gpu"
             >
               <div className="absolute inset-0 border-2 border-[var(--color-luxxor-gold)] translate-x-4 -translate-y-4 z-0 hidden md:block" />
-              <div className="relative z-10 w-full h-[500px]">
+              {/* OPTIMIZACIÓN DESKTOP (lg+): Altura de imagen reducida en lg/xl para no desbordar viewports de 768px de alto. */}
+              <div className="relative z-10 w-full h-[500px] lg:h-[420px] xl:h-[460px] 2xl:h-[500px]">
                 <Image
                   src="/images/sala-elegante-blanca-con-chimenea.jpg"
                   alt="Sala elegante con chimenea - Diseño de interiores premium Luxxor Group"
@@ -81,7 +93,13 @@ export default React.memo(function SobreNosotros() {
                 </span>
               </div>
               
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-8 leading-tight">
+              {/*
+               * OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+               * lg:text-5xl (48px) era excesivo en 1366×768. clamp() escala
+               * el tamaño entre un mínimo y máximo según el ancho del viewport,
+               * logrando proporción natural en todas las resoluciones Desktop.
+               */}
+              <h2 className="text-3xl md:text-4xl lg:text-[clamp(1.75rem,2.6vw,2.25rem)] xl:text-[clamp(2rem,2.8vw,2.5rem)] 2xl:text-4xl font-serif text-white mb-8 leading-tight">
                 Excelencia que Transciende el Tiempo
               </h2>
               

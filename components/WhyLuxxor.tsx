@@ -68,7 +68,12 @@ export default React.memo(function WhyLuxxor() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section id="por-que-elegirnos" className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      {/*
+       * OPTIMIZACIÓN DESKTOP (lg+): Reducción de padding vertical por breakpoint.
+       * py-24 en mobile/tablet se ajusta en lg para que la sección no ocupe pantallas
+       * completas en resoluciones 1366×768 al 100% zoom. Escala hasta 2xl.
+       */}
+      <section id="por-que-elegirnos" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div 
           className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
@@ -95,7 +100,13 @@ export default React.memo(function WhyLuxxor() {
               <div className="w-12 h-[1px] bg-[#D4AF37]" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
+            {/*
+             * OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+             * lg:text-5xl (48px) y xl:text-6xl (60px) resultaban en títulos
+             * desproporcionados en Desktop 1366/1440px al 100% de zoom.
+             * clamp() garantiza escalado suave y elegante entre resoluciones.
+             */}
+            <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.75rem,2.8vw,2.25rem)] xl:text-[clamp(2rem,3vw,2.5rem)] 2xl:text-4xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
               ¿Por Qué Elegir a Luxxor Group?
             </h2>
 

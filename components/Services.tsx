@@ -66,7 +66,11 @@ export default React.memo(function Services() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section id="servicios" className="py-24 bg-[var(--color-luxxor-dark)] overflow-hidden">
+      {/*
+       * OPTIMIZACIÓN DESKTOP (lg+): Control de padding vertical por breakpoint.
+       * Se reduce en lg para evitar secciones demasiado altas en 1366×768 al 100% zoom.
+       */}
+      <section id="servicios" className="py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[var(--color-luxxor-dark)] overflow-hidden">
         {/* Preload images for modal to prevent flash */}
         <div className="hidden">
           {services.map((service) => (
@@ -91,12 +95,17 @@ export default React.memo(function Services() {
               </span>
               <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)]" />
             </m.div>
-            <m.h2 
+            {/*
+             * OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
+             * Sin prefijo lg el texto saltaba de md:text-5xl directamente al tamaño base
+             * en desktop. Se agrega escalado progresivo para Desktop proporcional.
+             */}
+            <m.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-4xl md:text-5xl font-serif text-white mb-6"
+              className="text-4xl md:text-5xl lg:text-[clamp(1.75rem,2.8vw,2.25rem)] xl:text-[clamp(2rem,3vw,2.5rem)] 2xl:text-4xl font-serif text-white mb-6"
             >
               Nivel <span className="text-[var(--color-luxxor-gold)]">Premium</span>
             </m.h2>

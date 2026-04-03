@@ -80,13 +80,19 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
               onClick={onClose}
             />
 
-            {/* Modal Content */}
+            {/*
+             * Modal Content
+             * OPTIMIZACIÓN DESKTOP (lg+): max-w y max-h ajustados por breakpoint.
+             * max-w-[650px] puro sin restricción lg provocaba modal excesivamente ancho en Desktop.
+             * max-h controlado por breakpoint evita que el modal tape el botón de WhatsApp
+             * y que se sienta "apretado" en pantallas de 768px de alto al 100% zoom.
+             */}
             <m.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.28, ease: "easeIn" } }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="relative w-full max-w-[650px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col h-auto rounded-none max-h-[85vh] xl:max-h-[90vh] overflow-hidden mx-auto"
+              className="relative w-full max-w-[650px] lg:max-w-[580px] xl:max-w-[640px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col h-auto rounded-none max-h-[85vh] lg:max-h-[78vh] xl:max-h-[82vh] overflow-hidden mx-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
@@ -98,7 +104,9 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
               </button>
 
               {/* Top Side: Image */}
-              <div className="w-full h-[250px] sm:h-[300px] lg:h-[200px] xl:h-[300px] relative shrink-0">
+              {/* OPTIMIZACIÓN DESKTOP (lg+): Altura de imagen reducida para caber dentro del max-h del modal
+                  sin comprimir el contenido de texto. Escala progresivamente en xl y 2xl. */}
+              <div className="w-full h-[250px] sm:h-[300px] lg:h-[170px] xl:h-[210px] 2xl:h-[250px] relative shrink-0">
                 <Image
                   src={activeService.image}
                   alt={activeService.title}
@@ -113,12 +121,16 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
               </div>
 
               {/* Bottom Side: Content */}
-              <div className="w-full p-6 sm:p-8 flex flex-col justify-center h-auto overflow-y-auto no-scrollbar relative">
+              {/* OPTIMIZACIÓN DESKTOP (lg+): Padding reducido en lg para que el contenido no quede
+                  apretado dentro del max-h más pequeño. Escala progresivamente en xl/2xl. */}
+              <div className="w-full p-6 sm:p-8 lg:p-6 xl:p-8 flex flex-col justify-center h-auto overflow-y-auto no-scrollbar relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-luxxor-gold)]/5 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-[var(--color-luxxor-gold)]/5 rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="relative z-10">
-                  <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-serif text-white mb-6 leading-tight">
+                  {/* OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida para el título del modal.
+                      clamp() evita que el título sea demasiado grande en pantallas lg de 768px de alto. */}
+                  <h3 className="text-2xl md:text-3xl lg:text-[clamp(1.2rem,1.8vw,1.5rem)] xl:text-[clamp(1.35rem,1.9vw,1.65rem)] font-serif text-white mb-6 leading-tight">
                     {activeService.title}
                   </h3>
                   

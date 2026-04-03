@@ -41,7 +41,15 @@ export default React.memo(function Hero() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-serif text-white mb-6 uppercase tracking-wider [text-shadow:0_2px_5px_rgba(0,0,0,0.4)]">
+            {/*
+             * OPTIMIZACIÓN DESKTOP (lg+): Tipografía Fluida con clamp()
+             * Problema: text-6xl (60px) y text-7xl (72px) eran excesivamente grandes
+             * en resoluciones 1366×768, 1440×900 y 1920×1080 al 100% de zoom.
+             * Solución: clamp() escala el texto progresivamente según el ancho del viewport,
+             * evitando un salto brusco entre breakpoints y manteniendo proporciones áureas.
+             * Beneficio Desktop: Título proporcional y elegante sin dominar toda la pantalla.
+             */}
+            <h1 className="text-4xl md:text-6xl lg:text-[clamp(2rem,3.2vw,2.75rem)] xl:text-[clamp(2.5rem,3.5vw,3.25rem)] 2xl:text-[clamp(3rem,3.8vw,3.75rem)] font-serif text-white mb-6 uppercase tracking-wider [text-shadow:0_2px_5px_rgba(0,0,0,0.4)]">
               Transformamos tu
               <br />
               <span className="text-[var(--color-luxxor-gold)]">Espacio en Lujo</span>
