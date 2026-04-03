@@ -58,7 +58,7 @@ export default React.memo(function CommercialRemodelingSection() {
         <div className="absolute right-0 top-1/2 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
         <div className="absolute left-0 top-1/4 w-[1px] h-1/2 bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
 
-        <div className="max-w-[1400px] w-full px-6 md:px-12 lg:px-24 mx-auto relative z-10 flex flex-col items-center">
+        <div className="max-w-[1200px] xl:max-w-[1400px] w-full px-6 md:px-12 lg:px-12 xl:px-24 mx-auto relative z-10 flex flex-col items-center">
 
           {/* Section Header */}
           <m.div
@@ -76,7 +76,7 @@ export default React.memo(function CommercialRemodelingSection() {
               <div className="w-12 h-[1px] bg-[#D4AF37]" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
               Remodelación de Espacios Comerciales
             </h2>
 
@@ -98,7 +98,7 @@ export default React.memo(function CommercialRemodelingSection() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: false, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="relative w-full h-[400px] md:h-[480px] rounded-2xl cursor-pointer group will-change-transform border-[1.5px] border-[#D4AF37]/40 lg:hover:-translate-y-2 lg:hover:scale-[1.01] transition-transform duration-500 ease-[0.25,0.1,0.25,1]"
+                className="relative w-full h-[400px] md:h-[480px] lg:h-[400px] xl:h-[480px] rounded-2xl cursor-pointer group will-change-transform border-[1.5px] border-[#D4AF37]/40 lg:hover:-translate-y-2 lg:hover:scale-[1.01] transition-transform duration-500 ease-[0.25,0.1,0.25,1]"
               >
                 {/* Aura Animation — Mobile only (≤767px) */}
                 <m.div
@@ -148,12 +148,12 @@ export default React.memo(function CommercialRemodelingSection() {
                 <div className="absolute inset-0 rounded-2xl pointer-events-none transition-shadow duration-500 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.1)] group-hover:shadow-[inset_0_0_0_2px_rgba(212,175,55,0.5),0_0_40px_rgba(212,175,55,0.12)]" />
 
                 {/* Content */}
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10">
+                <div className="absolute inset-0 p-8 md:p-10 lg:p-8 xl:p-10 flex flex-col justify-end z-10">
                   <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-2xl md:text-3xl font-light tracking-wide text-[#D4AF37] mb-3 drop-shadow-md">
+                    <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-light tracking-wide text-[#D4AF37] mb-3 drop-shadow-md">
                       {service.title}
                     </h3>
-                    <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:text-white/95 drop-shadow-md">
+                    <p className="text-white/80 text-sm md:text-base lg:text-sm xl:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:text-white/95 drop-shadow-md">
                       {service.description}
                     </p>
                   </div>
@@ -177,7 +177,7 @@ export default React.memo(function CommercialRemodelingSection() {
               href="https://wa.me/573138865481"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center justify-center px-12 py-6 bg-[#D4AF37] text-[#121212] font-semibold tracking-wider uppercase text-base md:text-lg overflow-hidden rounded-sm hover-lift-gold transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_40px_rgba(212,175,55,0.3)]"
+              className="group relative inline-flex items-center justify-center px-12 py-6 lg:px-8 lg:py-4 xl:px-12 xl:py-6 bg-[#D4AF37] text-[#121212] font-semibold tracking-wider uppercase text-base md:text-lg lg:text-base xl:text-lg overflow-hidden rounded-sm hover-lift-gold transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_40px_rgba(212,175,55,0.3)]"
             >
               <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full skew-x-12 group-hover:animate-[shine_1.5s_ease-out_infinite]" />
               <span className="relative z-10 drop-shadow-sm">Transforma tu negocio comercial ahora</span>

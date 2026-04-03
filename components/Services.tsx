@@ -76,7 +76,7 @@ export default React.memo(function Services() {
           ))}
         </div>
         
-        <div className="container mx-auto px-6 lg:px-12">
+        <div className="max-w-[1200px] xl:max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <m.div
               initial={{ opacity: 0, y: 20 }}
@@ -116,7 +116,7 @@ export default React.memo(function Services() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:max-lg:gap-10"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-6 xl:gap-10 md:max-lg:gap-10"
           >
             {services.map((service) => (
               <m.div
@@ -190,7 +190,7 @@ export default React.memo(function Services() {
                     }
                     setSelectedService(service);
                   }}
-                  className="hidden md:relative md:z-10 md:w-full md:flex md:p-8 md:max-lg:p-0 border border-gray-800 bg-[#151515] overflow-hidden group rounded-none flex-col md:max-lg:flex-row h-full md:max-lg:min-h-[300px] md:max-lg:h-auto hover-lift-gold will-change-transform cursor-pointer md:max-lg:cursor-default md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100 md:max-lg:hover:shadow-none"
+                  className="hidden md:relative md:z-10 md:w-full md:flex md:p-8 md:max-lg:p-0 lg:p-6 xl:p-8 border border-gray-800 bg-[#151515] overflow-hidden group rounded-none flex-col md:max-lg:flex-row h-full md:max-lg:min-h-[300px] md:max-lg:h-auto hover-lift-gold will-change-transform cursor-pointer md:max-lg:cursor-default md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100 md:max-lg:hover:shadow-none"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-luxxor-gold)]/5 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500" />
                   
@@ -208,11 +208,11 @@ export default React.memo(function Services() {
                     <service.icon strokeWidth={1.5} size={32} />
                   </div>
                   
-                  <h3 className="text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300 md:max-lg:text-2xl md:max-lg:mb-5">
+                  <h3 className="text-xl lg:text-lg xl:text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300 md:max-lg:text-2xl md:max-lg:mb-5">
                     {service.title}
                   </h3>
                   
-                  <p className="text-gray-400 font-light leading-relaxed flex-grow md:max-lg:flex-grow-0 md:max-lg:mb-8 md:max-lg:text-base">
+                  <p className="text-gray-400 font-light leading-relaxed flex-grow lg:text-sm xl:text-base md:max-lg:flex-grow-0 md:max-lg:mb-8 md:max-lg:text-base">
                     {service.description}
                   </p>
                   

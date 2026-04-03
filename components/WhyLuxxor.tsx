@@ -78,7 +78,7 @@ export default React.memo(function WhyLuxxor() {
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent z-10" />
 
-        <div className="max-w-[1400px] w-full px-6 md:px-12 lg:px-24 mx-auto relative z-10 flex flex-col items-center">
+        <div className="max-w-[1200px] xl:max-w-[1400px] w-full px-6 md:px-12 lg:px-12 xl:px-24 mx-auto relative z-10 flex flex-col items-center">
           <m.div
             className="text-center max-w-3xl mb-16 md:mb-24 flex flex-col items-center transform-gpu"
             style={{ willChange: "opacity, transform" }}
@@ -95,7 +95,7 @@ export default React.memo(function WhyLuxxor() {
               <div className="w-12 h-[1px] bg-[#D4AF37]" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-light text-[#D4AF37] mb-6 tracking-wide [text-shadow:0_0_20px_rgba(212,175,55,0.15)] leading-tight">
               ¿Por Qué Elegir a Luxxor Group?
             </h2>
 
@@ -201,12 +201,12 @@ export default React.memo(function WhyLuxxor() {
                 key={reason.id}
                 variants={itemVariants}
                 style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 bg-[var(--color-luxxor-dark)] hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border-[1px] border-gray-800 shadow-none"
+                className="group relative p-8 lg:p-6 xl:p-8 bg-[var(--color-luxxor-dark)] hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border-[1px] border-gray-800 shadow-none"
               >
-                <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl lg:text-4xl xl:text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                   {reason.id}
                 </div>
-                <h3 className="relative z-10 text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                <h3 className="relative z-10 text-xl lg:text-lg xl:text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                   {reason.title}
                 </h3>
                 <p className="relative z-10 text-gray-400 font-light text-sm leading-relaxed">

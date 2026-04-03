@@ -35,13 +35,13 @@ export default React.memo(function Hero() {
         <div className="absolute inset-0 bg-gradient-to-l from-black/50 via-black/20 to-transparent z-[1]" />
 
         {/* Content */}
-        <div className="relative z-[2] container mx-auto px-6 lg:px-12 flex flex-col items-center text-center">
+        <div className="relative z-[2] max-w-[1200px] xl:max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col items-center text-center">
           <m.div
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-6 uppercase tracking-wider [text-shadow:0_2px_5px_rgba(0,0,0,0.4)]">
+            <h1 className="text-4xl md:text-6xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-serif text-white mb-6 uppercase tracking-wider [text-shadow:0_2px_5px_rgba(0,0,0,0.4)]">
               Transformamos tu
               <br />
               <span className="text-[var(--color-luxxor-gold)]">Espacio en Lujo</span>

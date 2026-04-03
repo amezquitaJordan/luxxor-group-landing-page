@@ -86,7 +86,7 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.28, ease: "easeIn" } }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="relative w-full max-w-[650px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col h-auto rounded-none max-h-[90vh] overflow-hidden mx-auto"
+              className="relative w-full max-w-[650px] bg-[#151515] border border-gray-800 shadow-2xl flex flex-col h-auto rounded-none max-h-[85vh] xl:max-h-[90vh] overflow-hidden mx-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
@@ -98,7 +98,7 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
               </button>
 
               {/* Top Side: Image */}
-              <div className="w-full h-[250px] sm:h-[300px] relative shrink-0">
+              <div className="w-full h-[250px] sm:h-[300px] lg:h-[200px] xl:h-[300px] relative shrink-0">
                 <Image
                   src={activeService.image}
                   alt={activeService.title}
@@ -118,13 +118,13 @@ export default React.memo(function ServiceModal({ isOpen, onClose, service }: Se
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-[var(--color-luxxor-gold)]/5 rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="relative z-10">
-                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 leading-tight">
+                  <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-serif text-white mb-6 leading-tight">
                     {activeService.title}
                   </h3>
                   
                   <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)] mb-6" />
                   
-                  <p className="text-gray-400 font-light leading-relaxed mb-10 text-base">
+                  <p className="text-gray-400 font-light leading-relaxed mb-10 text-base lg:text-sm xl:text-base">
                     {activeService.description}
                   </p>
                   
