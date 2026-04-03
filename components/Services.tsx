@@ -2,15 +2,13 @@
  * Archivo: components/Services.tsx
  * Componente: Services
  * Propósito: Destacar los tres servicios principales nivel Premium de la marca. 
- * Controla la presentación responsiva, mostrando vistas distintas según dispositivo 
- * e integrando el ServiceModal.tsx para ver detalles extendidos.
+ * Controla la presentación responsiva, mostrando vistas distintas según dispositivo.
  */
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Building2, Briefcase, ShieldCheck } from "lucide-react";
-import ServiceModal from "./ServiceModal";
 import Image from "next/image";
 
 const services = [
@@ -37,15 +35,7 @@ const services = [
   }
 ];
 
-/*
- * Componente principal Services
- * Estado: 
- *  - selectedService: Controla el servicio actualmente visible en el modal 
- *    emergente para profundizar en detalles al interactuar (click).
- */
 export default React.memo(function Services() {
-  const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -66,19 +56,7 @@ export default React.memo(function Services() {
 
   return (
     <LazyMotion features={domAnimation}>
-      {/*
-       * OPTIMIZACIÓN DESKTOP (lg+): Control de padding vertical por breakpoint.
-       * Se reduce en lg para evitar secciones demasiado altas en 1366×768 al 100% zoom.
-       */}
       <section id="servicios" className="py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[var(--color-luxxor-dark)] overflow-hidden">
-        {/* Preload images for modal to prevent flash */}
-        <div className="hidden">
-          {services.map((service) => (
-            <div key={service.id} className="relative w-0 h-0 overflow-hidden">
-              <Image src={service.image} alt="preload" fill sizes="(max-width: 768px) 100vw, 650px" priority />
-            </div>
-          ))}
-        </div>
         
         <div className="max-w-[1200px] xl:max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -95,11 +73,7 @@ export default React.memo(function Services() {
               </span>
               <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)]" />
             </m.div>
-            {/*
-             * OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
-             * Sin prefijo lg el texto saltaba de md:text-5xl directamente al tamaño base
-             * en desktop. Se agrega escalado progresivo para Desktop proporcional.
-             */}
+            
             <m.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +99,7 @@ export default React.memo(function Services() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-6 xl:gap-10 md:max-lg:gap-10"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-8 xl:gap-10 md:max-lg:gap-10"
           >
             {services.map((service) => (
               <m.div
@@ -161,6 +135,20 @@ export default React.memo(function Services() {
                   className="absolute inset-0 pointer-events-none hidden md:block lg:hidden z-0"
                 />
 
+                {/* ── AURA DESKTOP (≥1024px) ─────────────────────────────── */}
+                <m.div
+                  className="absolute inset-0 pointer-events-none hidden lg:block z-0 opacity-40 group-hover/wrapper:opacity-100 transition-opacity duration-500"
+                  initial={false}
+                  animate={{ 
+                    boxShadow: [
+                      '0 0 15px -5px rgba(212,175,55,0.15), 0 0 25px -10px rgba(212,175,55,0.05)',
+                      '0 0 20px -3px rgba(212,175,55,0.20), 0 0 35px -8px rgba(212,175,55,0.10)',
+                      '0 0 15px -5px rgba(212,175,55,0.15), 0 0 25px -10px rgba(212,175,55,0.05)'
+                    ]
+                  }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                />
+
                 {/* ── TARJETA MOBILE (≤767px): layout vertical ─────────── */}
                 <div className="block md:hidden relative z-10 w-full border border-[#D4AF37]/40 bg-[#151515] overflow-hidden rounded-[1px] flex-col">
                   {/* Imagen horizontal grande arriba */}
@@ -172,7 +160,6 @@ export default React.memo(function Services() {
                       className="object-cover"
                       sizes="(max-width: 767px) 100vw, 0px"
                     />
-                    {/* Gradiente sutil inferior para fundir con el fondo */}
                     <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#151515] to-transparent pointer-events-none" />
                   </div>
 
@@ -190,71 +177,67 @@ export default React.memo(function Services() {
                   </div>
                 </div>
 
-                {/* ── TARJETA TABLET + DESKTOP (≥768px): layout original ─ */}
-                <div
-                  onClick={(e) => {
-                    if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) {
-                      e.stopPropagation();
-                      return; // No modal on tablet
-                    }
-                    setSelectedService(service);
-                  }}
-                  className="hidden md:relative md:z-10 md:w-full md:flex md:p-8 md:max-lg:p-0 lg:p-6 xl:p-8 border border-gray-800 bg-[#151515] overflow-hidden group rounded-none flex-col md:max-lg:flex-row h-full md:max-lg:min-h-[300px] md:max-lg:h-auto hover-lift-gold will-change-transform cursor-pointer md:max-lg:cursor-default md:max-lg:border-[1.5px] md:max-lg:border-[#D4AF37]/40 md:max-lg:hover:translate-y-0 md:max-lg:hover:scale-100 md:max-lg:hover:shadow-none"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-luxxor-gold)]/5 to-transparent opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Animated Glow Border */}
-                  <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-luxxor-gold)] to-transparent opacity-0 lg:group-hover:opacity-100 lg:group-hover:animate-pulse-gold transform scale-x-0 lg:group-hover:scale-x-100 transition-all duration-500 origin-center" />
-                
-                {/* Image solely for Tablet */}
-                <div className="hidden md:max-lg:block relative w-[35%] h-auto shrink-0">
-                  <Image src={service.image} alt={service.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#151515] pointer-events-none" />
+                {/* ── TARJETA TABLET (768–1023px): layout horizontal ─────── */}
+                <div className="hidden md:flex lg:hidden relative z-10 w-full p-0 border-[1.5px] border-[#D4AF37]/40 bg-[#151515] overflow-hidden flex-row min-h-[300px] h-auto rounded-none">
+                  <div className="relative w-[35%] h-auto shrink-0">
+                    <Image src={service.image} alt={service.title} fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#151515] pointer-events-none" />
+                  </div>
+
+                  <div className="relative z-10 flex flex-col p-10 w-[65%] justify-center">
+                    <div className="w-16 h-16 bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-6 text-[var(--color-luxxor-gold)] shrink-0">
+                      <service.icon strokeWidth={1.5} size={32} />
+                    </div>
+                    
+                    <h3 className="text-2xl font-serif text-white mb-5">
+                      {service.title}
+                    </h3>
+                    
+                    <p className="text-gray-400 font-light leading-relaxed mb-8 flex-grow-0 text-base">
+                      {service.description}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="relative z-10 flex flex-col md:max-lg:p-10 md:max-lg:w-[65%] md:max-lg:justify-center">
-                  <div className="w-16 h-16 bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-8 md:max-lg:mb-6 text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shrink-0">
-                    <service.icon strokeWidth={1.5} size={32} />
+                {/* ── TARJETA DESKTOP (≥1024px): layout vertical premium ─── */}
+                <div className="hidden lg:flex relative z-10 w-full border border-[#D4AF37]/40 bg-[#151515] overflow-hidden flex-col h-full group hover:-translate-y-2 hover:shadow-[0_10px_40px_-15px_rgba(212,175,55,0.3)] transition-all duration-500 will-change-transform rounded-none">
+                  {/* Animación de borde sutil */}
+                  <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-luxxor-gold)] to-transparent opacity-0 group-hover:opacity-100 transform scale-x-0 group-hover:scale-x-100 transition-all duration-500 origin-center z-20" />
+
+                  {/* Imagen superior grande */}
+                  <div className="relative w-full h-64 xl:h-72 overflow-hidden">
+                    <Image 
+                      src={service.image} 
+                      alt={service.title} 
+                      fill 
+                      sizes="(max-width: 1536px) 33vw, 25vw" 
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[0.25,0.1,0.25,1]" 
+                    />
+                    {/* Gradiente sutil inferior */}
+                    <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#151515] via-[#151515]/70 to-transparent pointer-events-none" />
+                    
+                    {/* Icono pequeño dorado flotante */}
+                    <div className="absolute top-5 right-5 w-12 h-12 bg-[#151515]/80 backdrop-blur-md border border-[#D4AF37]/50 flex items-center justify-center text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shadow-lg z-10">
+                      <service.icon strokeWidth={1.5} size={22} />
+                    </div>
                   </div>
-                  
-                  <h3 className="text-xl lg:text-lg xl:text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300 md:max-lg:text-2xl md:max-lg:mb-5">
-                    {service.title}
-                  </h3>
-                  
-                  <p className="text-gray-400 font-light leading-relaxed flex-grow lg:text-sm xl:text-base md:max-lg:flex-grow-0 md:max-lg:mb-8 md:max-lg:text-base">
-                    {service.description}
-                  </p>
-                  
-                  {/* Botón oculto en Tablet */}
-                  <button 
-                    onClick={(e) => { 
-                      e.stopPropagation(); 
-                      if (typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024) return;
-                      setSelectedService(service); 
-                    }}
-                    className="md:max-lg:hidden mt-8 md:max-lg:mt-0 w-max px-6 py-2 border border-[var(--color-luxxor-gold)] text-[var(--color-luxxor-gold)] text-xs font-semibold tracking-widest uppercase hover:bg-[var(--color-luxxor-gold)] hover:text-black transition-all duration-300 relative overflow-hidden group/btn flex items-center gap-2 opacity-0 lg:group-hover:opacity-100 transform translate-y-4 lg:group-hover:translate-y-0 shadow-[0_0_15px_rgba(212,175,55,0.05)]"
-                  >
-                    <span className="relative z-10">Descubrir</span>
-                    <span className="relative z-10 group-hover/btn:translate-x-1 transition-transform duration-300">&rarr;</span>
-                  </button>
-                </div>
+
+                  {/* Contenido principal */}
+                  <div className="p-8 xl:p-10 flex flex-col flex-grow relative z-10 bg-[#151515] -mt-10">
+                    <h3 className="text-xl xl:text-2xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-400 font-light leading-relaxed text-sm xl:text-base">
+                      {service.description}
+                    </p>
+                  </div>
                 </div>
               </m.div>
             ))}
           </m.div>
         </div>
-
-        {/*
-         * Renderizado del componente modal global de Servicios.
-         * Recibe un booleano (isOpen), una función de cierre (onClose) 
-         * y la información del servicio clickeado (service).
-         */}
-        <ServiceModal 
-          isOpen={!!selectedService}
-          onClose={() => setSelectedService(null)}
-          service={selectedService as any}
-        />
       </section>
     </LazyMotion>
   );
 });
+
