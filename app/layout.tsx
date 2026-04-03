@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { MotionProvider } from "@/components/MotionProvider";
 import ScrollFeatures from "@/components/ScrollFeatures";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
@@ -51,22 +52,41 @@ export const metadata: Metadata = {
  * Props:
  *  - children: Los componentes hijos que se renderizan dentro del body (las páginas).
  * Interacciones/Hooks:
- *  - Aplica las variables de fuentes (Tailwind) y clases globales (scroll-smooth, fondo oscuro).
- *  - Integra ScrollFeatures (para smooth scroll nativo), MotionProvider (animaciones globales), y SpeedInsights (estadísticas de Vercel).
+ *  - Aplica las variables de fuentes (Tailwind) y usa variables del tema.
+ *  - Integra ThemeProvider (Light/Dark Mode), ScrollFeatures (para smooth scroll nativo), MotionProvider (animaciones globales), y SpeedInsights (estadísticas de Vercel).
  */
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Script para prevenir el parpadeo de colores (FOUC) leyendo localStorage antes del renderizado
+  const themeScript = `
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme');
+        if (theme) {
+          document.documentElement.setAttribute('data-theme', theme);
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  `;
+
   return (
-    <html lang="es" className="scroll-smooth">
-      <body className={`${inter.variable} ${playfair.variable} antialiased bg-[var(--color-luxxor-dark)] text-white font-sans overflow-x-hidden`}>
-        <ScrollFeatures />
-        <MotionProvider>
-          {children}
-        </MotionProvider>
-        <SpeedInsights />
+    <html lang="es" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className={`${inter.variable} ${playfair.variable} antialiased font-sans overflow-x-hidden`}>
+        <ThemeProvider>
+          <ScrollFeatures />
+          <MotionProvider>
+            {children}
+          </MotionProvider>
+          <SpeedInsights />
+        </ThemeProvider>
       </body>
     </html>
   );

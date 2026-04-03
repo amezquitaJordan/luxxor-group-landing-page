@@ -20,17 +20,17 @@ export default React.memo(function Hero() {
         {/* Background Image */}
         <div className="absolute inset-0 z-[0]">
           <Image
-            src="/images/casa-lujosa.jpg"
+            src="/images/IMG_1855.jpg"
             alt="Casa lujosa moderna - Remodelación residencial premium en Cali"
             fill
             priority
-            quality={90}
+            quality={50}
             sizes="100vw"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
-        
+
         {/* Asymmetrical Gradient Mask */}
         <div className="absolute inset-0 bg-gradient-to-l from-black/50 via-black/20 to-transparent z-[1]" />
 
@@ -57,7 +57,7 @@ export default React.memo(function Hero() {
             <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 font-sans font-light [text-shadow:0_2px_5px_rgba(0,0,0,0.4)]">
               Diseño funcional y estética premium para hogares y espacios que inspiran. Remodelaciones residenciales de alto nivel en Cali, Valle del Cauca.
             </p>
-            
+
             <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ export default React.memo(function Hero() {
             </m.div>
           </m.div>
         </div>
-        
+
         {/* Scroll indicator */}
         <m.div
           initial={{ opacity: 0 }}

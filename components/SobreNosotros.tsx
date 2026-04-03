@@ -24,7 +24,7 @@ export default React.memo(function SobreNosotros() {
        * altas en pantallas 1366×768 y 1440×900 al 100% zoom. Se escala progresivamente
        * hasta 2xl para pantallas grandes donde el espacio adicional se justifica.
        */}
-      <section id="sobre-nosotros" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      <section id="sobre-nosotros" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#F5EDE2] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div 
           className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
@@ -99,11 +99,11 @@ export default React.memo(function SobreNosotros() {
                * el tamaño entre un mínimo y máximo según el ancho del viewport,
                * logrando proporción natural en todas las resoluciones Desktop.
                */}
-              <h2 className="text-3xl md:text-4xl lg:text-[clamp(1.75rem,2.6vw,2.25rem)] xl:text-[clamp(2rem,2.8vw,2.5rem)] 2xl:text-4xl font-serif text-white mb-8 leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-[clamp(1.75rem,2.6vw,2.25rem)] xl:text-[clamp(2rem,2.8vw,2.5rem)] 2xl:text-4xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-8 leading-tight">
                 Excelencia que Transciende el Tiempo
               </h2>
               
-              <div className="space-y-6 text-gray-300 font-light text-lg">
+              <div className="space-y-6 text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light text-lg">
                 <p>
                   En <strong>Luxxor Group</strong> somos un equipo apasionado por transformar espacios en entornos de lujo y funcionalidad. Con sede en el Barrio La Flora de Cali, combinamos creatividad, precisión técnica y materiales de la más alta calidad para crear hogares que reflejan la personalidad y estilo de vida de nuestros clientes.
                 </p>

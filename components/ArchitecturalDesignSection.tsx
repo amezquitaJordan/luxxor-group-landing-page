@@ -38,7 +38,7 @@ export default React.memo(function ArchitecturalDesignSection() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden border-t border-[var(--color-luxxor-gold)]/10">
+      <section className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#EDE5D8] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden border-t border-[var(--color-luxxor-gold)]/10">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         {/* Bordes dorados bg-gradient-to-r para transiciones sutiles */}
@@ -79,7 +79,7 @@ export default React.memo(function ArchitecturalDesignSection() {
               </div>
 
               {/* Título adaptado progresivamente para una lectura monumental */}
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-[3.5rem] font-serif text-white leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-[3.5rem] font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 leading-tight">
                 Diseño Arquitectónico Integral
               </h2>
             </m.div>
@@ -148,9 +148,9 @@ export default React.memo(function ArchitecturalDesignSection() {
                * el texto nunca quede cortado por los bordes del viewport. */
               className="w-full max-w-3xl flex flex-col items-center text-left lg:text-center px-1"
             >
-              <div className="space-y-5 text-gray-400 font-light text-sm sm:text-base lg:text-[17px]">
+              <div className="space-y-5 text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 font-light text-sm sm:text-base lg:text-[17px]">
                 <p>
-                  En Luxxor Group convertimos ideas en proyectos ejecutables con precisión técnica y estética premium. Nuestro equipo de arquitectos y diseñadores entrega un paquete completo que incluye:
+                   En Luxxor Group convertimos ideas en proyectos ejecutables con precisión técnica y estética premium. Nuestro equipo de arquitectos y diseñadores entrega un paquete completo que incluye:
                 </p>
 
                 {/* 
@@ -165,19 +165,19 @@ export default React.memo(function ArchitecturalDesignSection() {
                   <ul className="space-y-4 text-left w-full pl-0">
                     <li className="flex items-start gap-4 group/bullet">
                       <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] flex-shrink-0 mt-2.5 opacity-80 group-hover/bullet:opacity-100 group-hover/bullet:scale-125 transition-all duration-300 shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
-                      <span className="text-gray-300 group-hover/bullet:text-white transition-colors duration-300">
+                      <span className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] group-hover/bullet:text-[#2A2824] dark:group-hover/bullet:text-[var(--theme-text-primary)] transition-colors duration-300">
                         Planos arquitectónicos completos (plantas, fachadas, cortes y detalles constructivos)
                       </span>
                     </li>
                     <li className="flex items-start gap-4 group/bullet">
                       <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] flex-shrink-0 mt-2.5 opacity-80 group-hover/bullet:opacity-100 group-hover/bullet:scale-125 transition-all duration-300 shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
-                      <span className="text-gray-300 group-hover/bullet:text-white transition-colors duration-300">
+                      <span className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] group-hover/bullet:text-[#2A2824] dark:group-hover/bullet:text-[var(--theme-text-primary)] transition-colors duration-300">
                         Modelado 3D profesional y renders fotorealistas de alta resolución
                       </span>
                     </li>
                     <li className="flex items-start gap-4 group/bullet">
                       <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-luxxor-gold)] flex-shrink-0 mt-2.5 opacity-80 group-hover/bullet:opacity-100 group-hover/bullet:scale-125 transition-all duration-300 shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
-                      <span className="text-gray-300 group-hover/bullet:text-white transition-colors duration-300">
+                      <span className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] group-hover/bullet:text-[#2A2824] dark:group-hover/bullet:text-[var(--theme-text-primary)] transition-colors duration-300">
                         Visualizaciones 360° interactivas para que recorras tu espacio antes de construir
                       </span>
                     </li>

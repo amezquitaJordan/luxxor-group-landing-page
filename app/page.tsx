@@ -14,7 +14,7 @@ import BeforeAfterSection from "@/components/BeforeAfterSection";
 import ArchitecturalDesignSection from "@/components/ArchitecturalDesignSection";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import FloatingControls from "@/components/FloatingControls";
 import FAQSection from "@/components/FAQSection";
 
 /*
@@ -37,7 +37,7 @@ const TestimonialsCarousel = dynamic(() => import("@/components/TestimonialsCaro
  */
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--color-luxxor-dark)] selection:bg-[var(--color-luxxor-gold)] selection:text-[var(--color-luxxor-dark)] flex flex-col w-full overflow-x-hidden">
+    <main className="min-h-screen bg-[var(--theme-bg-primary)] transition-colors duration-700 selection:bg-[var(--color-luxxor-gold)] selection:text-[#121212] flex flex-col w-full overflow-x-hidden">
       <Navbar />
       <Hero />
       <SobreNosotros />
@@ -52,7 +52,7 @@ export default function Home() {
       <TestimonialsCarousel />
       <FinalCTA />
       <Footer />
-      <FloatingWhatsApp />
+      <FloatingControls />
     </main>
   );
 }

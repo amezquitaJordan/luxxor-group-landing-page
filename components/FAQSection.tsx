@@ -44,7 +44,7 @@ export default React.memo(function FAQSection() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      <section className="relative w-full py-24 bg-[#F0EBE1] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         
@@ -71,8 +71,7 @@ export default React.memo(function FAQSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px", amount: 0.2 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-lg md:text-xl text-gray-400 font-light"
+              className="text-lg md:text-xl text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 font-light"
             >
               Resolvemos tus dudas sobre remodelación y diseño de interiores
             </m.p>
@@ -95,13 +94,13 @@ export default React.memo(function FAQSection() {
                   hidden: { opacity: 0, y: 10 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
                 }}
-                className="border border-[#2a2a2a] bg-[#1a1a1a]/50 backdrop-blur-sm rounded-xl overflow-hidden"
+                className="luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:shadow-xl backdrop-blur-sm rounded-xl overflow-hidden transition-colors duration-700"
               >
                 <m.button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="w-full flex items-center justify-between p-6 text-left focus:outline-none group will-change-transform"
                 >
-                  <span className="font-medium text-lg text-gray-200 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                  <span className="font-medium text-lg text-[#2A2824] dark:text-[var(--theme-text-primary)] group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                     {faq.question}
                   </span>
                   <span className="ml-6 flex-shrink-0 text-[var(--color-luxxor-gold)]">
@@ -123,7 +122,7 @@ export default React.memo(function FAQSection() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
-                      <div className="p-6 pt-0 text-gray-400 leading-relaxed text-md font-light">
+                      <div className="p-6 pt-0 text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 leading-relaxed text-md font-light">
                         {faq.answer}
                       </div>
                     </m.div>

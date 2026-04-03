@@ -56,7 +56,7 @@ export default React.memo(function Services() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section id="servicios" className="py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[var(--color-luxxor-dark)] overflow-hidden">
+      <section id="servicios" className="py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#EAE5D9] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         
         <div className="max-w-[1200px] xl:max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -79,7 +79,7 @@ export default React.memo(function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-4xl md:text-5xl lg:text-[clamp(1.75rem,2.8vw,2.25rem)] xl:text-[clamp(2rem,3vw,2.5rem)] 2xl:text-4xl font-serif text-white mb-6"
+              className="text-4xl md:text-5xl lg:text-[clamp(1.75rem,2.8vw,2.25rem)] xl:text-[clamp(2rem,3vw,2.5rem)] 2xl:text-4xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 mb-6"
             >
               Nivel <span className="text-[var(--color-luxxor-gold)]">Premium</span>
             </m.h2>
@@ -88,7 +88,7 @@ export default React.memo(function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-gray-400 font-light text-lg"
+              className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 font-light text-lg"
             >
               Soluciones integrales diseñadas para clientes exigentes. Simplificamos la complejidad del crecimiento patrimonial.
             </m.p>
@@ -150,7 +150,7 @@ export default React.memo(function Services() {
                 />
 
                 {/* ── TARJETA MOBILE (≤767px): layout vertical ─────────── */}
-                <div className="block md:hidden relative z-10 w-full border border-[#D4AF37]/40 bg-[#151515] overflow-hidden rounded-[1px] flex-col">
+                <div className="block md:hidden relative z-10 w-full overflow-hidden flex-col luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl">
                   {/* Imagen horizontal grande arriba */}
                   <div className="relative w-full h-52">
                     <Image
@@ -160,49 +160,48 @@ export default React.memo(function Services() {
                       className="object-cover"
                       sizes="(max-width: 767px) 100vw, 0px"
                     />
-                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#151515] to-transparent pointer-events-none" />
+                    <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#FFFFFF]/60 dark:from-[var(--theme-bg-surface)]/60 to-transparent pointer-events-none" />
                   </div>
 
                   {/* Contenido: ícono + título + descripción */}
                   <div className="p-7 flex flex-col">
-                    <div className="w-14 h-14 bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-5 text-[var(--color-luxxor-gold)] shrink-0">
+                    <div className="w-14 h-14 bg-[#EAE5D9] dark:bg-[var(--theme-bg-primary)] border border-[#D4AF37]/30 dark:border-[var(--theme-border)] flex items-center justify-center mb-5 text-[var(--color-luxxor-gold)] shrink-0">
                       <service.icon strokeWidth={1.5} size={28} />
                     </div>
-                    <h3 className="text-xl font-serif text-white mb-3">
+                    <h3 className="text-xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-3">
                       {service.title}
                     </h3>
-                    <p className="text-gray-400 font-light leading-relaxed text-sm">
+                    <p className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light leading-relaxed text-sm">
                       {service.description}
                     </p>
                   </div>
                 </div>
 
                 {/* ── TARJETA TABLET (768–1023px): layout horizontal ─────── */}
-                <div className="hidden md:flex lg:hidden relative z-10 w-full p-0 border-[1.5px] border-[#D4AF37]/40 bg-[#151515] overflow-hidden flex-row min-h-[300px] h-auto rounded-none">
+                <div className="hidden md:flex lg:hidden relative z-10 w-full p-0 overflow-hidden flex-row min-h-[300px] h-auto rounded-none luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl">
                   <div className="relative w-[35%] h-auto shrink-0">
                     <Image src={service.image} alt={service.title} fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#151515] pointer-events-none" />
+                    {/* Gradiente lateral: solo visible en dark mode para blend con fondo */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent dark:to-[var(--theme-bg-surface)] pointer-events-none" />
                   </div>
 
                   <div className="relative z-10 flex flex-col p-10 w-[65%] justify-center">
-                    <div className="w-16 h-16 bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-6 text-[var(--color-luxxor-gold)] shrink-0">
+                    <div className="w-16 h-16 bg-[#EAE5D9] dark:bg-[var(--theme-bg-primary)] border border-[#D4AF37]/30 dark:border-[var(--theme-border)] flex items-center justify-center mb-6 text-[var(--color-luxxor-gold)] shrink-0">
                       <service.icon strokeWidth={1.5} size={32} />
                     </div>
                     
-                    <h3 className="text-2xl font-serif text-white mb-5">
+                    <h3 className="text-2xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-5">
                       {service.title}
                     </h3>
                     
-                    <p className="text-gray-400 font-light leading-relaxed mb-8 flex-grow-0 text-base">
+                    <p className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light leading-relaxed mb-8 flex-grow-0 text-base">
                       {service.description}
                     </p>
                   </div>
                 </div>
 
                 {/* ── TARJETA DESKTOP (≥1024px): layout vertical premium ─── */}
-                <div className="hidden lg:flex relative z-10 w-full border border-[#D4AF37]/40 bg-[#151515] overflow-hidden flex-col h-full group hover:-translate-y-2 hover:shadow-[0_10px_40px_-15px_rgba(212,175,55,0.3)] transition-all duration-500 will-change-transform rounded-none">
-                  {/* Animación de borde sutil */}
-                  <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-luxxor-gold)] to-transparent opacity-0 group-hover:opacity-100 transform scale-x-0 group-hover:scale-x-100 transition-all duration-500 origin-center z-20" />
+                <div className="hidden lg:flex relative z-10 w-full overflow-hidden flex-col h-full group luxxor-card-premium rounded-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] dark:border-white/5 dark:hover:border-[#D4AF37] transition-all duration-500 overflow-hidden">
 
                   {/* Imagen superior grande */}
                   <div className="relative w-full h-64 xl:h-72 overflow-hidden">
@@ -214,20 +213,20 @@ export default React.memo(function Services() {
                       className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[0.25,0.1,0.25,1]" 
                     />
                     {/* Gradiente sutil inferior */}
-                    <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#151515] via-[#151515]/70 to-transparent pointer-events-none" />
+                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#FFFFFF]/80 dark:from-[var(--theme-bg-surface)]/80 to-transparent pointer-events-none" />
                     
                     {/* Icono pequeño dorado flotante */}
-                    <div className="absolute top-5 right-5 w-12 h-12 bg-[#151515]/80 backdrop-blur-md border border-[#D4AF37]/50 flex items-center justify-center text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shadow-lg z-10">
+                    <div className="absolute top-5 right-5 w-12 h-12 bg-[#EAE5D9]/80 dark:bg-[var(--theme-bg-primary)]/80 backdrop-blur-md border border-[#D4AF37]/50 flex items-center justify-center text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shadow-lg z-10">
                       <service.icon strokeWidth={1.5} size={22} />
                     </div>
                   </div>
 
-                  {/* Contenido principal */}
-                  <div className="p-8 xl:p-10 flex flex-col flex-grow relative z-10 bg-[#151515] -mt-10">
-                    <h3 className="text-xl xl:text-2xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                  {/* Contenido principal — sin borde top para evitar línea divisoria en hover */}
+                  <div className="p-8 xl:p-10 flex flex-col flex-grow relative z-10 bg-transparent -mt-10 border-t-0 transition-colors duration-700">
+                    <h3 className="text-xl xl:text-2xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                       {service.title}
                     </h3>
-                    <p className="text-gray-400 font-light leading-relaxed text-sm xl:text-base">
+                    <p className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light leading-relaxed text-sm xl:text-base">
                       {service.description}
                     </p>
                   </div>

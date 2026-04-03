@@ -47,7 +47,7 @@ export default React.memo(function CommercialRemodelingSection() {
       {/* OPTIMIZACIÓN DESKTOP (lg+): lg:py-20 sobreescribe md:py-32 en pantallas Desktop.
           md:py-32 (tablet) se conserva intacto. En lg+ se reduce para proporciones correctas
           en resoluciones 1366×768 y 1440×900 al 100% zoom. */}
-      <section className="relative py-24 md:py-32 lg:py-20 xl:py-24 2xl:py-28 w-full bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden flex flex-col items-center">
+      <section className="relative py-24 md:py-32 lg:py-20 xl:py-24 2xl:py-28 w-full bg-[#F0EBE1] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden flex flex-col items-center">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         
@@ -86,11 +86,11 @@ export default React.memo(function CommercialRemodelingSection() {
               Remodelación de Espacios Comerciales
             </h2>
 
-            <p className="text-xl md:text-2xl text-white font-medium mb-6 tracking-wide drop-shadow-md">
+            <p className="text-xl md:text-2xl text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 font-medium mb-6 tracking-wide drop-shadow-md">
               Tu negocio merece un espacio que venda antes de que el cliente entre
             </p>
 
-            <p className="text-base md:text-lg text-white/70 leading-relaxed font-light">
+            <p className="text-base md:text-lg text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 leading-relaxed font-light">
               En Luxxor Group transformamos locales comerciales en entornos que generan confianza, aumentan ventas y proyectan exclusividad. Especializados en farmacias, boutiques, oficinas, restaurantes y clínicas, creamos diseños que combinan funcionalidad operativa con estética de alto nivel.
             </p>
           </m.div>
@@ -104,7 +104,7 @@ export default React.memo(function CommercialRemodelingSection() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: false, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="relative w-full h-[400px] md:h-[480px] lg:h-[400px] xl:h-[480px] rounded-2xl cursor-pointer group will-change-transform border-[1.5px] border-[#D4AF37]/40 lg:hover:-translate-y-2 lg:hover:scale-[1.01] transition-transform duration-500 ease-[0.25,0.1,0.25,1]"
+                className="relative w-full h-[400px] md:h-[480px] lg:h-[400px] xl:h-[480px] rounded-2xl cursor-pointer group will-change-transform luxxor-card-premium"
               >
                 {/* Aura Animation — Mobile only (≤767px) */}
                 <m.div
@@ -144,22 +144,21 @@ export default React.memo(function CommercialRemodelingSection() {
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  {/* Base dark gradient for text legibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent pointer-events-none" />
+                  {/* Base gradient — blanco cálido en light, oscuro en dark para legibilidad del texto */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/40 to-transparent dark:from-black/95 dark:via-black/70 dark:to-transparent pointer-events-none" />
                   {/* Hover overlay with fade */}
                   <div className="absolute inset-0 bg-black/20 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
                 </div>
 
-                {/* Golden Glow Border on Hover */}
-                <div className="absolute inset-0 rounded-2xl pointer-events-none transition-shadow duration-500 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.1)] group-hover:shadow-[inset_0_0_0_2px_rgba(212,175,55,0.5),0_0_40px_rgba(212,175,55,0.12)]" />
+
 
                 {/* Content */}
                 <div className="absolute inset-0 p-8 md:p-10 lg:p-8 xl:p-10 flex flex-col justify-end z-10">
                   <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-light tracking-wide text-[#D4AF37] mb-3 drop-shadow-md">
+                    <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-light tracking-wide text-[#2A2824] dark:text-[#D4AF37] mb-3 drop-shadow-sm">
                       {service.title}
                     </h3>
-                    <p className="text-white/80 text-sm md:text-base lg:text-sm xl:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:text-white/95 drop-shadow-md">
+                    <p className="text-[#5C5A56] dark:text-white/80 text-sm md:text-base lg:text-sm xl:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:dark:text-white/95 drop-shadow-md">
                       {service.description}
                     </p>
                   </div>

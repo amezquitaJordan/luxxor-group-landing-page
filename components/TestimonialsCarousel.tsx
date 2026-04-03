@@ -53,7 +53,7 @@ export default React.memo(function TestimonialsCarousel() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section className="relative w-full py-24 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      <section className="relative w-full py-24 bg-[#EDE5D8] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div 
           className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
@@ -82,15 +82,15 @@ export default React.memo(function TestimonialsCarousel() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-4xl md:text-5xl font-serif text-white mb-6"
+            className="text-4xl md:text-5xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 mb-6"
           >
             ¿Qué dicen <span className="text-[var(--color-luxxor-gold)]">nuestros clientes?</span>
           </m.h2>
         </div>
 
         <div className="relative flex overflow-x-clip overflow-y-visible pt-8 pb-4 group">
-          <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[#EDE5D8] dark:from-[var(--theme-bg-primary)] to-transparent z-10 pointer-events-none transition-colors duration-700" />
+          <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[#EDE5D8] dark:from-[var(--theme-bg-primary)] to-transparent z-10 pointer-events-none transition-colors duration-700" />
           
           {/* Infinite JS Carousel */}
           <m.div 
@@ -106,17 +106,17 @@ export default React.memo(function TestimonialsCarousel() {
             {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
               <div
                 key={index}
-                className="w-[300px] md:w-[450px] p-8 md:p-10 border border-gray-800 bg-[#151515] flex-shrink-0 cursor-default hover:border-[var(--color-luxxor-gold)] hover:shadow-[0_10px_30px_-15px_rgba(212,175,55,0.2)] transition-all duration-300 transform hover:-translate-y-3 hover:z-10 whitespace-normal flex flex-col justify-between relative"
+                className="w-[300px] md:w-[450px] p-8 md:p-10 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl flex-shrink-0 cursor-default hover:z-10 whitespace-normal flex flex-col justify-between relative"
               >
                 <div>
                   <div className="text-[var(--color-luxxor-gold)] text-4xl font-serif mb-6 leading-none">"</div>
-                  <p className="text-gray-300 font-light text-sm md:text-base leading-relaxed mb-8 italic">
+                  <p className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light text-sm md:text-base leading-relaxed mb-8 italic transition-colors duration-700">
                     {testimonial.text}
                   </p>
                 </div>
                 <div>
                   <div className="w-12 h-[1px] bg-[var(--color-luxxor-gold)] mb-4" />
-                  <h4 className="text-white font-serif text-lg">{testimonial.name}</h4>
+                  <h4 className="text-[#2A2824] dark:text-[var(--theme-text-primary)] font-serif text-lg transition-colors duration-700">{testimonial.name}</h4>
                   <p className="text-[var(--color-luxxor-gold)] text-xs uppercase tracking-widest mt-1">{testimonial.role}</p>
                 </div>
               </div>

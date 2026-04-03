@@ -148,19 +148,19 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-lg lg:max-w-xl xl:max-w-2xl bg-[#111111] border border-[var(--color-luxxor-gold)]/30 shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px] lg:h-[620px] lg:max-h-[78vh] xl:h-[680px] xl:max-h-[82vh]"
+              className="relative w-full max-w-lg lg:max-w-xl xl:max-w-2xl bg-[var(--theme-bg-surface)] transition-colors duration-700 border border-[var(--theme-border)] shadow-2xl overflow-hidden flex flex-col pt-0 rounded-2xl h-[85vh] sm:h-[600px] lg:h-[620px] lg:max-h-[78vh] xl:h-[680px] xl:max-h-[82vh]"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[var(--color-luxxor-gold)]/20 bg-gradient-to-r from-[#1a1a1a] to-[#111111]">
+              <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[var(--theme-border)] bg-[var(--theme-bg-surface)] transition-colors duration-700">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--color-luxxor-gold)] to-yellow-200 flex items-center justify-center p-0.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                     <div className="w-full h-full bg-[#111] rounded-full flex flex-col items-center justify-center text-[var(--color-luxxor-gold)]">
                       <span className="text-[10px] font-bold font-serif leading-none tracking-tighter">LX</span>
-                      <Sparkles className="w-3 h-3 mt-0.5 text-white/80" />
+                      <Sparkles className="w-3 h-3 mt-0.5 text-[var(--theme-text-primary)]" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-white font-medium flex items-center gap-2">
+                    <h3 className="text-[var(--theme-text-primary)] font-medium flex items-center gap-2">
                       Asistente Luxxor IA
                     </h3>
                     <span className="text-xs text-[var(--color-luxxor-gold)] flex items-center gap-1.5 font-light">
@@ -171,7 +171,7 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 text-gray-400 hover:text-white rounded-full hover:bg-white/5 transition-colors focus:outline-none"
+                  className="p-2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)] rounded-full hover:bg-[var(--theme-bg-primary)] transition-colors focus:outline-none"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -193,7 +193,7 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
                             <span className="text-xs font-bold font-serif tracking-tighter">LX</span>
                           </div>
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-[#333] flex items-center justify-center text-gray-300">
+                          <div className="w-8 h-8 rounded-full bg-[var(--theme-bg-primary)] border border-[var(--theme-border)] flex items-center justify-center text-[var(--theme-text-secondary)]">
                             <User className="w-4 h-4" />
                           </div>
                         )}
@@ -201,10 +201,10 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
 
                       {/* Bubble */}
                       <div
-                        className={`p-3.5 rounded-2xl ${
+                        className={`p-3.5 rounded-2xl transition-colors duration-700 ${
                           msg.sender === "user"
-                            ? "bg-[#222] text-white rounded-tr-sm border border-white/5"
-                            : "bg-gradient-to-br from-[#1a1a1a] to-[#141414] text-gray-200 rounded-tl-sm border border-[var(--color-luxxor-gold)]/20 shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
+                            ? "bg-[var(--color-luxxor-gold)] text-[#111] rounded-tr-sm"
+                            : "bg-[var(--theme-bg-primary)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] rounded-tl-sm shadow-sm"
                         }`}
                       >
                         {/* Check if response shows contact buttons */}
@@ -244,7 +244,7 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
               </div>
 
               {/* Input Area */}
-              <div className="p-4 bg-[#141414] border-t border-white/10">
+              <div className="p-4 bg-[var(--theme-bg-surface)] border-t border-[var(--theme-border)] transition-colors duration-700">
                 <form
                   onSubmit={handleSendMessage}
                   className="relative flex items-center gap-2"
@@ -254,7 +254,7 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Escribe tu duda aquí..."
-                    className="w-full bg-[#1a1a1a] border border-[#333] focus:border-[var(--color-luxxor-gold)] text-white rounded-full pl-5 pr-12 py-3.5 outline-none transition-all placeholder:text-gray-500 font-light text-[0.95rem]"
+                    className="w-full bg-[var(--theme-bg-primary)] border border-[var(--theme-border)] focus:border-[var(--color-luxxor-gold)] text-[var(--theme-text-primary)] rounded-full pl-5 pr-12 py-3.5 outline-none transition-all placeholder:text-[var(--theme-text-secondary)] font-light text-[0.95rem]"
                     disabled={isTyping}
                   />
                   <button
@@ -266,7 +266,7 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
                   </button>
                 </form>
                 <div className="text-center mt-2.5">
-                 <span className="text-[10px] text-gray-500 font-light">La IA puede cometer errores. Considera verificar la información importante.</span>
+                 <span className="text-[10px] text-[var(--theme-text-secondary)] transition-colors duration-700 font-light">La IA puede cometer errores. Considera verificar la información importante.</span>
                 </div>
               </div>
             </m.div>

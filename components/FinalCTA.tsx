@@ -20,7 +20,7 @@ export default React.memo(function FinalCTA() {
     <LazyMotion features={domAnimation}>
       {/* OPTIMIZACIÓN DESKTOP (lg+): py-32 (128px) se reduce en lg a py-24 (96px)
           para que la sección final no ocupe pantalla completa en 1366×768 al 100% zoom. */}
-      <section id="contacto" className="relative py-32 lg:py-24 xl:py-28 2xl:py-32 bg-[var(--color-luxxor-dark)] overflow-hidden">
+      <section id="contacto" className="relative py-32 lg:py-24 xl:py-28 2xl:py-32 bg-[#F5EDE2] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Background Graphic */}
         <div className="absolute inset-0 z-0 opacity-10 flex items-center justify-center">
           <div className="w-[800px] h-[800px] rounded-full border border-[var(--color-luxxor-gold)] absolute animate-pulse-gold scale-x-150 rotate-45" />
@@ -36,7 +36,7 @@ export default React.memo(function FinalCTA() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="border border-gray-800 bg-[#151515]/80 backdrop-blur-md p-10 md:p-20 lg:p-12 xl:p-16 2xl:p-20 relative overflow-hidden"
+            className="border border-[#D4AF37]/40 dark:border-[var(--theme-border)] bg-[#FFFFFF]/90 dark:bg-[var(--theme-bg-surface)]/80 backdrop-blur-md p-10 md:p-20 lg:p-12 xl:p-16 2xl:p-20 relative overflow-hidden transition-colors duration-700 shadow-xl dark:shadow-none"
           >
             {/* Corner accents */}
             <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[var(--color-luxxor-gold)]" />
@@ -47,12 +47,12 @@ export default React.memo(function FinalCTA() {
             {/* OPTIMIZACIÓN DESKTOP (lg+): Tipografía fluida con clamp().
                 lg:text-6xl (60px) era demasiado grande en 1366×768 al 100% zoom.
                 clamp() escala suavemente desde lg hasta 2xl manteniendo elegancia. */}
-            <h2 className="text-3xl md:text-5xl lg:text-[clamp(2rem,3.2vw,2.75rem)] xl:text-[clamp(2.25rem,3.5vw,3rem)] 2xl:text-5xl font-serif text-white mb-6 uppercase tracking-wider leading-tight">
+            <h2 className="text-3xl md:text-5xl lg:text-[clamp(2rem,3.2vw,2.75rem)] xl:text-[clamp(2.25rem,3.5vw,3rem)] 2xl:text-5xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 mb-6 uppercase tracking-wider leading-tight">
               Eleve su estándar <br />
               <span className="text-[var(--color-luxxor-gold)]">Agende su asesoría</span>
             </h2>
             
-            <p className="text-gray-300 font-light text-lg mb-12 max-w-2xl mx-auto">
+            <p className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 font-light text-lg mb-12 max-w-2xl mx-auto">
               Discuta sus necesidades de remodelación y diseño con nuestros asesores de manera personalizada.
             </p>
 
@@ -69,7 +69,7 @@ export default React.memo(function FinalCTA() {
                   <ArrowRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
                 </span>
               </a>
-              <div className="text-white text-lg font-serif tracking-widest">
+              <div className="text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 text-lg font-serif tracking-widest">
                 +57 317 0303333
               </div>
             </div>

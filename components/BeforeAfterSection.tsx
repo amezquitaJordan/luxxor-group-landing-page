@@ -60,11 +60,11 @@ function Card({ project }: { project: Project }) {
 
   return (
     <m.div
-      className="flex flex-col group cursor-pointer hover-lift-gold will-change-transform transition-all"
+      className="flex flex-col h-full group cursor-pointer luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl p-4 md:p-6 rounded-2xl will-change-transform transition-all"
       onClick={handleTap}
     >
       <m.div
-        className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] shadow-[0_4px_10px_rgba(0,0,0,0.5)]"
+        className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 transition-all duration-300"
       >
         {/* Etiqueta Antes */}
         <div
@@ -113,10 +113,10 @@ function Card({ project }: { project: Project }) {
       </m.div>
 
       {/* Contenido (Textos) */}
-      <h3 className="text-[#D4AF37] text-xl font-medium mb-2 group-hover:text-white transition-colors duration-300">
+      <h3 className="text-[#D4AF37] text-xl font-medium mb-2 group-hover:text-[#2A2824] dark:group-hover:text-[var(--theme-text-primary)] transition-colors duration-300">
         {project.title}
       </h3>
-      <p className="text-gray-400 text-sm leading-relaxed">
+      <p className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 text-sm leading-relaxed">
         {project.description}
       </p>
     </m.div>
@@ -133,7 +133,7 @@ export default React.memo(function BeforeAfterSection() {
     <LazyMotion features={domAnimation}>
       {/* OPTIMIZACIÓN DESKTOP (lg+): Padding vertical reducido progresivamente en lg/xl/2xl
           para evitar secciones demasiado altas en resoluciones Desktop al 100% zoom. */}
-      <section className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      <section className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#F0EBE1] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         {/* Bordes dorados sutiles */}
@@ -156,7 +156,7 @@ export default React.memo(function BeforeAfterSection() {
                 md:text-5xl sin override lg resultaba en un tamaño excesivo en Desktop.
                 clamp() proporciona escalado continuo entre 1024px y 1920px. */}
             <m.h2
-              className="text-3xl md:text-5xl lg:text-[clamp(1.5rem,2.5vw,2rem)] xl:text-[clamp(1.75rem,2.8vw,2.25rem)] 2xl:text-4xl font-light text-white mb-6 leading-tight"
+              className="text-3xl md:text-5xl lg:text-[clamp(1.5rem,2.5vw,2rem)] xl:text-[clamp(1.75rem,2.8vw,2.25rem)] 2xl:text-4xl font-light text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 mb-6 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-50px", amount: 0.2 }}
@@ -165,7 +165,7 @@ export default React.memo(function BeforeAfterSection() {
               Antes y <span className="text-[#D4AF37] font-medium">Después</span>
             </m.h2>
             <m.p
-              className="text-gray-400 text-lg"
+              className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 text-lg"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-50px", amount: 0.2 }}
@@ -176,10 +176,11 @@ export default React.memo(function BeforeAfterSection() {
           </div>
 
           {/* Grid Container */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 md:items-stretch">
             {projects.map((project, index) => (
               <m.div
                 key={index}
+                className="h-full"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: "-50px", amount: 0.2 }}

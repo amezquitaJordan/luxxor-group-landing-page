@@ -42,7 +42,7 @@ export default React.memo(function ProjectsGrid() {
     <LazyMotion features={domAnimation}>
       {/* OPTIMIZACIÓN DESKTOP (lg+): Padding vertical reducido en lg/xl/2xl para
           proporcionar secciones equilibradas en resoluciones Desktop al 100% zoom. */}
-      <section id="proyectos" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      <section id="proyectos" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#F5EDE2] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div className="bg-noise" />
         
@@ -74,15 +74,15 @@ export default React.memo(function ProjectsGrid() {
               Explora Nuestras Remodelaciones y Diseños Más Recientes
             </h2>
 
-            <p className="text-xl md:text-2xl text-white font-medium mb-6 tracking-wide drop-shadow-md">
+            <p className="text-xl md:text-2xl text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700 font-medium mb-6 tracking-wide drop-shadow-md">
               Cada proyecto refleja nuestra pasión por el lujo y la excelencia
             </p>
 
-            <p className="text-base md:text-lg text-white/70 leading-relaxed font-light mb-8">
+            <p className="text-base md:text-lg text-[#5C5A56] dark:text-[var(--theme-text-secondary)] transition-colors duration-700 leading-relaxed font-light mb-8">
               Transformamos espacios residenciales y comerciales en Cali con diseño arquitectónico de alto nivel, acabados premium y atención al detalle. Descubre cómo redefinimos cada entorno.
             </p>
 
-            <a href="#contacto" className="inline-block border-b-2 border-[#D4AF37] text-white hover:text-[#D4AF37] transition-colors duration-300 pb-1 font-semibold uppercase tracking-widest text-sm">
+            <a href="#contacto" className="inline-block border-b-2 border-[#D4AF37] text-[#2A2824] dark:text-[var(--theme-text-primary)] hover:text-[#D4AF37] transition-colors duration-300 pb-1 font-semibold uppercase tracking-widest text-sm">
               Ver Catálogo Completo
             </a>
           </m.div>
@@ -94,8 +94,8 @@ export default React.memo(function ProjectsGrid() {
          */}
         {/* Infinite Carousel JS */}
         <div className="relative flex overflow-x-hidden group">
-          <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-[#F5EDE2] dark:from-[var(--theme-bg-primary)] to-transparent z-10 pointer-events-none transition-colors duration-700" />
+          <div className="absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-[#F5EDE2] dark:from-[var(--theme-bg-primary)] to-transparent z-10 pointer-events-none transition-colors duration-700" />
 
           <div 
             className="flex w-max gap-8 px-6 will-change-transform animate-carousel-projects lg:hover:[animation-play-state:paused]"
@@ -103,7 +103,7 @@ export default React.memo(function ProjectsGrid() {
             {[...projects, ...projects, ...projects].map((project, index) => (
               <div
                 key={`project-${index}`}
-                className="group/card relative w-[350px] md:w-[420px] h-[450px] overflow-hidden cursor-pointer flex-shrink-0"
+                className="group/card relative w-[350px] md:w-[420px] h-[450px] overflow-hidden cursor-pointer flex-shrink-0 luxxor-card-premium"
               >
                 {/* Image */}
                 <div className="absolute inset-0 z-0">
@@ -117,14 +117,14 @@ export default React.memo(function ProjectsGrid() {
                   />
                 </div>
 
-                {/* Dark tinting overlay — Permanente y premium en todas las resoluciones */}
-                <div className="absolute inset-0 bg-black/[0.32] z-[5] pointer-events-none" />
+                {/* Dark tinting overlay — solo en dark mode */}
+                <div className="absolute inset-0 bg-transparent dark:bg-black/[0.32] z-[5] pointer-events-none" />
 
                 {/* Vignette (lente de lujo) */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#0000002A_30%,transparent_70%)] z-[6] pointer-events-none" />
                 
-                {/* Overlay Degradado inferior — legible pero con más luz en zona superior */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/[0.88] via-black/[0.55] to-transparent z-10 opacity-80 group-hover/card:opacity-90 transition-opacity duration-300 pointer-events-none" />
+                {/* Overlay Degradado inferior — claro en light mode, oscuro en dark mode */}
+                <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/40 to-transparent dark:from-black/[0.88] dark:via-black/[0.55] dark:to-transparent z-10 opacity-80 group-hover/card:opacity-90 transition-opacity duration-300 pointer-events-none" />
                 
                 {/* Content Box */}
                 <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end pointer-events-none">
@@ -132,16 +132,14 @@ export default React.memo(function ProjectsGrid() {
                     <p className="text-[var(--color-luxxor-gold)] text-sm tracking-widest uppercase font-semibold mb-2">
                       {project.category}
                     </p>
-                    <h3 className="text-2xl font-serif text-white mb-4">
+                    <h3 className="text-2xl font-serif text-[#2A2824] dark:text-white mb-4">
                       {project.title}
                     </h3>
                     <div className="w-0 h-[2px] bg-[var(--color-luxxor-gold)] group-hover/card:w-12 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
                   </div>
                 </div>
                 
-                {/* Gold frame + aura */}
-                <div className="absolute inset-0 border border-[#D4AF37]/45 group-hover/card:border-[#D4AF37]/80 z-30 transition-all duration-500 pointer-events-none" />
-                <div className="absolute inset-0 border border-transparent group-hover/card:shadow-[0_0_30px_-8px_rgba(212,175,55,0.45)] z-30 transition-shadow duration-500 pointer-events-none" />
+
               </div>
             ))}
           </div>

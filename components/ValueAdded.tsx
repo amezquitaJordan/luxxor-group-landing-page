@@ -41,7 +41,7 @@ export default React.memo(function ValueAdded() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section className="relative w-full py-20 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      <section className="relative w-full py-20 bg-[#EDE5D8] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div 
           className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" 
@@ -70,15 +70,15 @@ export default React.memo(function ValueAdded() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px", amount: 0.2 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-3xl font-serif text-white"
+            className="text-3xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] transition-colors duration-700"
           >
             Mucho más que una transacción
           </m.h2>
         </div>
 
         <div className="relative flex overflow-x-hidden group py-4">
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0F0F0F] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#EDE5D8] dark:from-[var(--theme-bg-primary)] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#EDE5D8] dark:from-[var(--theme-bg-primary)] to-transparent z-10 pointer-events-none" />
           
           {/* Infinite JS Carousel */}
           <m.div 
@@ -94,7 +94,7 @@ export default React.memo(function ValueAdded() {
             {[...values, ...values, ...values].map((value, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center gap-6 px-8 py-4 mx-4 bg-[#1a1a1a] border border-gray-800 text-gray-300 hover:text-[var(--color-luxxor-gold)] hover:border-[var(--color-luxxor-gold)] transition-colors duration-300 cursor-default"
+                className="flex items-center justify-center gap-6 px-8 py-4 mx-4 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/25 dark:border-[var(--theme-card-border)] text-[#5C5A56] dark:text-[var(--theme-text-secondary)] hover:text-[var(--color-luxxor-gold)] hover:bg-white hover:shadow-lg cursor-default transition-all duration-300"
               >
                 <div className="w-2 h-2 rounded-full bg-[var(--color-luxxor-gold)]" />
                 <span className="text-xl font-serif tracking-wide">{value}</span>

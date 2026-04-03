@@ -73,7 +73,7 @@ export default React.memo(function WhyLuxxor() {
        * py-24 en mobile/tablet se ajusta en lg para que la sección no ocupe pantallas
        * completas en resoluciones 1366×768 al 100% zoom. Escala hasta 2xl.
        */}
-      <section id="por-que-elegirnos" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#121212] bg-gradient-to-b from-[#0F0F0F] to-[#1A1A1A] overflow-hidden">
+      <section id="por-que-elegirnos" className="relative w-full py-24 lg:py-20 xl:py-24 2xl:py-28 bg-[#F0EBE1] dark:bg-[var(--theme-bg-primary)] transition-colors duration-700 overflow-hidden">
         {/* Fondo Premium - Textura */}
         <div 
           className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay -z-10" 
@@ -110,11 +110,11 @@ export default React.memo(function WhyLuxxor() {
               ¿Por Qué Elegir a Luxxor Group?
             </h2>
 
-            <p className="text-xl md:text-2xl text-white font-medium mb-6 tracking-wide drop-shadow-md">
+            <p className="text-xl md:text-2xl text-[#2A2824] dark:text-[var(--theme-text-primary)] font-medium mb-6 tracking-wide drop-shadow-md">
               Somos sus socios estratégicos en la transformación de su estilo de vida
             </p>
 
-            <p className="text-base md:text-lg text-white/70 leading-relaxed font-light">
+            <p className="text-base md:text-lg text-[#5C5A56] dark:text-[var(--theme-text-secondary)] leading-relaxed font-light">
               No somos simplemente contratistas; creamos y transformamos espacios a través del diseño, la excelencia técnica y una pasión incomparable por el detalle.
             </p>
           </m.div>
@@ -134,12 +134,12 @@ export default React.memo(function WhyLuxxor() {
                 viewport={{ once: false, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 bg-[var(--color-luxxor-dark)] transform-gpu border-[1.5px] border-[#D4AF37]/40"
+                className="group relative p-8 transform-gpu luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
               >
                 {/* Mobile Glow Animation */}
                 <m.div 
                   initial={false}
-                  animate={{ boxShadow: ['0 0 15px rgba(212,175,55,0.15)', '0 0 35px rgba(212,175,55,0.3)', '0 0 15px rgba(212,175,55,0.15)'] }}
+                  animate={{ boxShadow: ['0 0 15px var(--theme-gold-glow)', '0 0 35px var(--theme-gold-glow)', '0 0 15px var(--theme-gold-glow)'] }}
                   transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute inset-0 pointer-events-none z-0"
                 />
@@ -147,10 +147,10 @@ export default React.memo(function WhyLuxxor() {
                 <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 transition-opacity duration-300">
                   {reason.id}
                 </div>
-                <h3 className="relative z-10 text-xl font-serif text-white mb-4 transition-colors duration-300">
+                <h3 className="relative z-10 text-xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-4 transition-colors duration-300">
                   {reason.title}
                 </h3>
-                <p className="relative z-10 text-gray-400 font-light text-sm leading-relaxed">
+                <p className="relative z-10 text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light text-sm leading-relaxed">
                   {reason.description}
                 </p>
                 
@@ -169,12 +169,12 @@ export default React.memo(function WhyLuxxor() {
                 viewport={{ once: false, margin: '-50px', amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 bg-[var(--color-luxxor-dark)] transform-gpu border-[1.5px] border-[#D4AF37]/40"
+                className="group relative p-8 transform-gpu luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
               >
                 {/* Tablet Glow Animation */}
                 <m.div 
                   initial={false}
-                  animate={{ boxShadow: ['0 0 15px rgba(212,175,55,0.15)', '0 0 35px rgba(212,175,55,0.3)', '0 0 15px rgba(212,175,55,0.15)'] }}
+                  animate={{ boxShadow: ['0 0 15px var(--theme-gold-glow)', '0 0 35px var(--theme-gold-glow)', '0 0 15px var(--theme-gold-glow)'] }}
                   transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute inset-0 pointer-events-none lg:hidden z-0"
                 />
@@ -182,10 +182,10 @@ export default React.memo(function WhyLuxxor() {
                 <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                   {reason.id}
                 </div>
-                <h3 className="relative z-10 text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                <h3 className="relative z-10 text-xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                   {reason.title}
                 </h3>
-                <p className="relative z-10 text-gray-400 font-light text-sm leading-relaxed">
+                <p className="relative z-10 text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light text-sm leading-relaxed">
                   {reason.description}
                 </p>
                 
@@ -212,15 +212,15 @@ export default React.memo(function WhyLuxxor() {
                 key={reason.id}
                 variants={itemVariants}
                 style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 lg:p-6 xl:p-8 bg-[var(--color-luxxor-dark)] hover:bg-[#1f1f1f] transition-all duration-500 transform-gpu border-[1px] border-gray-800 shadow-none"
+                className="group relative p-8 lg:p-6 xl:p-8 transform-gpu luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
               >
                 <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl lg:text-4xl xl:text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                   {reason.id}
                 </div>
-                <h3 className="relative z-10 text-xl lg:text-lg xl:text-xl font-serif text-white mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
+                <h3 className="relative z-10 text-xl lg:text-lg xl:text-xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                   {reason.title}
                 </h3>
-                <p className="relative z-10 text-gray-400 font-light text-sm leading-relaxed">
+                <p className="relative z-10 text-[#5C5A56] dark:text-[var(--theme-text-secondary)] font-light text-sm leading-relaxed">
                   {reason.description}
                 </p>
                 
