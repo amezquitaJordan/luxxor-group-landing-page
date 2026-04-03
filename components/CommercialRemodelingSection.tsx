@@ -100,11 +100,12 @@ export default React.memo(function CommercialRemodelingSection() {
             {services.map((service, index) => (
               <m.div
                 key={index}
-                initial={{ opacity: 0, y: 40, scale: 0.97 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false, margin: '-50px', amount: 0.15 }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="relative w-full h-[400px] md:h-[480px] lg:h-[400px] xl:h-[480px] rounded-2xl cursor-pointer group will-change-transform luxxor-card-premium"
+                initial={{ opacity: 0, filter: "blur(5px)" }}
+                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(5px)" }}
+                viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="relative w-full h-[400px] md:h-[480px] lg:h-[400px] xl:h-[480px] rounded-2xl cursor-pointer group luxxor-card-premium"
               >
                 {/* Aura Animation — Mobile only (≤767px) */}
                 <m.div

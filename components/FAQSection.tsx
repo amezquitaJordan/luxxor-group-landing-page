@@ -77,23 +77,15 @@ export default React.memo(function FAQSection() {
             </m.p>
           </div>
 
-          <m.div 
-            className="space-y-4 mb-16"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-            }}
-          >
+          <div className="space-y-4 mb-16">
             {FAQS.map((faq, index) => (
-              <m.div 
+              <m.div
                 key={index}
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
-                }}
+                initial={{ opacity: 0, filter: "blur(5px)" }}
+                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(5px)" }}
+                viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:shadow-xl backdrop-blur-sm rounded-xl overflow-hidden transition-colors duration-700"
               >
                 <m.button
@@ -130,7 +122,7 @@ export default React.memo(function FAQSection() {
                 </AnimatePresence>
               </m.div>
             ))}
-          </m.div>
+          </div>
 
           {/* CTA Button to Chatbot */}
           <m.div 

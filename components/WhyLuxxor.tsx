@@ -39,32 +39,6 @@ const reasons = [
  * No recibe Props y su estado interno es manejado estrictamente por animaciones delegadas.
  */
 export default React.memo(function WhyLuxxor() {
-  /* 
-   * Variantes de animación para Escritorio (lg+) 
-   * Controla la aparición en bloque y aparición secuencial rápida (staggerChildren).
-   */
-  // Variants Desktop (lg+) — comportamiento original
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.22 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.75, ease: [0.25, 0.1, 0.25, 1] as const }
-    }
-  };
-
-  /* 
-   * Nota: Las variantes antiguas de Tablet/Mobile se eliminaron en favor de 
-   * animaciones en-sitio directas.
-   */
 
   return (
     <LazyMotion features={domAnimation}>
@@ -129,12 +103,12 @@ export default React.memo(function WhyLuxxor() {
             {reasons.map((reason, index) => (
               <m.div
                 key={reason.id}
-                initial={{ opacity: 0, y: 40, scale: 0.97 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false, margin: '-50px', amount: 0.15 }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 transform-gpu luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
+                initial={{ opacity: 0, filter: "blur(5px)" }}
+                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(5px)" }}
+                viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
               >
                 {/* Mobile Glow Animation */}
                 <m.div 
@@ -160,16 +134,16 @@ export default React.memo(function WhyLuxxor() {
           </div>
 
           {/* ── TABLET EXCLUSIVE (768px hasta 1023px): Stagger secuencial intocable ── */}
-          <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-12 pt-6 transform-gpu">
+          <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-12 pt-6">
             {reasons.map((reason, index) => (
               <m.div
                 key={reason.id}
-                initial={{ opacity: 0, y: 40, scale: 0.97 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false, margin: '-50px', amount: 0.15 }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 transform-gpu luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
+                initial={{ opacity: 0, filter: "blur(5px)" }}
+                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(5px)" }}
+                viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
               >
                 {/* Tablet Glow Animation */}
                 <m.div 
@@ -199,20 +173,16 @@ export default React.memo(function WhyLuxxor() {
            * originales en hover y distribuciones en Grid (lg:grid-cols-4). 
            */}
           {/* ── DESKTOP (1024px+): comportamiento original sin cambios ── */}
-          <m.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, margin: "-80px 0px -40px 0px", amount: 0.3 }}
-            style={{ willChange: "opacity, transform" }}
-            className="hidden lg:grid lg:grid-cols-4 gap-8 pt-0 transform-gpu"
-          >
-            {reasons.map((reason) => (
+          <div className="hidden lg:grid lg:grid-cols-4 gap-8 pt-0">
+            {reasons.map((reason, index) => (
               <m.div
                 key={reason.id}
-                variants={itemVariants}
-                style={{ willChange: "opacity, transform" }}
-                className="group relative p-8 lg:p-6 xl:p-8 transform-gpu luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
+                initial={{ opacity: 0, filter: "blur(5px)" }}
+                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(5px)" }}
+                viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="group relative p-8 lg:p-6 xl:p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
               >
                 <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl lg:text-4xl xl:text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                   {reason.id}
@@ -227,7 +197,7 @@ export default React.memo(function WhyLuxxor() {
                 <div className="relative z-10 w-0 h-[2px] bg-[var(--color-luxxor-gold)] mt-8 group-hover:w-full transition-all duration-500 ease-out" />
               </m.div>
             ))}
-          </m.div>
+          </div>
         </div>
       </section>
     </LazyMotion>
