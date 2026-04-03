@@ -201,7 +201,7 @@ export default React.memo(function Services() {
                 </div>
 
                 {/* ── TARJETA DESKTOP (≥1024px): layout vertical premium ─── */}
-                <div className="hidden lg:flex relative z-10 w-full overflow-hidden flex-col h-full group luxxor-card-premium rounded-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] dark:border-white/5 dark:hover:border-[#D4AF37] transition-all duration-500 overflow-hidden">
+                <div className="hidden lg:flex relative z-10 w-full overflow-hidden flex-col h-full group luxxor-card-premium rounded-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] dark:border-white/5 dark:hover:border-[#D4AF37] transition-colors duration-500 overflow-hidden">
 
                   {/* Imagen superior grande */}
                   <div className="relative w-full h-64 xl:h-72 overflow-hidden">

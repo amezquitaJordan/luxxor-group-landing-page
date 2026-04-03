@@ -60,7 +60,7 @@ function Card({ project }: { project: Project }) {
 
   return (
     <m.div
-      className="flex flex-col h-full group cursor-pointer luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl p-4 md:p-6 rounded-2xl will-change-transform transition-all"
+      className="flex flex-col h-full group cursor-pointer luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl p-4 md:p-6 rounded-2xl will-change-transform transition-colors duration-500"
       onClick={handleTap}
     >
       <m.div
@@ -79,7 +79,7 @@ function Card({ project }: { project: Project }) {
           alt={`Antes - ${project.title}`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          loading="lazy"
+          priority
           className="object-cover"
         />
 
@@ -92,7 +92,7 @@ function Card({ project }: { project: Project }) {
             alt={`Después - ${project.title}`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            loading="lazy"
+            priority
             className="object-cover"
           />
         </div>
