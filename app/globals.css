@@ -198,7 +198,10 @@ h6 {
 .luxxor-card-premium {
   border: 1px solid var(--theme-card-border);
   box-shadow: var(--theme-card-shadow);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  /* REEMPLAZO: Evitar 'all' para no chocar con Framer Motion */
+  transition-property: background-color, border-color, box-shadow, transform;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .luxxor-card-premium:hover {
