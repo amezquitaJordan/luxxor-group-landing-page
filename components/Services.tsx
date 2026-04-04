@@ -150,9 +150,9 @@ export default React.memo(function Services() {
                 />
 
                 {/* ── TARJETA MOBILE (≤767px): layout vertical ─────────── */}
-                <div className="block md:hidden relative z-10 w-full overflow-hidden flex-col luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)]">
+                <div className="block md:hidden relative z-10 w-full overflow-hidden flex-col luxxor-card-premium rounded-t-2xl rounded-b-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)]">
                   {/* Imagen horizontal grande arriba */}
-                  <div className="relative w-full h-52">
+                  <div className="relative w-full h-52 rounded-t-2xl overflow-hidden">
                     <Image
                       src={service.image}
                       alt={service.title}
@@ -179,8 +179,8 @@ export default React.memo(function Services() {
                 </div>
 
                 {/* ── TARJETA TABLET (768–1023px): layout horizontal ─────── */}
-                <div className="hidden md:flex lg:hidden relative z-10 w-full p-0 overflow-hidden flex-row min-h-[300px] h-auto rounded-none luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)]">
-                  <div className="relative w-[35%] h-auto shrink-0">
+                <div className="hidden md:flex lg:hidden relative z-10 w-full p-0 overflow-hidden flex-row min-h-[300px] h-auto rounded-t-2xl rounded-b-none luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)]">
+                  <div className="relative w-[35%] h-auto shrink-0 rounded-tl-2xl overflow-hidden">
                     <Image src={service.image} alt={service.title} fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover" />
                     {/* Gradiente lateral: solo visible en dark mode para blend con fondo */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent dark:to-[var(--theme-bg-surface)] pointer-events-none" />
@@ -202,10 +202,10 @@ export default React.memo(function Services() {
                 </div>
 
                 {/* ── TARJETA DESKTOP (≥1024px): layout vertical premium ─── */}
-                <div className="hidden lg:flex relative z-10 w-full flex-col h-full group luxxor-card-premium rounded-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500">
+                <div className="hidden lg:flex relative z-10 w-full flex-col h-full group luxxor-card-premium rounded-t-2xl rounded-b-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500">
 
                   {/* Imagen superior grande */}
-                  <div className="relative w-full h-64 xl:h-72 overflow-hidden">
+                  <div className="relative w-full h-64 xl:h-72 overflow-hidden rounded-t-2xl">
                     <Image
                       src={service.image}
                       alt={service.title}

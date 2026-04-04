@@ -157,7 +157,7 @@ export default React.memo(function CommercialRemodelingSection() {
                   </div>
 
                   {/* Bloque Inferior: texto desplazado hacia arriba (efecto sándwich) */}
-                  <div className="relative z-10 bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] p-8 pt-10 xl:p-10 xl:pt-12 transition-colors duration-700 flex-grow flex flex-col justify-between">
+                  <div className="relative z-10 bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] p-8 pt-10 xl:p-10 xl:pt-12 transition-colors duration-700 flex-grow flex flex-col justify-between rounded-b-2xl">
                     <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
                       <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-light tracking-wide text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-3 group-hover:text-[#D4AF37] transition-colors duration-300">
                         {service.title}
