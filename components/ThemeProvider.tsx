@@ -22,6 +22,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const initialTheme = storedTheme || "light";
     setTheme(initialTheme);
     document.documentElement.setAttribute("data-theme", initialTheme);
+    initialTheme === 'dark'
+      ? document.documentElement.classList.add('dark')
+      : document.documentElement.classList.remove('dark');
     setMounted(true);
   }, []);
 
@@ -30,6 +33,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
+    newTheme === 'dark'
+      ? document.documentElement.classList.add('dark')
+      : document.documentElement.classList.remove('dark');
   };
 
   // By always providing the context, we prevent SSR crashes when children call useTheme.
