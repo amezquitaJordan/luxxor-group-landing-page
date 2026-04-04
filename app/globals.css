@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Tailwind v4: Forzar Dark Mode basado en la clase .dark del HTML */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-luxxor-gold: #D4AF37;
   --color-luxxor-dark: #121212;
