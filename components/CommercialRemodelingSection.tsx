@@ -136,24 +136,28 @@ export default React.memo(function CommercialRemodelingSection() {
                 />
 
                 {/* Sandwich Card — imagen arriba, texto sólido superpuesto hacia abajo */}
-                <div className="relative z-10 w-full overflow-hidden flex flex-col flex-1 rounded-2xl bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500">
+                <div className="relative z-10 w-full flex flex-col flex-1 rounded-2xl bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500">
 
                   {/* Bloque Superior: imagen */}
-                  <div className="relative w-full h-64 lg:h-[280px] overflow-hidden">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      loading="lazy"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    {/* Gradiente sutil inferior para blend con bloque de texto */}
-                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#FFFFFF]/80 dark:from-[var(--theme-bg-card)]/80 to-transparent pointer-events-none" />
+                  <div className="relative w-full h-64 lg:h-[280px] rounded-t-2xl">
+                    <div className="absolute inset-0 overflow-hidden rounded-t-2xl">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        loading="lazy"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                    {/* Sello Numérico Editorial */}
+                    <div className="absolute -bottom-6 right-6 md:right-8 w-12 h-12 bg-[#D4AF37] flex items-center justify-center text-[#121212] font-serif text-xl z-20 shadow-[0_5px_15px_rgba(212,175,55,0.4)]">
+                      0{index + 1}
+                    </div>
                   </div>
 
                   {/* Bloque Inferior: texto desplazado hacia arriba (efecto sándwich) */}
-                  <div className="relative z-10 bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] -mt-10 p-8 md:p-10 lg:p-8 xl:p-10 transition-colors duration-700 flex-grow flex flex-col justify-between">
+                  <div className="relative z-10 bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] p-8 pt-10 xl:p-10 xl:pt-12 transition-colors duration-700 flex-grow flex flex-col justify-between">
                     <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
                       <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-light tracking-wide text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-3 group-hover:text-[#D4AF37] transition-colors duration-300">
                         {service.title}

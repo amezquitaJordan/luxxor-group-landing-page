@@ -163,10 +163,11 @@ export default React.memo(function Services() {
                     <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#FFFFFF]/60 dark:from-[var(--theme-bg-surface)]/60 to-transparent pointer-events-none" />
                   </div>
 
-                  {/* Contenido: ícono + título + descripción */}
-                  <div className="p-7 flex flex-col">
-                    <div className="w-14 h-14 bg-[#EAE5D9] dark:bg-[var(--theme-bg-primary)] border border-[#D4AF37]/30 dark:border-[var(--theme-border)] flex items-center justify-center mb-5 text-[var(--color-luxxor-gold)] shrink-0">
-                      <service.icon strokeWidth={1.5} size={28} />
+                  {/* Contenido: título + descripción */}
+                  <div className="p-7 pt-10 flex flex-col relative z-10">
+                    {/* Sello Arquitectónico Mobile */}
+                    <div className="absolute -top-6 right-6 w-12 h-12 bg-[#D4AF37] flex items-center justify-center text-[#121212] z-20 shadow-[0_5px_15px_rgba(212,175,55,0.4)]">
+                      <service.icon strokeWidth={1.5} size={22} />
                     </div>
                     <h3 className="text-xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-3">
                       {service.title}
@@ -201,27 +202,25 @@ export default React.memo(function Services() {
                 </div>
 
                 {/* ── TARJETA DESKTOP (≥1024px): layout vertical premium ─── */}
-                <div className="hidden lg:flex relative z-10 w-full overflow-hidden flex-col h-full group luxxor-card-premium rounded-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500 overflow-hidden">
+                <div className="hidden lg:flex relative z-10 w-full flex-col h-full group luxxor-card-premium rounded-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500">
 
                   {/* Imagen superior grande */}
-                  <div className="relative w-full h-64 xl:h-72">
-                    <div className="absolute inset-0 overflow-hidden">
-                      <Image
-                        src={service.image}
-                        alt={service.title}
-                        fill
-                        sizes="(max-width: 1536px) 33vw, 25vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[0.25,0.1,0.25,1]"
-                      />
-                    </div>
-                    {/* Sello Arquitectónico — badge posicionado sobre la línea divisoria */}
-                    <div className="absolute -bottom-6 right-8 w-12 h-12 bg-[#EAE5D9]/80 dark:bg-[var(--theme-bg-primary)]/80 backdrop-blur-md border border-[#D4AF37]/50 flex items-center justify-center text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shadow-lg z-20">
-                      <service.icon strokeWidth={1.5} size={22} />
-                    </div>
+                  <div className="relative w-full h-64 xl:h-72 overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      sizes="(max-width: 1536px) 33vw, 25vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[0.25,0.1,0.25,1]"
+                    />
                   </div>
 
                   {/* Contenido principal */}
                   <div className="p-8 pt-10 xl:p-10 xl:pt-12 flex flex-col flex-grow relative z-10 bg-transparent transition-colors duration-700">
+                    {/* Sello Arquitectónico replicando diseño Comercial pero anclado al texto */}
+                    <div className="absolute -top-6 right-6 md:right-8 w-12 h-12 bg-[#D4AF37] flex items-center justify-center text-[#121212] z-20 shadow-[0_5px_15px_rgba(212,175,55,0.4)]">
+                      <service.icon strokeWidth={1.5} size={22} />
+                    </div>
                     <h3 className="text-xl xl:text-2xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                       {service.title}
                     </h3>
