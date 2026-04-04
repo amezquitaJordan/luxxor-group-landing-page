@@ -88,9 +88,9 @@
   --theme-nav-bg: rgba(255, 255, 255, 0.85);
 
   /* Aura Dorada Sutil en Tarjetas — Light Mode */
-  --theme-card-border: rgba(212, 175, 55, 0.25);
-  --theme-card-shadow: 0 2px 18px rgba(212, 175, 55, 0.11), 0 0 0 1px rgba(212, 175, 55, 0.08);
-  --theme-card-shadow-hover: 0 6px 30px rgba(212, 175, 55, 0.22), 0 0 0 1px rgba(212, 175, 55, 0.18);
+  --theme-card-border: rgba(212, 175, 55, 0.35);
+  --theme-card-shadow: 0 0 15px rgba(212, 175, 55, 0.12);
+  --theme-card-shadow-hover: 0 5px 25px rgba(212, 175, 55, 0.35);
 }
 
 :root[data-theme="dark"] {
@@ -107,10 +107,10 @@
   --theme-gold-glow: rgba(212, 175, 55, 0.08);
   --theme-nav-bg: rgba(0, 0, 0, 0.75);
 
-  /* Aura Animada Ligera en Tarjetas (Dark Mode Adaption) */
-  --theme-card-border: rgba(255, 255, 255, 0.1);
-  --theme-card-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  --theme-card-shadow-hover: 0 0 30px rgba(212, 175, 55, 0.15);
+  /* Aura Dorada Unificada en Tarjetas — Dark Mode */
+  --theme-card-border: rgba(212, 175, 55, 0.35);
+  --theme-card-shadow: 0 0 15px rgba(212, 175, 55, 0.12);
+  --theme-card-shadow-hover: 0 5px 25px rgba(212, 175, 55, 0.35);
 }
 
 body {

@@ -41,7 +41,7 @@ export default React.memo(function TestimonialsCarousel() {
   const [isHovered, setIsHovered] = useState(false);
 
   // similar speed adjustment for items. -33.333% is the wrap point with 3 duplicated sets of items
-  useAnimationFrame((t, delta) => {
+  useAnimationFrame((_t, delta) => {
     if (reducedMotion || isHovered) return;
     let moveBy = (delta / 1000) * 1.5; 
     let newX = baseX.get() - moveBy;
@@ -106,7 +106,7 @@ export default React.memo(function TestimonialsCarousel() {
             {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
               <div
                 key={index}
-                className="w-[300px] md:w-[450px] p-8 md:p-10 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl flex-shrink-0 cursor-default hover:z-10 whitespace-normal flex flex-col justify-between relative"
+                className="w-[300px] md:w-[450px] p-8 md:p-10 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] flex-shrink-0 cursor-default hover:z-10 whitespace-normal flex flex-col justify-between relative"
               >
                 <div>
                   <div className="text-[var(--color-luxxor-gold)] text-4xl font-serif mb-6 leading-none">"</div>

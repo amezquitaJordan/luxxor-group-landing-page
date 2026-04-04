@@ -136,7 +136,7 @@ export default React.memo(function CommercialRemodelingSection() {
                 />
 
                 {/* Sandwich Card — imagen arriba, texto sólido superpuesto hacia abajo */}
-                <div className="relative z-10 w-full overflow-hidden flex flex-col flex-1 rounded-2xl bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-white/5 hover:border-[#D4AF37] dark:hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-colors duration-500">
+                <div className="relative z-10 w-full overflow-hidden flex flex-col flex-1 rounded-2xl bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500">
 
                   {/* Bloque Superior: imagen */}
                   <div className="relative w-full h-64 lg:h-[280px] overflow-hidden">

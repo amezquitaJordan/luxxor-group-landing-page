@@ -103,7 +103,7 @@ export default React.memo(function ProjectsGrid() {
             {[...projects, ...projects, ...projects].map((project, index) => (
               <div
                 key={`project-${index}`}
-                className="group/card w-[350px] md:w-[420px] flex flex-col cursor-pointer flex-shrink-0 luxxor-card-premium rounded-2xl"
+                className="group/card w-[350px] md:w-[420px] flex flex-col cursor-pointer flex-shrink-0 luxxor-card-premium rounded-2xl shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-shadow duration-300"
               >
                 {/* Bloque Superior: Imagen portrait */}
                 <div className="relative w-full h-[400px] md:h-[450px] overflow-hidden rounded-t-2xl">
@@ -120,7 +120,7 @@ export default React.memo(function ProjectsGrid() {
                 </div>
 
                 {/* Bloque Inferior: Texto Sándwich desplazado */}
-                <div className="-mt-10 relative z-10 mx-4 mb-4 bg-[#F5F2EB] dark:bg-[var(--theme-bg-card)] p-6 border border-[#D4AF37]/30 rounded-xl hover:border-[#D4AF37] transition-colors duration-300 flex flex-col justify-between gap-4">
+                <div className="-mt-10 relative z-10 mx-4 mb-4 bg-[#F5F2EB] dark:bg-[var(--theme-bg-card)] p-6 border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 rounded-xl transition-all duration-300 flex flex-col justify-between gap-4">
                   <div>
                     <p className="text-[#D4AF37] text-xs tracking-widest uppercase font-semibold mb-2">
                       {project.category}

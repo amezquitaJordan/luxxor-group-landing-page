@@ -104,7 +104,7 @@ export default React.memo(function WhyLuxxor() {
                 exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
-                className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
+                className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)]"
               >
                 {/* Mobile Glow Animation */}
                 <m.div 
@@ -139,7 +139,7 @@ export default React.memo(function WhyLuxxor() {
                 exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
-                className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
+                className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)]"
               >
                 {/* Tablet Glow Animation */}
                 <m.div 
@@ -178,7 +178,7 @@ export default React.memo(function WhyLuxxor() {
                 exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
-                className="group relative p-8 lg:p-6 xl:p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
+                className="group relative p-8 lg:p-6 xl:p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)]"
               >
                 <div className="relative z-10 text-[var(--color-luxxor-gold)] text-5xl lg:text-4xl xl:text-5xl font-serif font-thin mb-8 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                   {reason.id}
