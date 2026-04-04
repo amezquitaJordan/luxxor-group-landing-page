@@ -100,9 +100,9 @@ export default React.memo(function CommercialRemodelingSection() {
             {services.map((service, index) => (
               <m.div
                 key={index}
-                initial={{ opacity: 0, filter: "blur(5px)" }}
-                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(5px)" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="relative w-full h-[400px] md:h-[480px] lg:h-[400px] xl:h-[480px] rounded-2xl cursor-pointer group luxxor-card-premium"

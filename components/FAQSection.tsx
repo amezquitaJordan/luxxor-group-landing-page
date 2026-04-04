@@ -81,9 +81,9 @@ export default React.memo(function FAQSection() {
             {FAQS.map((faq, index) => (
               <m.div
                 key={index}
-                initial={{ opacity: 0, filter: "blur(5px)" }}
-                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(5px)" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:shadow-xl backdrop-blur-sm rounded-xl overflow-hidden transition-colors duration-700"

@@ -99,9 +99,9 @@ export default React.memo(function WhyLuxxor() {
             {reasons.map((reason, index) => (
               <m.div
                 key={reason.id}
-                initial={{ opacity: 0, filter: "blur(5px)" }}
-                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(5px)" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
@@ -134,9 +134,9 @@ export default React.memo(function WhyLuxxor() {
             {reasons.map((reason, index) => (
               <m.div
                 key={reason.id}
-                initial={{ opacity: 0, filter: "blur(5px)" }}
-                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(5px)" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="group relative p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
@@ -173,9 +173,9 @@ export default React.memo(function WhyLuxxor() {
             {reasons.map((reason, index) => (
               <m.div
                 key={reason.id}
-                initial={{ opacity: 0, filter: "blur(5px)" }}
-                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(5px)" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="group relative p-8 lg:p-6 xl:p-8 luxxor-card-premium bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-[var(--theme-card-border)] hover:bg-white dark:hover:bg-[var(--theme-bg-card)] hover:shadow-xl"
