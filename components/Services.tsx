@@ -204,25 +204,24 @@ export default React.memo(function Services() {
                 <div className="hidden lg:flex relative z-10 w-full overflow-hidden flex-col h-full group luxxor-card-premium rounded-none bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/35 dark:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(212,175,55,0.12)] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-500 overflow-hidden">
 
                   {/* Imagen superior grande */}
-                  <div className="relative w-full h-64 xl:h-72 overflow-hidden">
-                    <Image 
-                      src={service.image} 
-                      alt={service.title} 
-                      fill 
-                      sizes="(max-width: 1536px) 33vw, 25vw" 
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[0.25,0.1,0.25,1]" 
-                    />
-                    {/* Gradiente sutil inferior */}
-                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#FFFFFF]/80 dark:from-[var(--theme-bg-surface)]/80 to-transparent pointer-events-none" />
-                    
-                    {/* Icono pequeño dorado flotante */}
-                    <div className="absolute top-5 right-5 w-12 h-12 bg-[#EAE5D9]/80 dark:bg-[var(--theme-bg-primary)]/80 backdrop-blur-md border border-[#D4AF37]/50 flex items-center justify-center text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shadow-lg z-10">
+                  <div className="relative w-full h-64 xl:h-72">
+                    <div className="absolute inset-0 overflow-hidden">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        sizes="(max-width: 1536px) 33vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[0.25,0.1,0.25,1]"
+                      />
+                    </div>
+                    {/* Sello Arquitectónico — badge posicionado sobre la línea divisoria */}
+                    <div className="absolute -bottom-6 right-8 w-12 h-12 bg-[#EAE5D9]/80 dark:bg-[var(--theme-bg-primary)]/80 backdrop-blur-md border border-[#D4AF37]/50 flex items-center justify-center text-[var(--color-luxxor-gold)] group-hover:bg-[var(--color-luxxor-gold)] group-hover:text-black transition-colors duration-500 shadow-lg z-20">
                       <service.icon strokeWidth={1.5} size={22} />
                     </div>
                   </div>
 
-                  {/* Contenido principal — sin borde top para evitar línea divisoria en hover */}
-                  <div className="p-8 xl:p-10 flex flex-col flex-grow relative z-10 bg-transparent -mt-10 border-t-0 transition-colors duration-700">
+                  {/* Contenido principal */}
+                  <div className="p-8 pt-10 xl:p-10 xl:pt-12 flex flex-col flex-grow relative z-10 bg-transparent transition-colors duration-700">
                     <h3 className="text-xl xl:text-2xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-4 group-hover:text-[var(--color-luxxor-gold)] transition-colors duration-300">
                       {service.title}
                     </h3>
