@@ -83,7 +83,7 @@ export default React.memo(function FloatingWhatsApp({ isContainerOpen = true }: 
             animate="visible"
             exit={{ opacity: 0, scale: 0.8, x: 10 }}
             transition={{ type: "spring", stiffness: 260, damping: 20, duration: 0.38 }}
-            className="absolute right-[calc(100%+16px)] top-1/2 -translate-y-1/2 bg-[var(--theme-bg-surface)] text-[var(--theme-text-primary)] border border-[var(--theme-border)] rounded-2xl rounded-br-sm px-4 py-3 shadow-lg max-w-[220px] w-max whitespace-nowrap lg:whitespace-normal"
+            className="absolute right-[calc(100%+16px)] top-1/2 -translate-y-1/2 bg-[var(--theme-bg-surface)] text-[var(--theme-text-primary)] border border-[var(--theme-border)] rounded-2xl rounded-br-sm px-4 py-3 shadow-lg w-[280px] sm:w-[320px] max-w-[85vw] sm:max-w-md whitespace-normal"
             style={{ transformOrigin: "right center" }}
           >
             <p className="text-sm font-medium leading-snug">

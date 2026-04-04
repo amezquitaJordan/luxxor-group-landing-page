@@ -103,43 +103,34 @@ export default React.memo(function ProjectsGrid() {
             {[...projects, ...projects, ...projects].map((project, index) => (
               <div
                 key={`project-${index}`}
-                className="group/card relative w-[350px] md:w-[420px] h-[450px] overflow-hidden cursor-pointer flex-shrink-0 luxxor-card-premium"
+                className="group/card w-[350px] md:w-[420px] flex flex-col cursor-pointer flex-shrink-0 luxxor-card-premium rounded-2xl"
               >
-                {/* Image */}
-                <div className="absolute inset-0 z-0">
+                {/* Bloque Superior: Imagen portrait */}
+                <div className="relative w-full h-[400px] md:h-[450px] overflow-hidden rounded-t-2xl">
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
                     loading="lazy"
                     sizes="(max-width: 768px) 350px, 420px"
-                    className="object-cover object-center transform group-hover/card:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                    className="object-cover object-center transform group-hover/card:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
                   />
+                  {/* Gradiente inferior para blend con el bloque sándwich */}
+                  <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F5F2EB] dark:from-[var(--theme-bg-card)] to-transparent pointer-events-none" />
                 </div>
 
-                {/* Dark tinting overlay — solo en dark mode */}
-                <div className="absolute inset-0 bg-transparent dark:bg-black/[0.32] z-[5] pointer-events-none" />
-
-                {/* Vignette (lente de lujo) */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#0000002A_30%,transparent_70%)] z-[6] pointer-events-none" />
-                
-                {/* Overlay Degradado inferior — claro en light mode, oscuro en dark mode */}
-                <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/40 to-transparent dark:from-black/[0.88] dark:via-black/[0.55] dark:to-transparent z-10 opacity-80 group-hover/card:opacity-90 transition-opacity duration-300 pointer-events-none" />
-                
-                {/* Content Box */}
-                <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end pointer-events-none">
-                  <div className="transform translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
-                    <p className="text-[var(--color-luxxor-gold)] text-sm tracking-widest uppercase font-semibold mb-2">
+                {/* Bloque Inferior: Texto Sándwich desplazado */}
+                <div className="-mt-10 relative z-10 mx-4 mb-4 bg-[#F5F2EB] dark:bg-[var(--theme-bg-card)] p-6 border border-[#D4AF37]/30 rounded-xl hover:border-[#D4AF37] transition-colors duration-300 flex flex-col justify-between gap-4">
+                  <div>
+                    <p className="text-[#D4AF37] text-xs tracking-widest uppercase font-semibold mb-2">
                       {project.category}
                     </p>
-                    <h3 className="text-2xl font-serif text-[#2A2824] dark:text-white mb-4">
+                    <h3 className="text-xl font-serif text-[#2A2824] dark:text-[var(--theme-text-primary)] group-hover/card:text-[#D4AF37] transition-colors duration-300 leading-snug">
                       {project.title}
                     </h3>
-                    <div className="w-0 h-[2px] bg-[var(--color-luxxor-gold)] group-hover/card:w-12 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
                   </div>
+                  <div className="h-[1px] bg-gradient-to-r from-[#D4AF37] to-transparent origin-left scale-x-[0.3] opacity-50 group-hover/card:scale-x-100 group-hover/card:opacity-100 transition-all duration-500 ease-out" />
                 </div>
-                
-
               </div>
             ))}
           </div>

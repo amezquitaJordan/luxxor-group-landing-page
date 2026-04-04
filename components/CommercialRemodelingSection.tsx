@@ -105,7 +105,7 @@ export default React.memo(function CommercialRemodelingSection() {
                 exit={{ opacity: 0 }}
                 viewport={{ once: false, margin: "-15% 0px", amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
-                className="relative w-full h-[400px] md:h-[480px] lg:h-[400px] xl:h-[480px] rounded-2xl cursor-pointer group luxxor-card-premium"
+                className="relative w-full rounded-2xl cursor-pointer group luxxor-card-premium flex flex-col h-full"
               >
                 {/* Aura Animation — Mobile only (≤767px) */}
                 <m.div
@@ -124,7 +124,7 @@ export default React.memo(function CommercialRemodelingSection() {
                 {/* Aura Animation — Tablet only (768–1023px) */}
                 <m.div
                   initial={false}
-                  animate={{ 
+                  animate={{
                     boxShadow: [
                       '0 0 25px -5px rgba(212,175,55,0.25), 0 0 45px -15px rgba(212,175,55,0.15)',
                       '0 0 35px -2px rgba(212,175,55,0.35), 0 0 60px -10px rgba(212,175,55,0.25)',
@@ -135,37 +135,37 @@ export default React.memo(function CommercialRemodelingSection() {
                   className="absolute inset-0 pointer-events-none hidden md:block z-0 rounded-2xl"
                 />
 
-                {/* Image with hover scale + parallax */}
-                <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-[#121212]">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  {/* Base gradient — blanco cálido en light, oscuro en dark para legibilidad del texto */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/40 to-transparent dark:from-black/95 dark:via-black/70 dark:to-transparent pointer-events-none" />
-                  {/* Hover overlay with fade */}
-                  <div className="absolute inset-0 bg-black/20 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
-                </div>
+                {/* Sandwich Card — imagen arriba, texto sólido superpuesto hacia abajo */}
+                <div className="relative z-10 w-full overflow-hidden flex flex-col flex-1 rounded-2xl bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] border border-[#D4AF37]/30 dark:border-white/5 hover:border-[#D4AF37] dark:hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-colors duration-500">
 
-
-
-                {/* Content */}
-                <div className="absolute inset-0 p-8 md:p-10 lg:p-8 xl:p-10 flex flex-col justify-end z-10">
-                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-light tracking-wide text-[#2A2824] dark:text-[#D4AF37] mb-3 drop-shadow-sm">
-                      {service.title}
-                    </h3>
-                    <p className="text-[#5C5A56] dark:text-white/80 text-sm md:text-base lg:text-sm xl:text-base leading-relaxed max-w-[95%] font-light transition-opacity duration-400 group-hover:dark:text-white/95 drop-shadow-md">
-                      {service.description}
-                    </p>
+                  {/* Bloque Superior: imagen */}
+                  <div className="relative w-full h-64 lg:h-[280px] overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      loading="lazy"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    {/* Gradiente sutil inferior para blend con bloque de texto */}
+                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#FFFFFF]/80 dark:from-[var(--theme-bg-card)]/80 to-transparent pointer-events-none" />
                   </div>
 
-                  {/* Animated accent line */}
-                  <div className="h-[1px] bg-gradient-to-r from-[#D4AF37] to-transparent mt-6 origin-left scale-x-[0.3] opacity-50 group-hover:scale-x-100 group-hover:opacity-100 transition-all duration-500 ease-out" />
+                  {/* Bloque Inferior: texto desplazado hacia arriba (efecto sándwich) */}
+                  <div className="relative z-10 bg-[#FFFFFF] dark:bg-[var(--theme-bg-card)] -mt-10 p-8 md:p-10 lg:p-8 xl:p-10 transition-colors duration-700 flex-grow flex flex-col justify-between">
+                    <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                      <h3 className="text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-light tracking-wide text-[#2A2824] dark:text-[var(--theme-text-primary)] mb-3 group-hover:text-[#D4AF37] transition-colors duration-300">
+                        {service.title}
+                      </h3>
+                      <p className="text-[#5C5A56] dark:text-[var(--theme-text-secondary)] text-sm md:text-base lg:text-sm xl:text-base leading-relaxed font-light">
+                        {service.description}
+                      </p>
+                    </div>
+
+                    {/* Animated accent line */}
+                    <div className="h-[1px] bg-gradient-to-r from-[#D4AF37] to-transparent mt-6 origin-left scale-x-[0.3] opacity-50 group-hover:scale-x-100 group-hover:opacity-100 transition-all duration-500 ease-out" />
+                  </div>
                 </div>
               </m.div>
             ))}
