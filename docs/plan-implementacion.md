@@ -107,6 +107,8 @@ Secciones = Server Components. Cliente solo: encabezado (menú y tema), botón f
 - **Radio:** `--radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px;` + `rounded-full`; además `--rad-radio-*`.
 - **Retícula:** 4 col / margen 20 / medianil 16 (base) · 8 / 32 / 24 (`md`) · 12 / 80 / 24 (`lg`); contenido máx. 80rem.
 - **Sin hex en componentes** (verificación con grep en QA).
+- **`--color-accion-whatsapp-texto`** (solo código; marino/900 en ambos modos): texto e ícono del botón de WhatsApp. En Figma el texto usa el hex suelto `#0A1C33`; atarlo a `accion/primaria/fondo` daría 1,74:1 en oscuro.
+- **Excepción de `borde/sutil`** (1,38–2,34:1, no llega a 3:1): solo se acepta en el botón de tema y el selector de tema, que se identifican por su ícono (texto/primario ≥ 15:1) y por el relleno de la opción activa. **No aplica a campos de texto:** el campo del chat (S7) y cualquier `input`/`textarea` usan `borde/fuerte` o un borde con contraste ≥ 3:1 frente a su fondo (WCAG 1.4.11).
 
 **Tipografía fluida** (`@utility texto-*`, 360 → 1440 px, siempre con término en rem):
 
@@ -222,7 +224,7 @@ gpt-oss cuenta los tokens de razonamiento dentro del límite de salida. Medidas:
 - `scripts/evaluar-asistente.mjs` (manual, ~25 preguntas reales + adversarias) mide la tasa de respuestas vacías y `finishReason: 'length'` con `maxOutputTokens: 400`. **Criterio: 0 vacías.** Si hay alguna, se sube a 700 y se mantiene la brevedad por prompt; el valor final queda documentado.
 
 ### G.4 Cliente
-`BotonAbrirChat` («Preguntar al asistente», FAQ) carga `PanelChat` con `import()` al hacer clic. Móvil: `<dialog>` + `showModal()` a pantalla completa. Escritorio: `dialog.show()` no modal 400×680 abajo a la derecha (Escape manejado). Foco al campo al abrir; al cerrar vuelve al botón de origen; `aria-labelledby`. Mensajes del asistente en `aria-live="polite"`, renderizados como **texto** (`whitespace-pre-line`), nunca HTML. `ChatCampoMensaje`: `<textarea>` 1–4 líneas, 16 px, `maxLength={500}`, contador, etiqueta «Escriba su pregunta», Enter envía / Mayús+Enter salto, deshabilitado en `submitted|streaming`. Sugerencias solo en la bienvenida. Avisos `role="status"`: Límite (429 detectado con `fetch` propio en el transporte) y Error (con «Reintentar»). Aviso permanente + enlace a la política de datos. Teclado: `interactiveWidget: 'resizes-content'`; iOS con `useViewportVisual` → `--alto-visible`; `env(safe-area-inset-bottom)`. Botón flotante oculto con el chat abierto.
+`BotonAbrirChat` («Preguntar al asistente», FAQ) carga `PanelChat` con `import()` al hacer clic. Móvil: `<dialog>` + `showModal()` a pantalla completa. Escritorio: `dialog.show()` no modal 400×680 abajo a la derecha (Escape manejado). Foco al campo al abrir; al cerrar vuelve al botón de origen; `aria-labelledby`. Mensajes del asistente en `aria-live="polite"`, renderizados como **texto** (`whitespace-pre-line`), nunca HTML. `ChatCampoMensaje`: `<textarea>` 1–4 líneas, borde `borde/fuerte` (o cualquier borde ≥ 3:1; nunca `borde/sutil`, ver §C), 16 px, `maxLength={500}`, contador, etiqueta «Escriba su pregunta», Enter envía / Mayús+Enter salto, deshabilitado en `submitted|streaming`. Sugerencias solo en la bienvenida. Avisos `role="status"`: Límite (429 detectado con `fetch` propio en el transporte) y Error (con «Reintentar»). Aviso permanente + enlace a la política de datos. Teclado: `interactiveWidget: 'resizes-content'`; iOS con `useViewportVisual` → `--alto-visible`; `env(safe-area-inset-bottom)`. Botón flotante oculto con el chat abierto.
 
 ---
 
@@ -261,7 +263,7 @@ Matriz verificada con Playwright (claro y oscuro): 320×640, 360×800, 390×844,
   frame-src 'none'; object-src 'none'; base-uri 'self';
   form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;
   ```
-  Además se conservan y verifican: `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()`, `X-Frame-Options: DENY`, `Cross-Origin-Opener-Policy: same-origin`.
+  Además se conservan y verifican: `Strict-Transport-Security: max-age=63072000; includeSubDomains` (sin `preload`: el dominio no está en la lista de precarga), `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()`, `X-Frame-Options: DENY`, `Cross-Origin-Opener-Policy: same-origin`.
   Medición obligatoria: TTFB y LCP en el preview; si incumplen el presupuesto se discute antes de pasar a la opción B.
 
 ---
@@ -283,16 +285,19 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 - Commit: `chore: limpiar repositorio, actualizar dependencias y centralizar contacto`
 
 ### Sesión 2 — Tokens, fuentes y tema
-- Crea `globals.css` (§C), fuentes, `componentes/tema/*`, `viewport`, galería `app/desarrollo/componentes`.
+- Crea `globals.css` (§C), fuentes, `componentes/tema/*`, `lib/hooks/useMontado.ts`, `config/tema.ts`, `viewport`, galería `app/desarrollo/componentes/page.dev.tsx` (solo se compila en desarrollo o con `GALERIA_COMPONENTES=1`, vía `pageExtensions`).
+- Token añadido solo en código: `--color-accion-whatsapp-texto` = marino/900 en ambos modos (8,69:1 sobre #25D366). En Figma lo añade el asistente que mantiene el archivo.
+- Fuentes: Plex Sans (400/600, un archivo variable) y Plex Sans Condensed 600 precargadas (~57 KB); Condensed 500 como instancia separada sin precarga (`--font-plex-condensed-dato`, solo `texto-dato`); Plex Mono sin precarga.
 - Dependencias: `next-themes@0.4.6`.
-- Aceptación: sin hex fuera de `globals.css`; tema sin parpadeo ni transiciones; «Sistema» sigue `prefers-color-scheme`; 18 tokens en ambos modos; axe sin violaciones de contraste en la galería.
+- Aceptación: sin hex fuera de `globals.css` y `config/tema.ts`; tema sin parpadeo ni transiciones; «Sistema» sigue `prefers-color-scheme`; 19 tokens semánticos en ambos modos; colores calculados = Figma; tamaños tipográficos ±0,5 px a 360 y 1440 px; 2 preloads de fuente. **Excepción conocida:** el aviso de React 19 por el `<script>` de next-themes, solo en desarrollo, se documenta y no se corrige. La verificación con axe pasa a la S3.
 - Commit: `feat(diseno): tokens de Figma, tipografía IBM Plex fluida y tema con next-themes`
 
 ### Sesión 3 — Componentes base, arnés de pruebas y CI
 - Crea `ui/*`, `fichas/*`, `navegacion/*`, `lib/estado/visibilidadFlotante.ts`, `lib/hooks/{useEnPantalla,useViewportVisual,useMovimientoReducido}.ts`, `playwright.config.ts`, `vitest.config.ts`.
 - **Crea `.github/workflows/calidad.yml`** (push y pull request): `npm ci` → `npm run lint` → `npx tsc --noEmit` → `npm test` (unitarias) → `npm run build` → `npm audit --omit=dev --audit-level=high`. Node 22, caché de npm. (Las E2E de Playwright se suman al workflow en la S9.)
 - Dependencias dev: `@playwright/test@1.65.0`, `@axe-core/playwright@4.14.0`, `vitest`.
-- Aceptación: cada componente coincide con su variante de Figma; foco con anillo de latón 2 px; menú con foco atrapado, Escape, `aria-expanded`, scroll bloqueado, cierre al tocar enlace; axe 0 violaciones en la galería (claro/oscuro); workflow en verde.
+- Pruebas unitarias nuevas: `config/tema.ts` (`colorNavegador.claro` / `.oscuro`) coincide con el valor resuelto de `--color-fondo-base` en `app/globals.css` en modo claro y oscuro (se parsean los primitivos y los bloques de tokens del CSS).
+- Aceptación: cada componente coincide con su variante de Figma; foco con anillo de latón 2 px; menú con foco atrapado, Escape, `aria-expanded`, scroll bloqueado, cierre al tocar enlace; **axe 0 violaciones en la galería (claro/oscuro), incluido `color-contrast`** (movido desde la S2); workflow en verde.
 - Commit: `feat(componentes): sistema de componentes base, arnés de pruebas y CI`
 
 ### Sesión 4 — Landing móvil
