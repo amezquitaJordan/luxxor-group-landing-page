@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ProveedorMovimiento } from "@/componentes/movimiento/ProveedorMovimiento";
+import { BotonFlotanteWhatsApp } from "@/componentes/navegacion/BotonFlotanteWhatsApp";
+import { ControladorBotonFlotante } from "@/componentes/navegacion/ControladorBotonFlotante";
+import { Encabezado } from "@/componentes/navegacion/Encabezado";
 import { ProveedorTema } from "@/componentes/tema/ProveedorTema";
 import { sitio } from "@/config/sitio";
 import { colorNavegador } from "@/config/tema";
@@ -76,7 +80,14 @@ export default function DisenoRaiz({
     // suppressHydrationWarning: el script de next-themes fija data-theme y color-scheme antes de hidratar.
     <html lang={sitio.idioma} className={variablesFuentes} suppressHydrationWarning>
       <body className="antialiased">
-        <ProveedorTema>{children}</ProveedorTema>
+        <ProveedorTema>
+          <ProveedorMovimiento>
+            <Encabezado />
+            {children}
+            <BotonFlotanteWhatsApp />
+            <ControladorBotonFlotante />
+          </ProveedorMovimiento>
+        </ProveedorTema>
         <SpeedInsights />
       </body>
     </html>

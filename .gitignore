@@ -12,6 +12,13 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+# Solo se versionan las capturas de Linux (workflow «Capturas visuales (Linux)»); las de Windows son locales.
+pruebas/e2e/__capturas__/**/*-win32.png
+pruebas/e2e/__capturas__/**/*-darwin.png
 
 # next.js
 /.next/

@@ -1,0 +1,39 @@
+name: Capturas visuales (Linux)
+
+# Genera las capturas de referencia de Playwright (-linux.png) en Linux, con la imagen oficial.
+# Se lanza a mano; las capturas se descargan como artefacto y se copian al repo (ver README).
+on:
+  workflow_dispatch:
+
+# Permisos mínimos del GITHUB_TOKEN: solo leer el código.
+permissions:
+  contents: read
+
+jobs:
+  capturas:
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright:v1.65.0-noble
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Generar capturas visuales
+        run: npx playwright test --update-snapshots --grep @visual
+
+      - name: Subir capturas de Linux
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: capturas-linux
+          path: pruebas/**/__capturas__/**/*-linux.png
+          if-no-files-found: error
+          retention-days: 7

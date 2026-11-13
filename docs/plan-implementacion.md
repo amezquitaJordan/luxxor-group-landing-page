@@ -107,7 +107,7 @@ Secciones = Server Components. Cliente solo: encabezado (menú y tema), botón f
 - **Radio:** `--radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px;` + `rounded-full`; además `--rad-radio-*`.
 - **Retícula:** 4 col / margen 20 / medianil 16 (base) · 8 / 32 / 24 (`md`) · 12 / 80 / 24 (`lg`); contenido máx. 80rem.
 - **Sin hex en componentes** (verificación con grep en QA).
-- **`--color-accion-whatsapp-texto`** (solo código; marino/900 en ambos modos): texto e ícono del botón de WhatsApp. En Figma el texto usa el hex suelto `#0A1C33`; atarlo a `accion/primaria/fondo` daría 1,74:1 en oscuro.
+- **`--color-accion-whatsapp-texto`** (marino/900 en ambos modos): texto e ícono del botón de WhatsApp. Existe en Figma como `accion/whatsapp/texto` (`VariableID:36:421`, colección Color), enlazada al texto y al ícono del Botón WhatsApp. Atarlo a `accion/primaria/fondo` daría 1,74:1 en oscuro.
 - **Excepción de `borde/sutil`** (1,38–2,34:1, no llega a 3:1): solo se acepta en el botón de tema y el selector de tema, que se identifican por su ícono (texto/primario ≥ 15:1) y por el relleno de la opción activa. **No aplica a campos de texto:** el campo del chat (S7) y cualquier `input`/`textarea` usan `borde/fuerte` o un borde con contraste ≥ 3:1 frente a su fondo (WCAG 1.4.11).
 
 **Tipografía fluida** (`@utility texto-*`, 360 → 1440 px, siempre con término en rem):
@@ -286,7 +286,7 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 
 ### Sesión 2 — Tokens, fuentes y tema
 - Crea `globals.css` (§C), fuentes, `componentes/tema/*`, `lib/hooks/useMontado.ts`, `config/tema.ts`, `viewport`, galería `app/desarrollo/componentes/page.dev.tsx` (solo se compila en desarrollo o con `GALERIA_COMPONENTES=1`, vía `pageExtensions`).
-- Token añadido solo en código: `--color-accion-whatsapp-texto` = marino/900 en ambos modos (8,69:1 sobre #25D366). En Figma lo añade el asistente que mantiene el archivo.
+- Token `--color-accion-whatsapp-texto` = marino/900 en ambos modos (8,69:1 sobre #25D366); en Figma es `accion/whatsapp/texto` (`VariableID:36:421`, verificado el 13-nov-2026).
 - Fuentes: Plex Sans (400/600, un archivo variable) y Plex Sans Condensed 600 precargadas (~57 KB); Condensed 500 como instancia separada sin precarga (`--font-plex-condensed-dato`, solo `texto-dato`); Plex Mono sin precarga.
 - Dependencias: `next-themes@0.4.6`.
 - Aceptación: sin hex fuera de `globals.css` y `config/tema.ts`; tema sin parpadeo ni transiciones; «Sistema» sigue `prefers-color-scheme`; 19 tokens semánticos en ambos modos; colores calculados = Figma; tamaños tipográficos ±0,5 px a 360 y 1440 px; 2 preloads de fuente. **Excepción conocida:** el aviso de React 19 por el `<script>` de next-themes, solo en desarrollo, se documenta y no se corrige. La verificación con axe pasa a la S3.
@@ -298,6 +298,11 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 - Dependencias dev: `@playwright/test@1.65.0`, `@axe-core/playwright@4.14.0`, `vitest`.
 - Pruebas unitarias nuevas: `config/tema.ts` (`colorNavegador.claro` / `.oscuro`) coincide con el valor resuelto de `--color-fondo-base` en `app/globals.css` en modo claro y oscuro (se parsean los primitivos y los bloques de tokens del CSS).
 - Aceptación: cada componente coincide con su variante de Figma; foco con anillo de latón 2 px; menú con foco atrapado, Escape, `aria-expanded`, scroll bloqueado, cierre al tocar enlace; **axe 0 violaciones en la galería (claro/oscuro), incluido `color-contrast`** (movido desde la S2); workflow en verde.
+- **Decisiones (13-nov-2026):** botones con `min-height` 44 px; botón Texto subrayado al pasar el puntero y enlaces dentro de párrafos subrayados siempre (WCAG 1.4.1); «Saltar al contenido»; favicon provisional «LX» en trazos de Plex Sans SemiBold (`app/icon.svg`, `apple-icon.png`, `favicon.ico`).
+- **Implementación:** `MenuMovil` con `<dialog>` + `showModal()`; el evento `close` es la única fuente de verdad (estado, bloqueo de scroll, motivo «menu» y foco). `useViewportVisual`: teclado = alto < 0,75 × innerHeight, `scale` ≈ 1 (±0,05) y foco en un campo editable. Borde de 1,5 px del botón Secundario como sombra interior (Chrome redondea `border-width` a enteros). `.github/dependabot.yml` semanal (github-actions y npm, máx. 3 PR).
+- **Intermitencia conocida (Windows):** con varios navegadores en paralelo contra `next start`, a veces todas las pruebas de un mismo navegador esperan `load` (los recursos de `/_next/static` no responden); con `curl` en paralelo el servidor responde bien. Mitigación: `workers: 3`, `retries: 1`, `127.0.0.1`. Causa raíz pendiente (hipótesis: el análisis web de Avast sobre el tráfico de los navegadores); revisar en la S9 al pasar las E2E a CI (Linux).
+- **Capturas de Linux:** se generan con el workflow manual `.github/workflows/capturas.yml` (contenedor `mcr.microsoft.com/playwright:v1.65.0-noble`, artefacto `capturas-linux` con 7 días de retención); instrucciones en el README. No se usa Docker local: Avast intercepta HTTPS y el contenedor no confía en su raíz (13-nov-2026).
+- **Colores forzados:** el borde de 1,5 px del botón Secundario es una sombra, que el modo de colores forzados elimina; en ese modo se pinta `border: 1px solid ButtonText` (prueba en `medidas.spec.ts`). Es el único componente que depende de `box-shadow`.
 - Commit: `feat(componentes): sistema de componentes base, arnés de pruebas y CI`
 
 ### Sesión 4 — Landing móvil

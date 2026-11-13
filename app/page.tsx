@@ -1,14 +1,15 @@
-import { BotonTema } from "@/componentes/tema/BotonTema";
 import { enlaceWhatsApp, mensajesWhatsApp, sitio } from "@/config/sitio";
+import { ID_CONTENIDO } from "@/contenido/navegacion";
 
-/** Página mínima provisional mientras se construye la nueva landing (Sesiones 3–5). */
+/** Página mínima provisional mientras se construye la nueva landing (Sesiones 4–5). */
 export default function Inicio() {
   return (
-    <main className="mx-auto flex min-h-svh max-w-2xl flex-col justify-center gap-6 px-5 py-16">
-      <div className="flex items-start justify-between gap-4">
-        <h1 className="texto-h1">{sitio.nombre}</h1>
-        <BotonTema />
-      </div>
+    <main
+      id={ID_CONTENIDO}
+      tabIndex={-1}
+      className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-2xl flex-col justify-center gap-6 px-5 py-16 focus:outline-none lg:min-h-[calc(100svh-5rem)]"
+    >
+      <h1 className="texto-h1">{sitio.nombre}</h1>
       <p className="texto-cuerpo-lg">{sitio.lema}.</p>
       <p className="texto-cuerpo text-texto-secundario">
         Estamos renovando nuestro sitio. Mientras tanto, puede contactarnos:

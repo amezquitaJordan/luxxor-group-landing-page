@@ -166,6 +166,27 @@
       scroll-behavior: smooth;
     }
   }
+
+  /* Bloqueo de scroll mientras el menú móvil está abierto (lo pone y lo quita MenuMovil). */
+  html[data-scroll-bloqueado] {
+    overflow: hidden;
+  }
+
+  /* Las anclas no quedan debajo del encabezado fijo (64 px móvil, 80 px escritorio). */
+  [id] {
+    scroll-margin-top: calc(4rem + env(safe-area-inset-top));
+  }
+  @media (min-width: 64rem) {
+    [id] {
+      scroll-margin-top: 5rem;
+    }
+  }
+
+  /* Enlaces dentro de párrafos: subrayados siempre (WCAG 1.4.1, no depender solo del color). */
+  :where(p) a {
+    text-decoration-line: underline;
+    text-underline-offset: 4px;
+  }
 }
 
 /* ── Tipografía fluida (estilos Móvil/* → Escritorio/* de Figma, 360 → 1440 px) ── */
