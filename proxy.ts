@@ -1,61 +1,59 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
 
-// --- MEJORA DE SEGURIDAD: PROXY GLOBAL (Anteriormente Middleware) ---
-// Este proxy se ejecuta en el backend intermedio antes de responder al cliente.
-// Aquí centralizamos la inyección de "Security Headers" para proteger toda la aplicación
-// contra ataques XSS, Clickjacking, MIME type sniffing y exposición de información.
+// Cabeceras de seguridad para todas las respuestas.
+// CSP provisional (Sesión 1): sin nonce. En la Sesión 8 se reemplaza por una CSP con
+// nonce + 'strict-dynamic' y se elimina 'unsafe-inline' de script-src.
 
-export function proxy(request: NextRequest) {
-  // Inicializamos la respuesta subyacente para poder inyectarle cabeceras
-  const response = NextResponse.next();
+const esDesarrollo = process.env.NODE_ENV === "development";
 
-  // 1. CONTENT-SECURITY-POLICY (CSP)
-  const cspHeader = `
-    default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com https://va.vercel-scripts.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://images.unsplash.com https://img.youtube.com https://i.ytimg.com https://raw.githubusercontent.com;
-    font-src 'self' https://fonts.gstatic.com;
-    connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com;
-    frame-src 'self' https://www.youtube.com;
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    frame-ancestors 'none';
-    upgrade-insecure-requests;
-  `;
+function construirCsp(): string {
+  const directivas: Record<string, string[]> = {
+    "default-src": ["'self'"],
+    // 'unsafe-inline' es provisional: sin nonce, los scripts inline del App Router no cargan.
+    // 'unsafe-eval' y el script de depuración de Speed Insights solo en desarrollo.
+    "script-src": esDesarrollo
+      ? ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://va.vercel-scripts.com"]
+      : ["'self'", "'unsafe-inline'"],
+    "style-src": ["'self'", "'unsafe-inline'"],
+    "img-src": ["'self'", "data:", "blob:"],
+    "font-src": ["'self'"],
+    "connect-src": esDesarrollo
+      ? ["'self'", "https://vitals.vercel-insights.com", "https://va.vercel-scripts.com"]
+      : ["'self'", "https://vitals.vercel-insights.com"],
+    "frame-src": ["'none'"],
+    "object-src": ["'none'"],
+    "base-uri": ["'self'"],
+    "form-action": ["'self'"],
+    "frame-ancestors": ["'none'"],
+  };
 
-  // Limpiamos los saltos de línea para inyectar como una cabecera válida en una sola línea
-  const contentSecurityPolicyHeaderValue = cspHeader
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-
-  // 2. INYECCIÓN DE CABECERAS HTTP SEGURAS
-
-  // Establece nuestra CSP calculada
-  response.headers.set('Content-Security-Policy', contentSecurityPolicyHeaderValue);
-
-  // X-Frame-Options: Previene ataques de Clickjacking prohibiendo que el sitio
-  // se incruste dentro de iframes de atacantes ('DENY').
-  response.headers.set('X-Frame-Options', 'DENY');
-
-  // X-Content-Type-Options: Previene "MIME-sniffing exploits". 
-  response.headers.set('X-Content-Type-Options', 'nosniff');
-
-  // Referrer-Policy: Protege privacidad asegurando que el sitio no filtre 
-  // datos del path al navegar a sitios externos.
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-
-  // Permissions-Policy: Restringe a gran escala el acceso a APIs.
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), browsing-topics=()');
-
-  return response;
+  const politica = Object.entries(directivas).map(
+    ([directiva, fuentes]) => `${directiva} ${fuentes.join(" ")}`
+  );
+  politica.push("upgrade-insecure-requests");
+  return politica.join("; ");
 }
 
-// Configuración de alcance (Matcher):
+const politicaSeguridad = construirCsp();
+
+export function proxy() {
+  const respuesta = NextResponse.next();
+
+  respuesta.headers.set("Content-Security-Policy", politicaSeguridad);
+  // HSTS sin preload: el dominio no está en la lista de precarga.
+  respuesta.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains");
+  respuesta.headers.set("X-Content-Type-Options", "nosniff");
+  respuesta.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  respuesta.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+  );
+  respuesta.headers.set("X-Frame-Options", "DENY");
+  respuesta.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+
+  return respuesta;
+}
+
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

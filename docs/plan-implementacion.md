@@ -246,7 +246,7 @@ Matriz verificada con Playwright (claro y oscuro): 320×640, 360×800, 390×844,
 ## I. SEO, legal y seguridad de cabeceras
 
 - `metadataBase: https://www.luxxor.com.co`; título «Luxxor Group · Ingeniería estructural y vulnerabilidad sísmica en Cali»; descripción del portafolio; `alternates.canonical: '/'`; `openGraph` (`es_CO`) y `twitter`; `opengraph-image.tsx` con tokens y Plex.
-- **Redirecciones** (`next.config.ts`, 308 por `has: host`): `luxxor.com.co` → `www.luxxor.com.co`; `luxxorgroup.com` / `www.luxxorgroup.com` → www.luxxor.com.co solo si ese dominio se añade al proyecto de Vercel (DNS/MX fuera del código).
+- **Redirecciones:** `luxxor.com.co` → `www.luxxor.com.co` la hace Vercel (Domains; verificado el 12-nov-2026), no el código. `luxxorgroup.com` / `www.luxxorgroup.com` → www.luxxor.com.co: también en Vercel Domains si ese dominio se añade al proyecto (DNS/MX fuera del código).
 - JSON-LD `ProfessionalService`: name, url, `telephone +573170303333`, email, `PostalAddress` (Calle 44N #4N-05, La Flora, Cali, Valle del Cauca, CO), `areaServed` (Valle del Cauca, Cauca, Nariño), `sameAs`. Sin `aggregateRating`, horarios ni coordenadas. Sin `FAQPage`.
 - `sitemap.ts`, `robots.ts` (`disallow: /api/`), `lang="es-CO"`, `poweredByHeader: false`.
 - `/politica-de-datos` (Ley 1581/2012, Decreto 1377/2013: responsable, finalidades, encargados Groq y Vercel con transferencia internacional, derechos, procedimiento, canal, vigencia) y `/terminos`, como **borrador** con solo datos confirmados.
@@ -276,9 +276,9 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 
 ### Sesión 1 — Limpieza, dependencias y base de seguridad
 - **Elimina** lo de §A, incluido `app/api/chat/route.ts` y `components/`.
-- **Modifica:** `package.json` (nombre `luxxor-group-landing`, `engines.node >=20.9`, scripts `typecheck`, `test`, `test:e2e`), `next.config.ts` (sin Unsplash, `poweredByHeader:false`, redirección raíz → www), `proxy.ts` (CSP depurada sin `unsafe-eval` en producción, con `form-action` y `upgrade-insecure-requests`, cabeceras de §I), `tsconfig.json`, `README.md`, `.gitignore` (`!.env.example`), `app/page.tsx` (página mínima temporal desde `config/sitio.ts`), `app/layout.tsx` (metadata mínima correcta).
-- **Crea:** `config/sitio.ts`, `.env.example`, `CLAUDE.md` del proyecto con: stack, tokens, reglas de la investigación, **«no hacer commits ni push»** y **«presentar un plan antes de cada sesión y esperar aprobación»**.
-- **Dependencias:** `next@16.4.6`, `eslint-config-next@16.4.6`, `react`/`react-dom` último 19.2.x; fuera `groq-sdk`, `embla-carousel-react`, `framer-motion`; dentro `motion@14.13.0`.
+- **Modifica:** `package.json` (nombre `luxxor-group-landing`, `engines.node >=20.9`, script `typecheck`; `test` y `test:e2e` se añaden en la S3; `overrides` de `minimatch@11.0.8` para `@typescript-eslint/typescript-estree`), `next.config.ts` (sin Unsplash, `poweredByHeader:false`; **sin redirección raíz → www: la hace Vercel**, verificado el 12-nov-2026), `proxy.ts` (CSP depurada sin `unsafe-eval` en producción, con `form-action` y `upgrade-insecure-requests`, cabeceras de §I, HSTS sin `preload`), `tsconfig.json`, `README.md`, `.gitignore` (`!.env.example`, `/recursos/`), `app/page.tsx` (página mínima temporal desde `config/sitio.ts`), `app/layout.tsx` (metadata mínima con `robots: { index: false }` provisional).
+- **Crea:** `config/sitio.ts`, `.env.example`, `.gitattributes` (`eol=lf`), `CLAUDE.md` del proyecto con: stack, convenciones, **«no hacer commits ni push»**, **«presentar un plan antes de cada sesión»**, **«no usar `npm audit fix --force`»**, **«no tocar `main` ni otras ramas»** y **«no ejecutar comandos destructivos de git salvo petición»**.
+- **Dependencias:** `next@16.4.6`, `eslint-config-next@16.4.6`, `react`/`react-dom@19.3.1`, `@types/react`/`@types/react-dom@19.3.0`; fuera `groq-sdk`, `embla-carousel-react`, `framer-motion`; dentro `motion@14.13.0`.
 - **Aceptación:** lint/tsc 0 errores; build OK; audit 0 críticas/altas; sin rutas de configs de IA en `git ls-files`; sin gitlinks (`git ls-files -s | grep ^160000` vacío); sin 313 886 5481; `public/` < 1 MB.
 - Commit: `chore: limpiar repositorio, actualizar dependencias y centralizar contacto`
 
@@ -325,9 +325,9 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 - Commit: `feat(chat): asistente con AI SDK, validación zod, rate limit y verificación de origen`
 
 ### Sesión 8 — SEO, legal y CSP final
-- Crea `sitemap.ts`, `robots.ts`, `opengraph-image.tsx`, JSON-LD, `/politica-de-datos`, `/terminos`, iconos; `proxy.ts` con nonce (opción A) y `nonce` en next-themes; redirecciones por host.
+- Crea `sitemap.ts`, `robots.ts`, `opengraph-image.tsx`, JSON-LD, `/politica-de-datos`, `/terminos`, iconos; `proxy.ts` con nonce (opción A) y `nonce` en next-themes; se retira `robots: { index: false }` de `app/layout.tsx`.
 - Dependencias: `@vercel/analytics@2.0.1` (si se activa).
-- Aceptación: Rich Results Test sin errores; `curl -I` muestra CSP con nonce, `form-action 'self'`, `upgrade-insecure-requests`, HSTS, nosniff, Referrer-Policy y Permissions-Policy; 0 errores de CSP en consola (tema, 3D, chat); Lighthouse SEO 100; **TTFB y LCP medidos en el preview** y reportados.
+- Aceptación: Rich Results Test sin errores; `curl -I` muestra CSP con nonce, `form-action 'self'`, `upgrade-insecure-requests`, HSTS, nosniff, Referrer-Policy y Permissions-Policy; 0 errores de CSP en consola (tema, 3D, chat); Lighthouse SEO 100; **TTFB y LCP medidos en el preview** y reportados; **metadata sin `robots` `index:false`**: `git grep -n "index: false" -- app` sin resultados y `curl -s https://<preview>/ | grep -ci 'name="robots"'` → `0` (o un `robots` con `index, follow`).
 - Commit: `feat(seo): metadata, datos estructurados, páginas legales y CSP con nonce`
 
 ### Sesión 9 — QA final

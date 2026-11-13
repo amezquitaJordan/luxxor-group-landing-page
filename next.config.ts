@@ -1,17 +1,11 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const configuracion: NextConfig = {
+  poweredByHeader: false,
   images: {
-    qualities: [75, 90],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    qualities: [75],
   },
+  // La redirección luxxor.com.co → www.luxxor.com.co la hace Vercel (Domains).
 };
 
-export default nextConfig;
+export default configuracion;
