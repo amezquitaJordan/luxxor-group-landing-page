@@ -73,7 +73,8 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
     setInputValue("");
     setIsTyping(true);
 
-    const historyForApi = messages.map(m => ({
+    // Solo se envían los últimos 6 mensajes: el servidor limita el tamaño del cuerpo a 16 KB.
+    const historyForApi = messages.slice(-6).map(m => ({
       role: m.sender === "user" ? "user" : "model",
       content: m.text
     }));
@@ -96,11 +97,20 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
         new Promise((resolve) => setTimeout(resolve, realisticDelay)) // ensures minimum typed delay
       ]);
 
-      if (!response.ok) {
+      const data = await response.json().catch(() => null);
+
+      // Límite de mensajes (429) o mensaje demasiado largo (413): se muestra el aviso del servidor.
+      if ((response.status === 429 || response.status === 413) && typeof data?.error === "string") {
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now().toString(), text: data.error, sender: "bot" }
+        ]);
+        return;
+      }
+
+      if (!response.ok || !data) {
         throw new Error("Failed connecting to API");
       }
-      
-      const data = await response.json();
       
       setMessages((prev) => [
         ...prev,
@@ -253,6 +263,7 @@ export default React.memo(function ChatbotModal({ isOpen, onClose }: ChatbotModa
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
+                    maxLength={500}
                     placeholder="Escribe tu duda aquí..."
                     className="w-full bg-[var(--theme-bg-primary)] border border-[var(--theme-border)] focus:border-[var(--color-luxxor-gold)] text-[var(--theme-text-primary)] rounded-full pl-5 pr-12 py-3.5 outline-none transition-all placeholder:text-[var(--theme-text-secondary)] font-light text-[0.95rem]"
                     disabled={isTyping}
