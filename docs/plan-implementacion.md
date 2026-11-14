@@ -311,6 +311,17 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 - Dependencias dev: `sharp@0.35.5`.
 - Aceptación: capturas 360/390/414 claro y oscuro coherentes con Figma 03 y 06; hero completo en 360×640; ningún texto < 14 px salvo letras de ejes; 0 scroll horizontal en 320; fotos A/B según rol en Figma; foto 28 ausente.
 - Commit: `feat(landing): landing móvil con contenido del portafolio`
+- **División (aprobada el 14-nov-2026):** 4a (contenido, fotos, secciones y pruebas de estructura) y 4b (controles del carrusel, motivos «lienzo» y «contacto» del botón flotante, capturas por sección con bases de Linux y presupuestos móviles).
+- **Decisiones (14-nov-2026):**
+  - `FichaServicio` principal: foto a sangre en contenedores angostos (container query, Figma 15:187); en ≥ 48rem conserva la variante 11:32. `PasoMetodologia` admite `total` («Paso N de 6»). Las descripciones de ensayos (Figma 04, 19:329–19:361) se ven también en móvil.
+  - Fotos optimizadas en `activos/fotos/` con importación estática (dimensiones automáticas, URL con hash, caché inmutable); `next/image` sirve AVIF/WebP (`images.formats`). Los PDF van a `public/descargas/`.
+  - Contacto: WhatsApp 573170303333 en todos los botones; teléfono +57 300 195 1936 (Yasser Niño, Director de Operaciones) en Contacto con `tel:+573001951936`. Correo gerencia@luxxorgroup.com confirmado. Dominio oficial https://www.luxxor.com.co; luxxorgroup.com solo en el correo.
+  - PDF: versiones corregidas por el dueño (`<recursos>/pdf-corregidos/`: www.luxxor.com.co y QR nuevo). Medidas: portafolio 11 págs. y 1 869 076 B («1,9 MB»); tarjeta 2 págs. y 467 519 B («0,5 MB»).
+  - Interruptores en `config/sitio.ts` → `funciones`: `nombresClientes: false`, `descargas: true`, `asistente: false` (S7), `paginasLegales: false` (S8).
+  - Las personas de las fotos 13, 15 y 16 autorizaron el uso de su imagen (evidencia escrita: ver S9).
+  - Foto 18 (letrero de Super Farma): solo con `nombresClientes: true`; apagado, la fila «Espacios comerciales» se pinta sin foto hasta aprobar una alternativa.
+  - Respuestas 2–4 de Preguntas frecuentes: borrador (VALIDAR CON EL DUEÑO); descripción accesible del lienzo: VALIDAR CON EL INGENIERO.
+  - Encabezado: por debajo de 360 px el botón «Agendar» reduce su relleno a 16 px (reflow sin desbordar a 320 px).
 
 ### Sesión 5 — Escritorio y anchos intermedios
 - Layouts `md`/`lg`/`xl`, hero compacto, encabezado de escritorio.
@@ -343,6 +354,10 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 ### Sesión 9 — QA final
 - Matriz completa de Playwright, axe, Lighthouse móvil, bundle, checklist manual; E2E añadidas al workflow.
 - Aceptación: LCP < 2,5 s, CLS < 0,1, TBT < 200 ms; JS inicial < 150 KB gz; axe 0; «Definición de terminado» (§11.5 de la investigación) completa.
+- **Requisitos bloqueantes antes de pasar a `main`** (14-nov-2026):
+  1. Evidencia escrita, en poder del dueño, de la autorización de las personas que aparecen en las fotos 13, 15 y 16.
+  2. Autorización de los nombres de clientes (Tecnoquímicas, Interplásticos, Farmatodo, Super Farma, Colegios de Yumbo, Wan Su Lay); sin ella, `funciones.nombresClientes` sigue en `false`.
+  3. Validación por el dueño de las respuestas 2–4 de Preguntas frecuentes, y por el ingeniero de la descripción accesible del lienzo (marcadas «VALIDAR» en `contenido/landing.ts`).
 - Commit: `test: regresión visual por viewport y verificación de accesibilidad y rendimiento`
 
 ---
@@ -373,6 +388,9 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 8. Razón social, NIT y revisión legal de política y términos; URL canónica de Facebook.
 9. Aprobación del copy de las respuestas de Preguntas frecuentes (tomado del portafolio).
 10. Variables: `GROQ_API_KEY` (existe en Vercel), cuenta Upstash (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`); confirmar `openai/gpt-oss-20b`.
+
+**Pendientes externos (no bloquean el código)**
+11. Redirección 301 de luxxorgroup.com → https://www.luxxor.com.co en Bluehost, para las tarjetas ya impresas con el QR viejo. No se toca el DNS ni el correo (registros MX de @luxxorgroup.com).
 
 **Riesgos**
 - Cambios de API en versiones mayores (AI SDK 7, motion 14, zod 4) → se verifica en los tipos y documentación del paquete instalado.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { enlaceWhatsApp, sitio } from "@/config/sitio";
+import { enlaceTelefono, enlaceWhatsApp, funciones, sitio } from "@/config/sitio";
 
 describe("enlaceWhatsApp", () => {
   it("sin mensaje apunta al número oficial", () => {
@@ -18,5 +18,23 @@ describe("enlaceWhatsApp", () => {
     expect(sitio.contacto.correo).toBe("gerencia@luxxorgroup.com");
     expect(sitio.redes.instagram).toBe("https://www.instagram.com/luxxorcol");
     expect(sitio.url).toBe("https://www.luxxor.com.co");
+  });
+});
+
+describe("enlaceTelefono", () => {
+  it("apunta al celular de operaciones en formato E.164", () => {
+    expect(enlaceTelefono()).toBe("tel:+573001951936");
+    expect(sitio.contacto.telefono.visible).toBe("+57 300 195 1936");
+  });
+
+  it("es un número distinto del de WhatsApp y solo con dígitos", () => {
+    expect(sitio.contacto.telefono.numero).toMatch(/^57\d{10}$/);
+    expect(sitio.contacto.telefono.numero).not.toBe(sitio.contacto.whatsapp.numero);
+  });
+});
+
+describe("funciones", () => {
+  it("estado aprobado para la Sesión 4", () => {
+    expect(funciones).toEqual({ nombresClientes: false, descargas: true, asistente: false, paginasLegales: false });
   });
 });

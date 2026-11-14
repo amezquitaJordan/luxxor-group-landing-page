@@ -48,7 +48,8 @@ export function Encabezado({ enlaces = enlacesNavegacion }: { enlaces?: readonly
           <BotonTema />
           {/* Envolturas para no mezclar «hidden» con el «inline-flex» del botón. */}
           <span className="contents lg:hidden">
-            <Boton href={hrefAgendar} externo>
+            {/* Por debajo de 360 px (reflow WCAG a 320) el botón se estrecha 16 px para no desbordar. */}
+            <Boton href={hrefAgendar} externo className="max-[22.5rem]:px-4">
               Agendar
             </Boton>
           </span>

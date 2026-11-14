@@ -9,6 +9,8 @@ const configuracion: NextConfig = {
   poweredByHeader: false,
   pageExtensions: incluirGaleria ? ["dev.tsx", "tsx", "ts"] : ["tsx", "ts"],
   images: {
+    // AVIF primero (más liviano); WebP para navegadores sin AVIF. Los originales JPEG viven en activos/fotos.
+    formats: ["image/avif", "image/webp"],
     qualities: [75],
   },
   // La redirección luxxor.com.co → www.luxxor.com.co la hace Vercel (Domains).

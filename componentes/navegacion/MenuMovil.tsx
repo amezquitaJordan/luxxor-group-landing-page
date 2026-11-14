@@ -7,7 +7,7 @@ import { SelectorTema } from "@/componentes/tema/SelectorTema";
 import { Boton } from "@/componentes/ui/Boton";
 import { BotonWhatsApp } from "@/componentes/ui/BotonWhatsApp";
 import { Logo } from "@/componentes/ui/Logo";
-import { enlaceWhatsApp, mensajesWhatsApp, sitio } from "@/config/sitio";
+import { enlaceTelefono, enlaceWhatsApp, mensajesWhatsApp, sitio } from "@/config/sitio";
 import type { EnlaceNavegacion } from "@/contenido/navegacion";
 
 interface PropsMenuMovil {
@@ -167,7 +167,7 @@ export function MenuMovil({ id, abierto, enlaces, alCerrarse, refDisparador }: P
             </Boton>
             <BotonWhatsApp anchoCompleto />
             <p className="texto-pequeno text-texto-secundario">
-              <a href={`tel:+${sitio.contacto.whatsapp.numero}`}>{sitio.contacto.whatsapp.visible}</a>
+              <a href={enlaceTelefono()}>{sitio.contacto.telefono.visible}</a>
               {" · "}
               <a href={`mailto:${sitio.contacto.correo}`}>{sitio.contacto.correo}</a>
             </p>

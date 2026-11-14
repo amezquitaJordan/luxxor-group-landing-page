@@ -24,6 +24,15 @@ test("página de inicio sin violaciones", async ({ page }) => {
   expect(resumen).toEqual([]);
 });
 
+test("landing con todas las preguntas abiertas y las fotos cargadas sin violaciones", async ({ page }) => {
+  await abrir(page, "/");
+  await page.locator("#preguntas-frecuentes details").evaluateAll((d) => d.forEach((e) => e.setAttribute("open", "")));
+  await page.locator("#contacto").scrollIntoViewIfNeeded();
+  await page.waitForLoadState("networkidle");
+  const { resumen } = await analizar(page);
+  expect(resumen).toEqual([]);
+});
+
 test("menú móvil abierto sin violaciones", async ({ page }, info) => {
   test.skip(!esMovil(info), "solo móvil");
   await abrir(page, "/");

@@ -1,39 +1,40 @@
-import { enlaceWhatsApp, mensajesWhatsApp, sitio } from "@/config/sitio";
+import { Complementarios } from "@/componentes/secciones/Complementarios";
+import { Contacto } from "@/componentes/secciones/Contacto";
+import { Credenciales } from "@/componentes/secciones/Credenciales";
+import { CuandoSeNecesita } from "@/componentes/secciones/CuandoSeNecesita";
+import { Descargas } from "@/componentes/secciones/Descargas";
+import { DireccionTecnica } from "@/componentes/secciones/DireccionTecnica";
+import { Ensayos } from "@/componentes/secciones/Ensayos";
+import { Hero } from "@/componentes/secciones/Hero";
+import { Metodologia } from "@/componentes/secciones/Metodologia";
+import { ObrasEnEjecucion } from "@/componentes/secciones/ObrasEnEjecucion";
+import { PiePagina } from "@/componentes/secciones/PiePagina";
+import { PreguntasFrecuentes } from "@/componentes/secciones/PreguntasFrecuentes";
+import { Proyectos } from "@/componentes/secciones/Proyectos";
+import { Servicios } from "@/componentes/secciones/Servicios";
+import { funciones } from "@/config/sitio";
 import { ID_CONTENIDO } from "@/contenido/navegacion";
 
-/** Página mínima provisional mientras se construye la nueva landing (Sesiones 4–5). */
+/** Landing (Figma 03 · Landing — Móvil, 15:2): secciones en el orden del diseño. */
 export default function Inicio() {
   return (
-    <main
-      id={ID_CONTENIDO}
-      tabIndex={-1}
-      className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-2xl flex-col justify-center gap-6 px-5 py-16 focus:outline-none lg:min-h-[calc(100svh-5rem)]"
-    >
-      <h1 className="texto-h1">{sitio.nombre}</h1>
-      <p className="texto-cuerpo-lg">{sitio.lema}.</p>
-      <p className="texto-cuerpo text-texto-secundario">
-        Estamos renovando nuestro sitio. Mientras tanto, puede contactarnos:
-      </p>
-      <ul className="texto-cuerpo flex flex-col gap-3">
-        <li>
-          <a
-            className="text-texto-acento underline underline-offset-4"
-            href={enlaceWhatsApp(mensajesWhatsApp.agendarVisita)}
-          >
-            Agendar visita técnica por WhatsApp ({sitio.contacto.whatsapp.visible})
-          </a>
-        </li>
-        <li>
-          <a className="text-texto-acento underline underline-offset-4" href={`mailto:${sitio.contacto.correo}`}>
-            {sitio.contacto.correo}
-          </a>
-        </li>
-        <li>
-          <a className="text-texto-acento underline underline-offset-4" href={sitio.redes.instagram}>
-            Instagram @luxxorcol
-          </a>
-        </li>
-      </ul>
-    </main>
+    <>
+      <main id={ID_CONTENIDO} tabIndex={-1} className="focus:outline-none">
+        <Hero />
+        <Credenciales />
+        <Servicios />
+        <CuandoSeNecesita />
+        <Metodologia />
+        <Ensayos />
+        <ObrasEnEjecucion />
+        <Proyectos />
+        <Complementarios />
+        <DireccionTecnica />
+        {funciones.descargas && <Descargas />}
+        <PreguntasFrecuentes />
+        <Contacto />
+      </main>
+      <PiePagina />
+    </>
   );
 }

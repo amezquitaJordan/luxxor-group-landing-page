@@ -1,10 +1,10 @@
 import { createElement, type ReactNode } from "react";
+import type { StaticImageData } from "next/image";
 
+/** Foto de una ficha: importación estática (ancho y alto automáticos) y texto alternativo. */
 export interface ImagenFicha {
-  src: string;
+  src: StaticImageData;
   alt: string;
-  width: number;
-  height: number;
 }
 
 export type NivelTitulo = 2 | 3 | 4;

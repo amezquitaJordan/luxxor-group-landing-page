@@ -22,10 +22,8 @@ export function FichaProyecto({ titulo, tipologia, dato, imagen, nivelTitulo = 3
         <Image
           src={imagen.src}
           alt={imagen.alt}
-          width={imagen.width}
-          height={imagen.height}
           sizes="(min-width: 64rem) 392px, 100vw"
-          className="aspect-[4/3] w-full border-b border-borde-sutil object-cover"
+          className="aspect-[4/3] w-full border-b border-borde-sutil object-cover dark:brightness-90"
         />
       )}
       <div className="flex flex-col items-start gap-3 px-6 pt-6 pb-7">
