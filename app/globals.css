@@ -167,6 +167,20 @@
     }
   }
 
+  /*
+   * Foco no oculto (WCAG 2.4.11): al moverse con el teclado, el navegador deja libre la franja del
+   * botón flotante (56 px + 24 px de margen en móvil, 56 + 40 en escritorio, más la zona segura).
+   * El pie añade el mismo relleno al final de la página.
+   */
+  html {
+    scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 64rem) {
+    html {
+      scroll-padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+    }
+  }
+
   /* Bloqueo de scroll mientras el menú móvil está abierto (lo pone y lo quita MenuMovil). */
   html[data-scroll-bloqueado] {
     overflow: hidden;

@@ -1,4 +1,5 @@
 import { MarcoLienzo } from "@/componentes/lienzo-3d/MarcoLienzo";
+import { OcultarFlotanteMientrasVisible } from "@/componentes/navegacion/OcultarFlotanteMientrasVisible";
 import { Boton } from "@/componentes/ui/Boton";
 import { enlaceWhatsApp, funciones, mensajesWhatsApp } from "@/config/sitio";
 import { archivosDescarga, idsSecciones, landing } from "@/contenido/landing";
@@ -23,7 +24,10 @@ export function Hero() {
             </Boton>
           )}
         </div>
-        <MarcoLienzo {...lienzo} />
+        {/* Móvil: el flotante taparía el lienzo (Figma 06, checklist «!»): se oculta mientras se ve. */}
+        <OcultarFlotanteMientrasVisible motivo="lienzo" media="(max-width: 63.99rem)">
+          <MarcoLienzo {...lienzo} />
+        </OcultarFlotanteMientrasVisible>
       </div>
     </section>
   );

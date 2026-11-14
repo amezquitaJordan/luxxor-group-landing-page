@@ -1,6 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const PUERTO = 3400;
+
+// Los presupuestos de rendimiento (@presupuesto) se miden solos, con un worker, para que otros
+// navegadores no compitan por la CPU: solo corren con `npm run test:presupuestos`.
+// Los workers vuelven a cargar esta configuración sin esos argumentos: heredan la variable del proceso principal.
+const soloPresupuestos =
+  process.env.MEDIR_PRESUPUESTOS === "1" || process.argv.some((argumento) => argumento.includes("@presupuesto"));
+if (soloPresupuestos) process.env.MEDIR_PRESUPUESTOS = "1";
 const NEXT = "node node_modules/next/dist/bin/next";
 
 /*
@@ -15,7 +22,7 @@ export default defineConfig({
   // Intermitencia conocida (Windows, 13-nov-2026): a veces todas las pruebas de un mismo navegador
   // se quedan esperando `load` porque los recursos de /_next/static no responden. Un reintento
   // abre un navegador nuevo. Pendiente de causa raíz (ver docs/plan-implementacion.md, S3).
-  workers: 3,
+  workers: soloPresupuestos ? 1 : 3,
   forbidOnly: !!process.env.CI,
   retries: 1,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",

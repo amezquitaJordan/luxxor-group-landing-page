@@ -106,6 +106,9 @@ test.describe("medidas frente a Figma", () => {
 
   test("Botón flotante (11:82): 56×56, a 20/24 px (móvil) o 40 px (escritorio) del borde", async ({ page }, info) => {
     await abrir(page, "/");
+    // En móvil el lienzo del hero oculta el flotante (motivo «lienzo»): se baja a Servicios.
+    await page.evaluate(() => document.getElementById("servicios")!.scrollIntoView());
+    await expect(page.locator("[data-boton-flotante]")).toBeVisible();
     const caja = (await page.locator("[data-boton-flotante]").boundingBox())!;
     const vista = page.viewportSize()!;
     expect([caja.width, caja.height]).toEqual([56, 56]);

@@ -12,6 +12,7 @@ import { PiePagina } from "@/componentes/secciones/PiePagina";
 import { PreguntasFrecuentes } from "@/componentes/secciones/PreguntasFrecuentes";
 import { Proyectos } from "@/componentes/secciones/Proyectos";
 import { Servicios } from "@/componentes/secciones/Servicios";
+import { OcultarFlotanteMientrasVisible } from "@/componentes/navegacion/OcultarFlotanteMientrasVisible";
 import { funciones } from "@/config/sitio";
 import { ID_CONTENIDO } from "@/contenido/navegacion";
 
@@ -32,7 +33,10 @@ export default function Inicio() {
         <DireccionTecnica />
         {funciones.descargas && <Descargas />}
         <PreguntasFrecuentes />
-        <Contacto />
+        {/* Con Contacto en pantalla el flotante sobra: la sección tiene su propio botón de WhatsApp. */}
+        <OcultarFlotanteMientrasVisible motivo="contacto">
+          <Contacto />
+        </OcultarFlotanteMientrasVisible>
       </main>
       <PiePagina />
     </>

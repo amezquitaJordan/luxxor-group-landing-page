@@ -22,7 +22,7 @@ const NOMBRES_CLIENTES = /interpl[aá]sticos|tecnoqu[ií]micas|farmatodo|super ?
 test.describe("estructura", () => {
   test("secciones en el orden de Figma y un solo h1", async ({ page }) => {
     await abrir(page, "/");
-    const ids = await page.locator("main > section[id]").evaluateAll((s) => s.map((e) => e.id));
+    const ids = await page.locator("main section[id]").evaluateAll((s) => s.map((e) => e.id));
     expect(ids).toEqual(SECCIONES);
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("h1")).toHaveText("Sabemos cómo se comporta su edificación ante un sismo.");
@@ -170,10 +170,115 @@ test("preguntas frecuentes: la primera abierta y se abren con el teclado", async
   await expect(segunda).toHaveAttribute("open", "");
 });
 
-test("el lienzo provisional reserva su caja y describe el dibujo", async ({ page }) => {
+/*
+ * Caja del lienzo (plan §4): la Sesión 6 debe reemplazar el contenido sin cambiar este alto (CLS 0).
+ * Medido el 14-nov-2026 con next start, fuentes cargadas.
+ */
+const ALTO_LIENZO: Record<number, number> = { 360: 533.7, 390: 534.0, 414: 550.4 };
+
+test("el lienzo reserva su caja y describe el dibujo", async ({ page }, info) => {
+  test.skip(!esMovil(info), "alto medido en móvil");
+  for (const [ancho, alto] of Object.entries(ALTO_LIENZO)) {
+    await page.setViewportSize({ width: Number(ancho), height: 844 });
+    await abrir(page, "/");
+    const lienzo = page.locator("[data-lienzo]");
+    await expect(lienzo.getByRole("img")).toHaveAccessibleName(/Pórtico de cinco pisos/);
+    const caja = (await lienzo.boundingBox())!;
+    expect(caja.height, `alto del lienzo a ${ancho} px`).toBeCloseTo(alto, 0);
+  }
+});
+
+test.describe("carrusel de obras", () => {
+  test("Anterior/Siguiente desplazan una foto y se marcan en los extremos", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await abrir(page, "/");
+    const region = page.getByRole("region", { name: "Fotos de obras en ejecución" });
+    const anterior = page.locator("#obras").getByRole("button", { name: "Anterior" });
+    const siguiente = page.locator("#obras").getByRole("button", { name: "Siguiente" });
+    await region.scrollIntoViewIfNeeded();
+    await expect(anterior).toHaveAttribute("aria-disabled", "true");
+    await expect(siguiente).toHaveAttribute("aria-disabled", "false");
+    for (const control of [anterior, siguiente]) {
+      const caja = (await control.boundingBox())!;
+      expect(caja.height).toBeGreaterThanOrEqual(44);
+    }
+
+    await siguiente.click();
+    await expect.poll(() => region.evaluate((e) => e.scrollLeft)).toBeCloseTo(292, -1);
+    await expect(anterior).toHaveAttribute("aria-disabled", "false");
+
+    // Hasta el final: con aria-disabled="true" el botón ya no se pulsa (Playwright lo trata como deshabilitado).
+    for (let i = 0; i < 5 && (await siguiente.getAttribute("aria-disabled")) === "false"; i++) {
+      await siguiente.click();
+      await page.waitForTimeout(400);
+    }
+    await expect(siguiente).toHaveAttribute("aria-disabled", "true");
+    await anterior.click();
+    await expect(siguiente).toHaveAttribute("aria-disabled", "false");
+  });
+});
+
+test.describe("botón flotante", () => {
+  const flotante = (page: import("@playwright/test").Page) => page.locator("[data-boton-flotante]");
+  const irA = (page: import("@playwright/test").Page, id: string) =>
+    page.evaluate((i) => document.getElementById(i)!.scrollIntoView({ block: "start" }), id);
+
+  test("se oculta con el lienzo (móvil) y con Contacto en pantalla", async ({ page }, info) => {
+    await abrir(page, "/");
+    if (esMovil(info)) await expect(flotante(page)).toHaveCount(0); // motivo «lienzo»
+    else await expect(flotante(page)).toBeVisible();
+    await irA(page, "servicios");
+    await expect(flotante(page)).toBeVisible();
+    await irA(page, "contacto");
+    await expect(flotante(page)).toHaveCount(0); // motivo «contacto»
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect(flotante(page)).toHaveCount(0); // al final de la página, Contacto sigue en pantalla
+    await irA(page, "proyectos");
+    await expect(flotante(page)).toBeVisible();
+  });
+
+  test("foco no oculto (WCAG 2.4.11): con Tab, nada enfocado queda debajo del botón flotante", async ({ page }, info) => {
+    test.skip(info.project.name !== "movil-390-claro", "una pasada a 390×844 basta");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await abrir(page, "/");
+    const total = await page.evaluate(
+      () =>
+        document.querySelectorAll(
+          'a[href], button:not([disabled]), summary, [tabindex="0"], input, select, textarea',
+        ).length,
+    );
+    const tapados: string[] = [];
+    let recorridos = 0;
+    for (let i = 0; i < total + 5; i++) {
+      await page.keyboard.press("Tab");
+      // Deja terminar el desplazamiento y la animación del flotante (200 ms).
+      await page.waitForTimeout(260);
+      const r = await page.evaluate(() => {
+        const activo = document.activeElement as HTMLElement | null;
+        if (!activo || activo === document.body) return null;
+        const boton = document.querySelector<HTMLElement>("[data-boton-flotante]");
+        const nombre = `${activo.tagName.toLowerCase()} «${(activo.getAttribute("aria-label") ?? activo.textContent ?? "").trim().slice(0, 40)}»`;
+        if (!boton || boton.contains(activo)) return { nombre, tapa: false };
+        const a = activo.getBoundingClientRect();
+        const b = boton.getBoundingClientRect();
+        const ancho = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+        const alto = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+        return { nombre, tapa: ancho > 0 && alto > 0 };
+      });
+      if (!r) continue;
+      recorridos++;
+      if (r.tapa) tapados.push(r.nombre);
+    }
+    expect(recorridos).toBeGreaterThan(20);
+    expect(tapados).toEqual([]);
+  });
+});
+
+test("Complementarios: la fila sin foto conserva la columna y los títulos quedan alineados", async ({ page }) => {
   await abrir(page, "/");
-  const lienzo = page.locator("[data-lienzo]");
-  await expect(lienzo.getByRole("img")).toHaveAccessibleName(/Pórtico de cinco pisos/);
-  const caja = (await lienzo.boundingBox())!;
-  expect(caja.height).toBeGreaterThan(300);
+  const vacia = page.locator("#complementarios [data-sin-foto]");
+  await expect(vacia).toHaveCount(1);
+  await expect(vacia).toHaveAttribute("aria-hidden", "true");
+  const izquierdas = await page.locator("#complementarios h3").evaluateAll((h) => h.map((e) => Math.round(e.getBoundingClientRect().left)));
+  expect(new Set(izquierdas).size).toBe(1);
 });

@@ -7,6 +7,10 @@ test.beforeEach(({}, info) => {
 
 async function abrirMenu(page: Page) {
   await abrir(page, "/");
+  // Arriba de la página el lienzo oculta el flotante (motivo «lienzo»): se baja a Servicios para
+  // comprobar que el menú lo oculta y lo devuelve.
+  await page.evaluate(() => document.getElementById("servicios")!.scrollIntoView());
+  await expect(page.locator("[data-boton-flotante]")).toBeVisible();
   const disparador = page.getByRole("button", { name: "Abrir menú" });
   await disparador.click();
   const dialogo = page.getByRole("dialog", { name: "Menú" });

@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:actualizar-local": "playwright test --update-snapshots --grep @visual",
-    "fotos": "node scripts/optimizar-fotos.mjs"
+    "fotos": "node scripts/optimizar-fotos.mjs",
+    "test:presupuestos": "playwright test --grep @presupuesto"
   },
   "dependencies": {
     "@vercel/speed-insights": "^2.0.0",

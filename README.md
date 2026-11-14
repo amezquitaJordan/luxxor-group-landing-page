@@ -18,7 +18,11 @@ npm test           # pruebas unitarias (Vitest)
 npm run build
 npm start          # servidor de producción local
 npm run test:e2e   # pruebas E2E y de accesibilidad (Playwright; la primera vez: npx playwright install chromium)
+npm run test:presupuestos   # LCP, CLS, imágenes y JS inicial en móvil (CPU ×4, 4G lenta), con un solo worker
+npm run fotos -- --recursos "C:\Luxxor\recursos"   # optimiza fotos (activos/fotos) y copia los PDF (public/descargas)
 ```
+
+Las fotos originales y los PDF viven fuera del repositorio (`RUTA_RECURSOS`); solo se versiona lo optimizado.
 
 ## Capturas visuales (Playwright)
 Las capturas de referencia que se versionan son **solo las de Linux** (`*-linux.png`), para que coincidan en cualquier máquina y en CI. Las de Windows (`*-win32.png`) son locales y están en `.gitignore`.

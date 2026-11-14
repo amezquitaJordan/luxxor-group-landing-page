@@ -58,6 +58,9 @@ test.describe("galería · capturas @visual", () => {
 
   test("botón flotante", async ({ page }) => {
     await abrir(page, "/");
+    // En móvil el lienzo del hero oculta el flotante (motivo «lienzo»): se baja a Servicios.
+    await page.evaluate(() => document.getElementById("servicios")!.scrollIntoView());
+    await expect(page.locator("[data-boton-flotante]")).toBeVisible();
     await expect(page.locator("[data-boton-flotante]")).toHaveScreenshot("boton-flotante.png");
   });
 });
