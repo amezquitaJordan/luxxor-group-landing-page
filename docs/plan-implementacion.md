@@ -17,6 +17,7 @@
 | `arquitectura.md` | Se **borra**. |
 | Endpoint del chat en la S1 | Se **retira** y se reconstruye en la S7. |
 | «Volver arriba» | **No** se implementa. |
+| Motion (15-nov-2026) | **Se retira.** Entradas y salidas con CSS (`@starting-style`, `transition-behavior: allow-discrete`). JS inicial: presupuesto **175 KB gz**. |
 
 ---
 
@@ -146,7 +147,7 @@ Texto corrido `max-width: 70ch`.
 
 ## E. Animaciones
 
-**Solo Motion** (`motion/react`, `LazyMotion` + `m` + `domAnimation`), **sin GSAP**: no hay pinning ni scrub; el 3D lo mueven el control deslizante y el selector, animados dentro de R3F con `invalidate()`. Motion solo para `AnimatePresence` (menú, chat, botón flotante). Cero animaciones de entrada de sección.
+**Sin librerías de animación** (Motion se retiró el 15-nov-2026; sin GSAP): las entradas y salidas (menú, botón flotante y, en la S7, el chat) son transiciones CSS con `@starting-style` y `transition-behavior: allow-discrete` (clases `.menu-movil` y `.boton-flotante` en `globals.css`); el 3D lo mueven el control deslizante y el selector, animados dentro de R3F con `invalidate()`. Cero animaciones de entrada de sección.
 
 | # | Elemento | Disparador | Propiedades | Duración / easing | Reduced motion |
 |---|---|---|---|---|---|
@@ -330,8 +331,16 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
   - Complementarios: la fila sin foto conserva la columna de 112 px vacía (sin recuadro); títulos alineados.
   - Caja del lienzo medida (prueba E2E, referencia para la S6): 533,7 px a 360, 534,0 a 390 y 550,4 a 414 (±0,5).
   - Capturas por sección (`landing-visual.spec.ts`): 14 secciones × 360 claro, 390 claro/oscuro y 414 claro/oscuro, con el encabezado y el flotante ocultos. Bases de Windows generadas; las de Linux, con el workflow manual.
-  - Presupuestos móviles (`npm run test:presupuestos`: `presupuestos.spec.ts` solo y con un worker; 390×844, CPU ×4, 4G lenta, next start): LCP 2,12–2,30 s (h1; mediana de 3 cargas en 3 ejecuciones, cargas sueltas 2,00–2,37 s; con la suite en paralelo llegaba a 2,79 s, por eso se mide aparte con un worker) · CLS 0 · 0 fotos en el primer pantallazo (35,4 KB de la ficha de Servicios se adelantan por la carga diferida nativa) · 293,6 KB de imágenes tras recorrer la página · **JS inicial 197,7 KB gz, por encima del objetivo de 150 KB**: ~133 KB son la base de Next/React (react-dom 70, runtime 46, Turbopack y otros) y 56 KB el layout cliente de la S2/S3 (Motion `domAnimation`, encabezado, menú, next-themes); la 4b añade 6,6 KB. Cargar `domAnimation` en diferido no ayuda (se pide igual durante la carga). La prueba vigila un techo de 200 KB; la decisión sobre el objetivo pasa a la S9.
+  - Presupuestos móviles (`npm run test:presupuestos`: `presupuestos.spec.ts` solo y con un worker; 390×844, CPU ×4, 4G lenta, next start): LCP 2,12–2,30 s (h1; mediana de 3 cargas en 3 ejecuciones, cargas sueltas 2,00–2,37 s; con la suite en paralelo llegaba a 2,79 s, por eso se mide aparte con un worker) · CLS 0 · 0 fotos en el primer pantallazo (35,4 KB de la ficha de Servicios se adelantan por la carga diferida nativa) · 293,6 KB de imágenes tras recorrer la página · **JS inicial 197,7 KB gz, por encima del objetivo de 150 KB**: ~133 KB son la base de Next/React (react-dom 70, runtime 46, Turbopack y otros) y 56 KB el layout cliente de la S2/S3 (Motion `domAnimation`, encabezado, menú, next-themes); la 4b añade 6,6 KB. Cargar `domAnimation` en diferido no ayuda (se pide igual durante la carga). La prueba vigilaba un techo de 200 KB; resuelto el 15-nov-2026 al retirar Motion (152,3 KB, presupuesto 175 KB).
   - Comparación con Figma 03/06 (360, 390, 414; claro y oscuro): coinciden composición, textos, fondos por sección, Contacto y pie en modo oscuro. Diferencias aceptadas: lienzo provisional en 2D (3D en la S6), anotaciones de 14 px (Figma 12), «Espacios comerciales» sin foto, descripciones de ensayos visibles en móvil, sin «Preguntar al asistente» ni enlaces legales (interruptores).
+
+### Retirada de Motion (15-nov-2026, antes de la Sesión 5)
+- `MenuMovil`: sin `m.div`, temporizador ni estado `saliendo`; Escape y «Cerrar menú» llaman a `close()` y el evento `close` sigue siendo la única fuente de verdad. La salida la pinta el navegador después de `close()` (`display`/`overlay` con `allow-discrete`); en Firefox y Safari, sin `overlay` animable, la salida es instantánea.
+- `BotonFlotanteWhatsApp`: siempre montado; `data-visible` + `inert`; oculto queda con `visibility: hidden` al final de la transición (no enfocable, fuera del árbol de accesibilidad). Las pruebas usan `esperarFlotanteOculto`/`esperarFlotanteVisible` (`toBeHidden`, `inert` y ausencia en el árbol de accesibilidad) en lugar de `toHaveCount(0)`.
+- `prefers-reduced-motion: reduce`: `translate: none`; solo opacidad.
+- Fuera `motion` (`npm uninstall`), `componentes/movimiento/` y `ProveedorMovimiento` del layout. Prueba unitaria `sin-motion.test.ts`.
+- **JS inicial: 152,3 KB gz** (antes 197,7; −45,4 KB). Presupuesto nuevo: **175 KB gz** (base de Next+React ≈ 133 KB), en `presupuestos.spec.ts`.
+- Commit: `refactor(movimiento): reemplazar Motion por transiciones CSS`
 
 ### Sesión 5 — Escritorio y anchos intermedios
 - Layouts `md`/`lg`/`xl`, hero compacto, encabezado de escritorio.
@@ -363,8 +372,7 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 
 ### Sesión 9 — QA final
 - Matriz completa de Playwright, axe, Lighthouse móvil, bundle, checklist manual; E2E añadidas al workflow.
-- Aceptación: LCP < 2,5 s, CLS < 0,1, TBT < 200 ms; JS inicial < 150 KB gz; axe 0; «Definición de terminado» (§11.5 de la investigación) completa.
-- **JS inicial (pendiente de decisión):** medido 197,7 KB gz en la S4b. Opciones: reemplazar Motion por transiciones CSS en el menú y el botón flotante (−25 a −30 KB estimados), revisar Speed Insights/next-themes, o ajustar el objetivo a lo que permite la base del framework (~133 KB).
+- Aceptación: LCP < 2,5 s, CLS < 0,1, TBT < 200 ms; JS inicial ≤ 175 KB gz (presupuesto aprobado el 15-nov-2026 al retirar Motion; antes 150); axe 0; «Definición de terminado» (§11.5 de la investigación) completa.
 - **Requisitos bloqueantes antes de pasar a `main`** (14-nov-2026):
   1. Evidencia escrita, en poder del dueño, de la autorización de las personas que aparecen en las fotos 13, 15 y 16.
   2. Autorización de los nombres de clientes (Tecnoquímicas, Interplásticos, Farmatodo, Super Farma, Colegios de Yumbo, Wan Su Lay); sin ella, `funciones.nombresClientes` sigue en `false`.

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { abrir, esMovil } from "./utilidades";
+import { abrir, esMovil, esperarFlotanteOculto, esperarFlotanteVisible } from "./utilidades";
 
 /** Orden de Figma 03 (15:2). Credenciales no lleva id; Descargas está encendida. */
 const SECCIONES = [
@@ -219,22 +219,21 @@ test.describe("carrusel de obras", () => {
 });
 
 test.describe("botón flotante", () => {
-  const flotante = (page: import("@playwright/test").Page) => page.locator("[data-boton-flotante]");
   const irA = (page: import("@playwright/test").Page, id: string) =>
     page.evaluate((i) => document.getElementById(i)!.scrollIntoView({ block: "start" }), id);
 
   test("se oculta con el lienzo (móvil) y con Contacto en pantalla", async ({ page }, info) => {
     await abrir(page, "/");
-    if (esMovil(info)) await expect(flotante(page)).toHaveCount(0); // motivo «lienzo»
-    else await expect(flotante(page)).toBeVisible();
+    if (esMovil(info)) await esperarFlotanteOculto(page); // motivo «lienzo»
+    else await esperarFlotanteVisible(page);
     await irA(page, "servicios");
-    await expect(flotante(page)).toBeVisible();
+    await esperarFlotanteVisible(page);
     await irA(page, "contacto");
-    await expect(flotante(page)).toHaveCount(0); // motivo «contacto»
+    await esperarFlotanteOculto(page); // motivo «contacto»
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-    await expect(flotante(page)).toHaveCount(0); // al final de la página, Contacto sigue en pantalla
+    await esperarFlotanteOculto(page); // al final de la página, Contacto sigue en pantalla
     await irA(page, "proyectos");
-    await expect(flotante(page)).toBeVisible();
+    await esperarFlotanteVisible(page);
   });
 
   test("foco no oculto (WCAG 2.4.11): con Tab, nada enfocado queda debajo del botón flotante", async ({ page }, info) => {
@@ -258,7 +257,7 @@ test.describe("botón flotante", () => {
         if (!activo || activo === document.body) return null;
         const boton = document.querySelector<HTMLElement>("[data-boton-flotante]");
         const nombre = `${activo.tagName.toLowerCase()} «${(activo.getAttribute("aria-label") ?? activo.textContent ?? "").trim().slice(0, 40)}»`;
-        if (!boton || boton.contains(activo)) return { nombre, tapa: false };
+        if (!boton || boton.dataset.visible !== "true" || boton.contains(activo)) return { nombre, tapa: false };
         const a = activo.getBoundingClientRect();
         const b = boton.getBoundingClientRect();
         const ancho = Math.min(a.right, b.right) - Math.max(a.left, b.left);
@@ -272,6 +271,16 @@ test.describe("botón flotante", () => {
     expect(recorridos).toBeGreaterThan(20);
     expect(tapados).toEqual([]);
   });
+});
+
+test("oculto, el botón flotante no es una parada de Tab", async ({ page }, info) => {
+  test.skip(!esMovil(info), "en móvil, arriba de la página, el lienzo lo oculta");
+  await abrir(page, "/");
+  await esperarFlotanteOculto(page);
+  for (let i = 0; i < 12; i++) {
+    await page.keyboard.press("Tab");
+    expect(await page.evaluate(() => !!document.activeElement?.closest("[data-boton-flotante]"))).toBe(false);
+  }
 });
 
 test("Complementarios: la fila sin foto conserva la columna y los títulos quedan alineados", async ({ page }) => {

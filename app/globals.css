@@ -203,6 +203,76 @@
   }
 }
 
+/* ── Entradas y salidas (sin JS de animación; plan §E #5 y #10) ──────────────────────────────
+ * @starting-style da el estado inicial al aparecer y transition-behavior: allow-discrete deja
+ * animar display/overlay/visibility, así la salida se pinta después de close() o al ocultarse.
+ * Navegadores sin `overlay` animable (Firefox, Safari) cierran el menú sin animación de salida.
+ */
+@layer components {
+  /* Menú móvil (<dialog>): entrada 200 ms cubic-bezier(.2,0,0,1), salida 150 ms ease-in; opacidad y translateY(-8px). */
+  .menu-movil {
+    opacity: 0;
+    translate: 0 -8px;
+    transition:
+      opacity 150ms ease-in,
+      translate 150ms ease-in,
+      display 150ms allow-discrete,
+      overlay 150ms allow-discrete;
+  }
+  .menu-movil[open] {
+    opacity: 1;
+    translate: 0 0;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  @starting-style {
+    .menu-movil[open] {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+
+  /* Botón flotante: 200 ms, opacidad y translateY(8px); oculto queda invisible al terminar la transición. */
+  .boton-flotante {
+    transition:
+      opacity 200ms ease-out,
+      translate 200ms ease-out,
+      visibility 200ms allow-discrete;
+  }
+  .boton-flotante[data-visible="true"] {
+    opacity: 1;
+    translate: 0 0;
+    visibility: visible;
+  }
+  .boton-flotante[data-visible="false"] {
+    opacity: 0;
+    translate: 0 8px;
+    visibility: hidden;
+  }
+  @starting-style {
+    .boton-flotante[data-visible="true"] {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+
+  /* Movimiento reducido: sin desplazamientos, solo opacidad. */
+  @media (prefers-reduced-motion: reduce) {
+    .menu-movil,
+    .menu-movil[open],
+    .boton-flotante,
+    .boton-flotante[data-visible] {
+      translate: none;
+    }
+    @starting-style {
+      .menu-movil[open],
+      .boton-flotante[data-visible="true"] {
+        translate: none;
+      }
+    }
+  }
+}
+
 /* ── Tipografía fluida (estilos Móvil/* → Escritorio/* de Figma, 360 → 1440 px) ── */
 @utility texto-display {
   font-family: var(--font-titular);

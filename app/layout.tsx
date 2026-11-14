@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ProveedorMovimiento } from "@/componentes/movimiento/ProveedorMovimiento";
 import { BotonFlotanteWhatsApp } from "@/componentes/navegacion/BotonFlotanteWhatsApp";
 import { ControladorBotonFlotante } from "@/componentes/navegacion/ControladorBotonFlotante";
 import { Encabezado } from "@/componentes/navegacion/Encabezado";
@@ -81,12 +80,10 @@ export default function DisenoRaiz({
     <html lang={sitio.idioma} className={variablesFuentes} suppressHydrationWarning>
       <body className="antialiased">
         <ProveedorTema>
-          <ProveedorMovimiento>
-            <Encabezado />
-            {children}
-            <BotonFlotanteWhatsApp />
-            <ControladorBotonFlotante />
-          </ProveedorMovimiento>
+          <Encabezado />
+          {children}
+          <BotonFlotanteWhatsApp />
+          <ControladorBotonFlotante />
         </ProveedorTema>
         <SpeedInsights />
       </body>

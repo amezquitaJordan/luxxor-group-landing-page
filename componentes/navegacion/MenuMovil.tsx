@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
-import { m } from "motion/react";
+import { useEffect, useRef, type RefObject } from "react";
 import { X } from "lucide-react";
 import { SelectorTema } from "@/componentes/tema/SelectorTema";
 import { Boton } from "@/componentes/ui/Boton";
@@ -29,15 +28,14 @@ const MEDIA_ESCRITORIO = "(min-width: 64rem)";
  * - El evento `close` es la única fuente de verdad: actualiza el estado, quita el bloqueo de
  *   scroll, libera el motivo «menu» del botón flotante (vía el estado del encabezado) y
  *   devuelve el foco al botón «Abrir menú».
- * - `cancel` (Escape) se intenta cancelar solo para animar la salida; si el navegador no lo
- *   permite (Chrome sin activación del usuario), el diálogo se cierra igual y `close` sincroniza.
+ * - Las animaciones de entrada y salida son CSS (`.menu-movil` en globals.css: @starting-style y
+ *   transition-behavior: allow-discrete). El navegador pinta la salida después de close(), así que
+ *   Escape y «Cerrar menú» cierran al instante y `close` sincroniza sin esperas ni temporizadores.
  */
 export function MenuMovil({ id, abierto, enlaces, alCerrarse, refDisparador }: PropsMenuMovil) {
   const dialogo = useRef<HTMLDialogElement>(null);
   const primerEnlace = useRef<HTMLAnchorElement>(null);
   const devolverFoco = useRef(true);
-  const temporizador = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [saliendo, setSaliendo] = useState(false);
 
   // Abrir: showModal + bloqueo de scroll + foco en el primer enlace.
   useEffect(() => {
@@ -61,31 +59,16 @@ export function MenuMovil({ id, abierto, enlaces, alCerrarse, refDisparador }: P
     return () => consulta.removeEventListener("change", alCambiar);
   }, []);
 
-  useEffect(
-    () => () => {
-      if (temporizador.current) clearTimeout(temporizador.current);
-      document.documentElement.removeAttribute(ATRIBUTO_BLOQUEO);
-    },
-    [],
-  );
+  useEffect(() => () => document.documentElement.removeAttribute(ATRIBUTO_BLOQUEO), []);
 
-  function cerrarYa() {
+  function cerrar() {
     const d = dialogo.current;
     if (d?.open) d.close();
   }
 
-  /** Cierre animado: anima la salida y luego cierra; con un respaldo por si la animación no termina. */
-  function solicitarCierre() {
-    setSaliendo(true);
-    if (temporizador.current) clearTimeout(temporizador.current);
-    temporizador.current = setTimeout(cerrarYa, 400);
-  }
-
   /** Evento `close`: única fuente de verdad. */
   function alCerrar() {
-    if (temporizador.current) clearTimeout(temporizador.current);
     document.documentElement.removeAttribute(ATRIBUTO_BLOQUEO);
-    setSaliendo(false);
     alCerrarse();
     if (devolverFoco.current) refDisparador.current?.focus();
     devolverFoco.current = true;
@@ -95,7 +78,7 @@ export function MenuMovil({ id, abierto, enlaces, alCerrarse, refDisparador }: P
   function alElegirEnlace() {
     devolverFoco.current = false;
     document.documentElement.removeAttribute(ATRIBUTO_BLOQUEO);
-    cerrarYa();
+    cerrar();
   }
 
   return (
@@ -103,31 +86,16 @@ export function MenuMovil({ id, abierto, enlaces, alCerrarse, refDisparador }: P
       ref={dialogo}
       id={id}
       aria-label="Menú"
-      onCancel={(evento) => {
-        evento.preventDefault();
-        solicitarCierre();
-      }}
       onClose={alCerrar}
-      className="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-fondo-base p-0 text-texto-primario backdrop:bg-transparent"
+      className="menu-movil m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-fondo-base p-0 text-texto-primario backdrop:bg-transparent"
     >
-      <m.div
-        initial="oculto"
-        animate={abierto && !saliendo ? "visible" : "oculto"}
-        variants={{
-          visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: [0.2, 0, 0, 1] } },
-          oculto: { opacity: 0, y: -8, transition: { duration: 0.15, ease: "easeIn" } },
-        }}
-        onAnimationComplete={(definicion) => {
-          if (definicion === "oculto" && saliendo) cerrarYa();
-        }}
-        className="flex min-h-full flex-col"
-      >
+      <div className="flex min-h-full flex-col">
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-borde-sutil px-5 pt-[env(safe-area-inset-top)]">
           <Logo />
           <button
             type="button"
             aria-label="Cerrar menú"
-            onClick={solicitarCierre}
+            onClick={cerrar}
             className="inline-flex size-11 items-center justify-center rounded-sm border border-borde-sutil text-texto-primario"
           >
             <X aria-hidden className="size-6" strokeWidth={1.75} />
@@ -173,7 +141,7 @@ export function MenuMovil({ id, abierto, enlaces, alCerrarse, refDisparador }: P
             </p>
           </div>
         </div>
-      </m.div>
+      </div>
     </dialog>
   );
 }

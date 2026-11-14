@@ -11,10 +11,11 @@ const PRESUPUESTO = {
   /** Fotos visibles en el primer pantallazo (390×844): ninguna; el LCP es el h1. */
   fotosEnPrimerPantallazo: 0,
   imagenesTotalKB: 550,
-  /** Objetivo de la investigación (§10). Hoy no se cumple: la base del framework ya pesa ~133 KB gz. */
-  jsInicialObjetivoKB: 150,
-  /** Techo contra regresiones mientras se decide cómo llegar al objetivo (medido: 197,7 KB, 14-nov-2026). */
-  jsInicialTechoKB: 200,
+  /**
+   * JS inicial (gzip). Presupuesto aprobado al retirar Motion: 175 KB (base de Next+React ≈ 133 KB).
+   * Medido tras la retirada: 152,3 KB (antes 197,7 KB).
+   */
+  jsInicialKB: 175,
 };
 
 declare global {
@@ -117,8 +118,5 @@ test("presupuestos móviles: LCP, CLS, imágenes y JS inicial @presupuesto", asy
   expect(medido.cls).toBeLessThan(PRESUPUESTO.cls);
   expect(medido.fotosEnPrimerPantallazo).toBe(PRESUPUESTO.fotosEnPrimerPantallazo);
   expect(medido.imagenesTotalKB).toBeLessThanOrEqual(PRESUPUESTO.imagenesTotalKB);
-  expect(medido.jsInicialKB).toBeLessThanOrEqual(PRESUPUESTO.jsInicialTechoKB);
-  if (medido.jsInicialKB > PRESUPUESTO.jsInicialObjetivoKB) {
-    info.annotations.push({ type: "presupuesto", description: `JS inicial ${medido.jsInicialKB} KB > objetivo ${PRESUPUESTO.jsInicialObjetivoKB} KB` });
-  }
+  expect(medido.jsInicialKB).toBeLessThanOrEqual(PRESUPUESTO.jsInicialKB);
 });

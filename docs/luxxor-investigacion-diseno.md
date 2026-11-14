@@ -239,7 +239,7 @@ El repo actual trae `.agents/skills` con Stitch, Remotion, shadcn, etc. y config
 ## 10. Presupuestos de calidad (para revisar cada plan de Claude Code)
 
 - Core Web Vitals en móvil: LCP < 2,5 s, INP < 200 ms, CLS < 0,1.
-- JS inicial sin el 3D: objetivo < 150 KB gz [Recomendación]; el 3D se carga aparte, bajo demanda.
+- JS inicial sin el 3D: ≤ 175 KB gz (presupuesto aprobado el 15-nov-2026; la base de Next+React ronda 133 KB; antes se recomendaba < 150); el 3D se carga aparte, bajo demanda.
 - Imágenes: AVIF/WebP vía `next/image`; originales ≤ 400 KB en `public/` (redimensionar antes de commitear).
 - Accesibilidad: WCAG 2.2 AA (contraste, foco visible, áreas táctiles ≥ 24×24 px, teclado, `aria` del modal).
 - Lint y `tsc` sin errores; `npm audit` sin críticas ni altas en producción.

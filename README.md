@@ -42,4 +42,4 @@ Para generar o actualizar las de Linux:
 En local (Windows), `npm run test:e2e:actualizar-local` regenera las capturas `-win32` para comparar.
 
 ## Stack
-Next.js 16 (App Router) · React 19 · Tailwind CSS v4 · Motion · despliegue en Vercel.
+Next.js 16 (App Router) · React 19 · Tailwind CSS v4 · transiciones CSS · despliegue en Vercel.

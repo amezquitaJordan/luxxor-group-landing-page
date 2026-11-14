@@ -10,13 +10,13 @@
 - La foto 28 no se usa (contenido de terceros).
 
 ## Stack
-Next.js 16.4 (App Router, Turbopack, `proxy.ts`) · React 19.3 · Tailwind v4 · Motion · React Three Fiber (Sesión 6) · AI SDK + Groq (Sesión 7). Node ≥ 20.9.
+Next.js 16.4 (App Router, Turbopack, `proxy.ts`) · React 19.3 · Tailwind v4 · transiciones CSS (sin librería de animación) · React Three Fiber (Sesión 6) · AI SDK + Groq (Sesión 7). Node ≥ 20.9.
 
 ## Convenciones de código
 - Código propio en español (variables, funciones, componentes, comentarios). Excepciones: identificadores de librerías/APIs y **hooks con prefijo `use`** (`useEnPantalla`), que exigen eslint-plugin-react-hooks y el React Compiler.
 - Contacto y datos del sitio solo desde `config/sitio.ts`; textos de la landing desde `contenido/landing.ts`.
 - Colores solo con tokens (`bg-fondo-base`, `text-texto-primario`…); cero hex en componentes.
-- Animar solo `transform` y `opacity`; respetar `prefers-reduced-motion` en CSS, Motion y 3D.
+- Animar solo `transform`/`translate` y `opacity`; respetar `prefers-reduced-motion` en CSS y 3D.
 - Accesibilidad WCAG 2.2 AA; áreas táctiles de 44 px como objetivo.
 - Secretos solo en variables de entorno del servidor (ver `.env.example`); nunca con prefijo `NEXT_PUBLIC_`.
 
