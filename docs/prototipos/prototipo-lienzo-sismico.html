@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lienzo sísmico Luxxor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Paleta «Memoria de cálculo» de Luxxor: marino, acero, concreto; latón solo como detalle */
+  --fondo: #EEF0F2;
+  --superficie: #FFFFFF;
+  --texto: #1A2230;
+  --texto-2: #5A6472;
+  --acento: #1F4E80;
+  --laton: #8F6F2E;
+  --laton-texto: #7A5C22;
+  --borde: #C9CED5;
+  --borde-fuerte: #1A2230;
+  --accion-fondo: #0B1B33;
+  --accion-texto: #FFFFFF;
+  --cumple: #1F4E80;
+  --cerca: #B54708;
+  --excede: #B42318;
+  /* Escena 3D */
+  --concreto: #D5D9DF;
+  --concreto-oscuro: #A9B2BE;
+  --vidrio: #8DB3DD;
+  --suelo-1: #CFC8BA;
+  --suelo-2: #B8AE9C;
+  --suelo-3: #A3988A;
+  --reticula: #A9B2BE;
+  --font-titular: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-texto: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  /* Disposición: escenario a la izquierda, tablero de derivas a la derecha; apilado en móvil */
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #0B1B33; --superficie: #142640; --texto: #FFFFFF; --texto-2: #A9B2BE; --acento: #8DB3DD;
+    --laton: #D2B572; --laton-texto: #D2B572; --borde: #47576D; --borde-fuerte: #A9B2BE;
+    --accion-fondo: #EEF0F2; --accion-texto: #0B1B33;
+    --cumple: #8DB3DD; --cerca: #FDB022; --excede: #F97066;
+    --concreto: #7D8796; --concreto-oscuro: #5A6472; --vidrio: #1F4E80;
+    --suelo-1: #3A4250; --suelo-2: #323946; --suelo-3: #2A303B; --reticula: #47576D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #0B1B33; --superficie: #142640; --texto: #FFFFFF; --texto-2: #A9B2BE; --acento: #8DB3DD;
+  --laton: #D2B572; --laton-texto: #D2B572; --borde: #47576D; --borde-fuerte: #A9B2BE;
+  --accion-fondo: #EEF0F2; --accion-texto: #0B1B33;
+  --cumple: #8DB3DD; --cerca: #FDB022; --excede: #F97066;
+  --concreto: #7D8796; --concreto-oscuro: #5A6472; --vidrio: #1F4E80;
+  --suelo-1: #3A4250; --suelo-2: #323946; --suelo-3: #2A303B; --reticula: #47576D;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--fondo); color: var(--texto); font-family: var(--font-texto); font-size: 16px; line-height: 1.5; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--laton); outline-offset: 2px; }
+
+.contenedor { max-width: 1280px; margin: 0 auto; padding: 24px 20px 48px; display: grid; gap: 20px; }
+.cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.cabecera h1 { font-family: var(--font-titular); font-weight: 600; font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem); line-height: 1.08; margin: 0; text-wrap: balance; }
+.cabecera > div { flex: 1 1 40ch; }
+.cabecera p { margin: 6px 0 0; color: var(--texto-2); max-width: 62ch; }
+.marca { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--laton-texto); margin: 0 0 6px; }
+
+.boton-tema { width: 44px; height: 44px; border: 1px solid var(--borde); border-radius: 2px; background: var(--superficie); display: inline-grid; place-items: center; cursor: pointer; }
+.boton-tema svg { width: 20px; height: 20px; }
+
+.lienzo { display: grid; grid-template-columns: minmax(0, 1fr); background: var(--superficie); border: 1px solid var(--borde); border-radius: 4px; overflow: hidden; }
+@media (min-width: 64rem) { .lienzo { grid-template-columns: minmax(0, 1fr) 360px; } }
+
+.escenario { position: relative; aspect-ratio: 1 / 1.15; min-height: 340px; border-bottom: 1px solid var(--borde); }
+@media (min-width: 64rem) { .escenario { aspect-ratio: auto; min-height: 620px; border-bottom: 0; border-right: 1px solid var(--borde); } }
+.escenario canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.barra { position: absolute; inset: 12px 12px auto 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; pointer-events: none; }
+.barra > * { pointer-events: auto; }
+.etiqueta-mono { font-family: var(--font-mono); font-size: 0.875rem; color: var(--laton-texto); background: color-mix(in srgb, var(--superficie) 82%, transparent); padding: 4px 8px; border-radius: 2px; }
+.selector { display: inline-grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--borde-fuerte); border-radius: 2px; background: var(--superficie); }
+.selector button { min-height: 40px; padding: 8px 14px; border: 0; background: transparent; cursor: pointer; font-weight: 600; font-size: 0.9375rem; }
+.selector button[aria-pressed="true"] { background: var(--accion-fondo); color: var(--accion-texto); }
+.rotulo { position: absolute; left: 12px; bottom: 12px; right: 12px; margin: 0; font-size: 0.875rem; color: var(--texto-2); }
+.rotulo span { background: color-mix(in srgb, var(--superficie) 85%, transparent); padding: 2px 6px; border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+.tablero { padding: 20px; display: grid; gap: 20px; align-content: start; }
+.tablero h2 { font-family: var(--font-titular); font-weight: 600; font-size: 1.375rem; line-height: 1.2; margin: 0; }
+.estado { margin: 4px 0 0; font-size: 0.9375rem; color: var(--texto-2); min-height: 3em; }
+
+.pisos { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.piso { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) 4.2rem 4.6rem; align-items: center; gap: 8px; font-size: 0.875rem; }
+.piso .num { font-family: var(--font-mono); color: var(--texto-2); }
+.pista { position: relative; height: 10px; background: color-mix(in srgb, var(--borde) 55%, transparent); border-radius: 1px; }
+.pista .relleno { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--cumple); border-radius: 1px; }
+.pista .pico { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--texto); opacity: .55; left: 0; }
+.pista .limite { position: absolute; top: -5px; bottom: -5px; width: 0; border-left: 1px dashed var(--laton); left: 66.67%; }
+.piso .valor { font-family: var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.chip { justify-self: start; font-size: 0.8125rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.chip[data-clase="cumple"] { color: var(--cumple); }
+.chip[data-clase="cerca"] { color: var(--cerca); }
+.chip[data-clase="excede"] { color: var(--excede); }
+.escala { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) 4.2rem 4.6rem; gap: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--texto-2); }
+.escala .marcas { display: flex; justify-content: space-between; }
+
+.control label { display: flex; justify-content: space-between; gap: 8px; font-weight: 600; font-size: 0.9375rem; }
+.control output { font-family: var(--font-mono); font-weight: 400; color: var(--laton-texto); }
+input[type="range"] { width: 100%; accent-color: var(--acento); height: 32px; margin: 6px 0 0; }
+
+.acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+.primario { min-height: 44px; padding: 10px 20px; border: 0; border-radius: 2px; background: var(--accion-fondo); color: var(--accion-texto); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.primario svg { width: 18px; height: 18px; }
+
+.sismografo { display: grid; gap: 6px; }
+.sismografo canvas { width: 100%; height: 76px; display: block; border: 1px solid var(--borde); border-radius: 2px; background: color-mix(in srgb, var(--fondo) 60%, var(--superficie)); }
+.sismografo p { margin: 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--texto-2); }
+
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.875rem; margin: 0; padding: 0; list-style: none; }
+.leyenda li { display: inline-flex; align-items: center; gap: 6px; }
+.leyenda i { width: 14px; height: 4px; display: inline-block; }
+
+.notas { display: grid; gap: 6px; font-size: 0.875rem; color: var(--texto-2); max-width: 90ch; }
+.notas p { margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<main class="contenedor">
+  <header class="cabecera">
+    <div>
+      <p class="marca">LUXXOR GROUP · Concepto del lienzo 3D · prototipo</p>
+      <h1>¿Cómo responde un edificio de 8 pisos al sismo de diseño?</h1>
+      <p>Pulse «Simular sismo» para ver la oscilación y la deriva de cada piso. Cambie a «Reforzada» para comparar el mismo edificio con riostras metálicas y columnas encamisadas.</p>
+    </div>
+    <button class="boton-tema" id="boton-tema" type="button" aria-label="Cambiar tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M12 3a6 6 0 1 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </header>
+
+  <section class="lienzo" aria-labelledby="titulo-lienzo">
+    <div class="escenario" id="escenario">
+      <canvas id="canvas-3d" role="img" aria-label="Modelo 3D ilustrativo de un edificio de 8 pisos sobre un bloque de suelo con tres estratos. La deriva de cada piso se describe en el tablero."></canvas>
+      <div class="barra">
+        <span class="etiqueta-mono">Deriva por piso · ilustrativo</span>
+        <div class="selector" role="group" aria-label="Estado del edificio">
+          <button type="button" id="estado-original" aria-pressed="true">Original</button>
+          <button type="button" id="estado-reforzada" aria-pressed="false">Reforzada</button>
+        </div>
+      </div>
+      <p class="rotulo"><span>Desplazamientos exagerados ×12 para que se vean. Simulación ilustrativa: no es un resultado de análisis de ninguna edificación.</span></p>
+    </div>
+
+    <div class="tablero">
+      <div>
+        <h2 id="titulo-lienzo">Deriva de entrepiso</h2>
+        <p class="estado" id="resumen" aria-live="polite"></p>
+      </div>
+
+      <div>
+        <ol class="pisos" id="pisos" reversed></ol>
+        <div class="escala" aria-hidden="true">
+          <span></span><span class="marcas"><span>0</span><span>0,5</span><span>1,0</span><span>1,5 %</span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <ul class="leyenda" aria-label="Leyenda">
+        <li><i style="background: var(--cumple)"></i>Cumple (&lt; 0,7 %)</li>
+        <li><i style="background: var(--cerca)"></i>Cerca (0,7–1,0 %)</li>
+        <li><i style="background: var(--excede)"></i>Excede (≥ 1,0 %)</li>
+      </ul>
+
+      <div class="control">
+        <label for="intensidad">Intensidad del sismo <output id="salida-intensidad" for="intensidad">100 % · sismo de diseño</output></label>
+        <input type="range" id="intensidad" min="0" max="100" step="5" value="100" aria-valuetext="100 % · sismo de diseño">
+      </div>
+
+      <div class="acciones">
+        <button class="primario" id="simular" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/></svg>
+          <span>Simular sismo</span>
+        </button>
+      </div>
+
+      <div class="sismografo">
+        <canvas id="sismograma" aria-hidden="true"></canvas>
+        <p>Acelerograma sintético en la base · ilustrativo</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="notas">
+    <p>Límite de deriva usado en el prototipo: 1,0 % de la altura de piso (NSR-10, tabla A.6.4-1). Pendiente de validar con el ingeniero.</p>
+    <p>Original: pórtico de concreto sin reforzar. Reforzada: riostras metálicas en X en los vanos centrales y encamisado de columnas en los pisos 1 a 3.</p>
+  </div>
+</main>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+
+/* ---------- Modelo estructural (ilustrativo) ---------- */
+const PISOS = 8, ALTURA = 3.2;
+const XS = [-12, -6, 0, 6, 12], ZS = [-7.5, -2.5, 2.5, 7.5];
+const LIMITE = 0.010;                 // 1,0 % de la altura de piso
+const U_DISENO = 0.062 * ALTURA;      // desplazamiento de cubierta con el sismo de diseño (m)
+const FACTOR_REFORZADA = 0.45;
+const EXAGERACION = 12;
+const PERIODO = { original: 0.8, reforzada: 0.55 };
+const modo = i => Math.sin((Math.PI / 2) * (i / PISOS));
+const derivasPara = (U) => Array.from({ length: PISOS }, (_, k) => U * (modo(k + 1) - modo(k)) / ALTURA);
+const clase = r => (r >= LIMITE ? "excede" : r >= 0.7 * LIMITE ? "cerca" : "cumple");
+const pct = r => (r * 100).toFixed(2).replace(".", ",") + " %";
+
+const movReducido = matchMedia("(prefers-reduced-motion: reduce)");
+
+/* ---------- Tema ---------- */
+const raiz = document.documentElement;
+const css = n => getComputedStyle(raiz).getPropertyValue(n).trim();
+document.getElementById("boton-tema").addEventListener("click", () => {
+  const oscuro = getComputedStyle(raiz).colorScheme.includes("dark");
+  raiz.dataset.theme = oscuro ? "light" : "dark";
+  aplicarTema();
+});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => aplicarTema());
+
+/* ---------- Escena ---------- */
+const lienzo = document.getElementById("canvas-3d");
+const escenario = document.getElementById("escenario");
+const renderer = new THREE.WebGLRenderer({ canvas: lienzo, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+
+const escena = new THREE.Scene();
+const camara = new THREE.PerspectiveCamera(30, 1, 0.5, 400);
+const objetivo = new THREE.Vector3(0, 10, 0);
+
+const hemi = new THREE.HemisphereLight(0xffffff, 0x8a8f99, 1.1);
+const sol = new THREE.DirectionalLight(0xffffff, 2.2);
+sol.position.set(30, 55, 25);
+sol.castShadow = true;
+sol.shadow.mapSize.set(1024, 1024);
+Object.assign(sol.shadow.camera, { left: -32, right: 32, top: 40, bottom: -20, near: 10, far: 140 });
+escena.add(hemi, sol);
+
+const mundo = new THREE.Group();          // se desplaza con el movimiento del suelo
+escena.add(mundo);
+
+const mat = {
+  concreto: new THREE.MeshStandardMaterial({ roughness: 0.85, metalness: 0 }),
+  nucleo: new THREE.MeshStandardMaterial({ roughness: 0.9 }),
+  losa: new THREE.MeshStandardMaterial({ roughness: 0.8 }),
+  vidrio: new THREE.MeshStandardMaterial({ transparent: true, opacity: 0.32, roughness: 0.15, metalness: 0.2, depthWrite: false, side: THREE.DoubleSide }),
+  luces: new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide }),
+  banda: new THREE.MeshBasicMaterial({ color: 0xffffff }),
+  riostra: new THREE.MeshStandardMaterial({ roughness: 0.35, metalness: 0.7 }),
+  encamisado: new THREE.MeshStandardMaterial({ roughness: 0.4, metalness: 0.6 }),
+  suelo: [1, 2, 3].map(() => new THREE.MeshStandardMaterial({ roughness: 1 })),
+  bordes: new THREE.LineBasicMaterial({ transparent: true, opacity: 0.55 }),
+  reticula: new THREE.LineBasicMaterial({ transparent: true, opacity: 0.6 }),
+  ejes: new THREE.LineDashedMaterial({ dashSize: 0.9, gapSize: 0.5, transparent: true, opacity: 0.9 }),
+};
+
+/* Bloque de suelo con tres estratos (maqueta) */
+const ANCHO_B = 44, FONDO_B = 32;
+[[0, -1.4], [-1.4, -3.8], [-3.8, -6.5]].forEach(([arriba, abajo], i) => {
+  const alto = arriba - abajo;
+  const g = new THREE.BoxGeometry(ANCHO_B, alto, FONDO_B);
+  const m = new THREE.Mesh(g, mat.suelo[i]);
+  m.position.y = abajo + alto / 2;
+  m.receiveShadow = i === 0;
+  mundo.add(m);
+  const e = new THREE.LineSegments(new THREE.EdgesGeometry(g), mat.bordes);
+  e.position.copy(m.position);
+  mundo.add(e);
+});
+/* Retícula de plano sobre el terreno */
+{
+  const pts = [];
+  for (let x = -ANCHO_B / 2; x <= ANCHO_B / 2 + 0.01; x += 2) pts.push(x, 0.015, -FONDO_B / 2, x, 0.015, FONDO_B / 2);
+  for (let z = -FONDO_B / 2; z <= FONDO_B / 2 + 0.01; z += 2) pts.push(-ANCHO_B / 2, 0.015, z, ANCHO_B / 2, 0.015, z);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+  mundo.add(new THREE.LineSegments(g, mat.reticula));
+}
+/* Ejes de proyecto A–E y 1–4 con círculos de latón */
+const etiquetas = [];
+function sprite(texto) {
+  const c = document.createElement("canvas"); c.width = c.height = 128;
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, transparent: true, depthWrite: false }));
+  s.scale.set(1.9, 1.9, 1);
+  etiquetas.push({ c, t, texto });
+  return s;
+}
+function pintarEtiquetas() {
+  const laton = css("--laton"), fondo = css("--superficie");
+  for (const { c, t, texto } of etiquetas) {
+    const x = c.getContext("2d");
+    x.clearRect(0, 0, 128, 128);
+    x.beginPath(); x.arc(64, 64, 52, 0, Math.PI * 2);
+    x.fillStyle = fondo; x.fill(); x.lineWidth = 7; x.strokeStyle = laton; x.stroke();
+    x.fillStyle = laton; x.font = "500 58px 'IBM Plex Mono', monospace"; x.textAlign = "center"; x.textBaseline = "middle";
+    x.fillText(texto, 64, 68);
+    t.needsUpdate = true;
+  }
+}
+{
+  const pts = [];
+  XS.forEach((x, i) => {
+    pts.push(x, 0.03, -FONDO_B / 2 + 1, x, 0.03, FONDO_B / 2 - 2.2);
+    const s = sprite("ABCDE"[i]); s.position.set(x, 0.9, FONDO_B / 2 - 1.2); mundo.add(s);
+  });
+  ZS.forEach((z, i) => {
+    pts.push(-ANCHO_B / 2 + 2.2, 0.03, z, ANCHO_B / 2 - 1, 0.03, z);
+    const s = sprite(String(4 - i)); s.position.set(-ANCHO_B / 2 + 1.2, 0.9, z); mundo.add(s);
+  });
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+  const l = new THREE.LineSegments(g, mat.ejes); l.computeLineDistances(); mundo.add(l);
+}
+
+/* Edificio con mallas instanciadas */
+const edificio = new THREE.Group();
+mundo.add(edificio);
+const nuevo = (geo, material, n, sombra = true) => {
+  const m = new THREE.InstancedMesh(geo, material, n);
+  m.castShadow = sombra; m.receiveShadow = sombra;
+  m.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  edificio.add(m); return m;
+};
+const columnas = nuevo(new THREE.BoxGeometry(0.55, 1, 0.55), mat.concreto, PISOS * XS.length * ZS.length);
+const encamisados = nuevo(new THREE.BoxGeometry(0.72, 1, 0.72), mat.encamisado, 3 * XS.length * ZS.length);
+const vigasX = nuevo(new THREE.BoxGeometry(6, 0.55, 0.35), mat.concreto, PISOS * ZS.length * 4);
+const vigasZ = nuevo(new THREE.BoxGeometry(0.35, 0.55, 5), mat.concreto, PISOS * XS.length * 3);
+const losas = nuevo(new THREE.BoxGeometry(24.9, 0.22, 15.9), mat.losa, PISOS);
+const nucleo = nuevo(new THREE.BoxGeometry(3.4, 1, 3.4), mat.nucleo, PISOS);
+const bandas = nuevo(new THREE.BoxGeometry(1, 1, 1), mat.banda, PISOS * 4, false);
+const PANELES = 4 + 3;
+const vidrios = nuevo(new THREE.PlaneGeometry(1, 1), mat.vidrio, PISOS * PANELES * 2, false);
+const luces = nuevo(new THREE.PlaneGeometry(1, 1), mat.luces, PISOS * PANELES * 2, false);
+const riostras = nuevo(new THREE.CylinderGeometry(0.11, 0.11, 1, 6), mat.riostra, 6 * PISOS * 2);
+const tanque = new THREE.Mesh(new THREE.BoxGeometry(4, 1.6, 3), mat.nucleo); tanque.castShadow = true; edificio.add(tanque);
+
+/* Ventanas encendidas (modo oscuro): un patrón fijo, no aleatorio en cada carga */
+const encendida = Array.from({ length: PISOS * PANELES * 2 }, (_, i) => ((i * 37 + 11) % 10) < 3);
+
+const VACIO = new THREE.Matrix4().makeScale(0, 0, 0);
+const M = new THREE.Matrix4(), P = new THREE.Vector3(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), E = new THREE.Euler();
+const ARRIBA = new THREE.Vector3(0, 1, 0), A = new THREE.Vector3(), B = new THREE.Vector3(), D = new THREE.Vector3();
+
+function tramo(malla, i, x, y0, y1, z, u0, u1, ancho = 1) {
+  const dx = u1 - u0, h = y1 - y0;
+  E.set(0, 0, -Math.atan2(dx, h));
+  Q.setFromEuler(E);
+  P.set(x + (u0 + u1) / 2, (y0 + y1) / 2, z);
+  S.set(ancho, Math.hypot(h, dx), ancho);
+  malla.setMatrixAt(i, M.compose(P, Q, S));
+}
+function barra(malla, i, a, b) {
+  D.subVectors(b, a); const largo = D.length();
+  Q.setFromUnitVectors(ARRIBA, D.normalize());
+  P.addVectors(a, b).multiplyScalar(0.5);
+  S.set(1, largo, 1);
+  malla.setMatrixAt(i, M.compose(P, Q, S));
+}
+function panel(malla, i, cx, cz, rotY, w, y0, y1, u0, u1, oculto = false) {
+  if (oculto) { malla.setMatrixAt(i, VACIO); return; }
+  const dx = u1 - u0, h = y1 - y0;
+  E.set(0, rotY, -Math.atan2(dx, h), "ZYX");
+  Q.setFromEuler(E);
+  P.set(cx + (u0 + u1) / 2, (y0 + y1) / 2, cz);
+  S.set(w, Math.hypot(h, dx), 1);
+  malla.setMatrixAt(i, M.compose(P, Q, S));
+}
+
+let reforzada = false;
+/** Coloca el edificio a partir de los desplazamientos de cada nivel u[0..PISOS] (m, ya exagerados). */
+function colocar(u) {
+  let c = 0, e = 0;
+  for (let s = 1; s <= PISOS; s++) {
+    const y0 = (s - 1) * ALTURA, y1 = s * ALTURA;
+    for (const x of XS) for (const z of ZS) {
+      tramo(columnas, c++, x, y0, y1, z, u[s - 1], u[s], 1);
+      if (s <= 3) {
+        if (reforzada) tramo(encamisados, e, x, y0 + 0.05, y1 - 0.6, z, u[s - 1], u[s], 1);
+        else encamisados.setMatrixAt(e, VACIO);
+        e++;
+      }
+    }
+    tramo(nucleo, s - 1, 0, y0, y1, 0, u[s - 1], u[s], 1);
+  }
+  let v = 0;
+  for (let s = 1; s <= PISOS; s++) for (const z of ZS) for (let b = 0; b < 4; b++) {
+    P.set(XS[b] + 3 + u[s], s * ALTURA - 0.27, z); vigasX.setMatrixAt(v++, M.compose(P, Q.identity(), S.set(1, 1, 1)));
+  }
+  v = 0;
+  for (let s = 1; s <= PISOS; s++) for (const x of XS) for (let b = 0; b < 3; b++) {
+    P.set(x + u[s], s * ALTURA - 0.27, ZS[b] + 2.5); vigasZ.setMatrixAt(v++, M.compose(P, Q.identity(), S.set(1, 1, 1)));
+  }
+  for (let s = 1; s <= PISOS; s++) {
+    P.set(u[s], s * ALTURA - 0.05, 0); losas.setMatrixAt(s - 1, M.compose(P, Q.identity(), S.set(1, 1, 1)));
+    const y = s * ALTURA - 0.05, k = (s - 1) * 4;
+    bandas.setMatrixAt(k,     M.compose(P.set(u[s], y, 8.0), Q.identity(), S.set(25.3, 0.34, 0.1)));
+    bandas.setMatrixAt(k + 1, M.compose(P.set(u[s], y, -8.0), Q.identity(), S.set(25.3, 0.34, 0.1)));
+    bandas.setMatrixAt(k + 2, M.compose(P.set(u[s] + 12.6, y, 0), Q.identity(), S.set(0.1, 0.34, 16.1)));
+    bandas.setMatrixAt(k + 3, M.compose(P.set(u[s] - 12.6, y, 0), Q.identity(), S.set(0.1, 0.34, 16.1)));
+  }
+  tanque.position.set(u[PISOS] + 4, PISOS * ALTURA + 0.8, -3);
+  /* Fachadas de vidrio en las cuatro caras (paneles entre columnas) */
+  let p = 0;
+  for (let s = 1; s <= PISOS; s++) {
+    const y0 = (s - 1) * ALTURA + 0.05, y1 = s * ALTURA - 0.55;
+    for (let b = 0; b < 4; b++) for (const lado of [1, -1]) {
+      const riostrado = reforzada && (b === 1 || b === 2);
+      panel(vidrios, p, XS[b] + 3, 7.45 * lado, 0, 5.4, y0, y1, u[s - 1], u[s]);
+      panel(luces, p, XS[b] + 3, 7.4 * lado, 0, 5.4, y0, y1, u[s - 1], u[s], !(encendida[p] && oscuroActivo) || riostrado);
+      p++;
+    }
+    for (let b = 0; b < 3; b++) for (const lado of [1, -1]) {
+      panel(vidrios, p, 11.95 * lado, ZS[b] + 2.5, Math.PI / 2, 4.4, y0, y1, u[s - 1], u[s]);
+      panel(luces, p, 11.9 * lado, ZS[b] + 2.5, Math.PI / 2, 4.4, y0, y1, u[s - 1], u[s], !(encendida[p] && oscuroActivo) || (reforzada && b === 1));
+      p++;
+    }
+  }
+  /* Riostras en X: vanos centrales de las caras largas y vano central de las cortas */
+  let r = 0;
+  const caras = [
+    ...[1, 2].flatMap(b => [[XS[b], XS[b + 1], 7.7], [XS[b], XS[b + 1], -7.7]].map(([xa, xb, z]) => ({ a: [xa, z], b: [xb, z], eje: "x" }))),
+    ...[12.2, -12.2].map(x => ({ a: [x, ZS[1]], b: [x, ZS[2]], eje: "z" })),
+  ];
+  for (let s = 1; s <= PISOS; s++) {
+    const y0 = (s - 1) * ALTURA + 0.2, y1 = s * ALTURA - 0.45;
+    for (const cara of caras) {
+      for (const diag of [0, 1]) {
+        if (!reforzada) { riostras.setMatrixAt(r++, VACIO); continue; }
+        const [inicio, fin] = diag ? [cara.a, cara.b] : [cara.b, cara.a];
+        if (cara.eje === "x") { A.set(inicio[0] + u[s - 1], y0, inicio[1]); B.set(fin[0] + u[s], y1, fin[1]); }
+        else { A.set(inicio[0] + u[s - 1], y0, inicio[1]); B.set(fin[0] + u[s], y1, fin[1]); }
+        barra(riostras, r++, A, B);
+      }
+    }
+  }
+  for (const m of [columnas, encamisados, vigasX, vigasZ, losas, nucleo, bandas, vidrios, luces, riostras]) m.instanceMatrix.needsUpdate = true;
+}
+
+/* Ondas sísmicas: anillos que se expanden desde el epicentro, recortados al bloque */
+const recorte = [
+  new THREE.Plane(new THREE.Vector3(1, 0, 0), ANCHO_B / 2), new THREE.Plane(new THREE.Vector3(-1, 0, 0), ANCHO_B / 2),
+  new THREE.Plane(new THREE.Vector3(0, 0, 1), FONDO_B / 2), new THREE.Plane(new THREE.Vector3(0, 0, -1), FONDO_B / 2),
+];
+const EPICENTRO = new THREE.Vector3(-ANCHO_B / 2 + 3, 0.05, -FONDO_B / 2 + 3);
+const ondas = Array.from({ length: 5 }, () => {
+  const m = new THREE.Mesh(new THREE.RingGeometry(0.96, 1, 96), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, clippingPlanes: recorte }));
+  m.rotation.x = -Math.PI / 2; m.position.copy(EPICENTRO); m.visible = false; mundo.add(m);
+  return { m, t0: -1 };
+});
+const epicentro = new THREE.Mesh(new THREE.CircleGeometry(0.6, 32), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }));
+epicentro.rotation.x = -Math.PI / 2; epicentro.position.copy(EPICENTRO); mundo.add(epicentro);
+
+/* ---------- Tema de la escena ---------- */
+let oscuroActivo = false;
+function aplicarTema() {
+  oscuroActivo = getComputedStyle(raiz).colorScheme.includes("dark");
+  const c = n => new THREE.Color(css(n));
+  mat.concreto.color = c("--concreto");
+  mat.losa.color = c("--concreto");
+  mat.nucleo.color = c("--concreto-oscuro");
+  mat.vidrio.color = c("--vidrio");
+  mat.vidrio.opacity = oscuroActivo ? 0.5 : 0.32;
+  mat.luces.color = new THREE.Color(oscuroActivo ? "#F6D58E" : "#FFFFFF");
+  mat.riostra.color = c("--laton");
+  mat.encamisado.color = new THREE.Color(oscuroActivo ? "#A9B2BE" : "#8C97A6");
+  mat.suelo.forEach((m, i) => (m.color = c(`--suelo-${i + 1}`)));
+  mat.bordes.color = c("--borde-fuerte"); mat.bordes.opacity = oscuroActivo ? 0.35 : 0.4;
+  mat.reticula.color = c("--reticula"); mat.reticula.opacity = oscuroActivo ? 0.55 : 0.7;
+  mat.ejes.color = c("--laton");
+  ondas.forEach(o => (o.m.material.color = c("--laton")));
+  epicentro.material.color = c("--excede");
+  hemi.intensity = oscuroActivo ? 0.75 : 1.15;
+  hemi.groundColor = new THREE.Color(oscuroActivo ? "#0B1B33" : "#8A8F99");
+  sol.intensity = oscuroActivo ? 1.3 : 2.3;
+  colores = { cumple: c("--cumple"), cerca: c("--cerca"), excede: c("--excede") };
+  pintarEtiquetas();
+  sismo.ultimo = null;
+  pedirCuadro();
+}
+let colores = {};
+
+/* ---------- Tablero ---------- */
+const lista = document.getElementById("pisos");
+const filas = [];
+for (let s = PISOS; s >= 1; s--) {
+  const li = document.createElement("li");
+  li.className = "piso";
+  li.innerHTML = `<span class="num">P${s}</span><span class="pista" aria-hidden="true"><span class="relleno"></span><span class="pico"></span><span class="limite"></span></span><span class="valor"></span><span class="chip"></span>`;
+  lista.appendChild(li);
+  filas[s - 1] = { li, relleno: li.querySelector(".relleno"), pico: li.querySelector(".pico"), valor: li.querySelector(".valor"), chip: li.querySelector(".chip") };
+}
+const ESCALA_MAX = 0.015;
+function pintarTablero(actuales, picos) {
+  for (let k = 0; k < PISOS; k++) {
+    const r = Math.abs(actuales[k]), p = picos[k], cl = clase(p), f = filas[k];
+    f.relleno.style.width = Math.min(r / ESCALA_MAX, 1) * 100 + "%";
+    f.relleno.style.background = `var(--${clase(r)})`;
+    f.pico.style.left = `calc(${Math.min(p / ESCALA_MAX, 1) * 100}% - 1px)`;
+    f.valor.textContent = pct(p);
+    f.chip.textContent = cl === "excede" ? "Excede" : cl === "cerca" ? "Cerca" : "Cumple";
+    f.chip.dataset.clase = cl;
+    f.li.setAttribute("aria-label", `Piso ${k + 1}: deriva máxima ${pct(p)}, ${f.chip.textContent.toLowerCase()}`);
+  }
+}
+function rango(ns) {
+  if (!ns.length) return "";
+  if (ns.length === 1) return `piso ${ns[0]}`;
+  const consecutivos = ns.every((n, i) => i === 0 || n === ns[i - 1] + 1);
+  return consecutivos ? `pisos ${ns[0]} a ${ns[ns.length - 1]}` : `pisos ${ns.join(", ")}`;
+}
+let temporizadorResumen;
+function resumir(picos) {
+  clearTimeout(temporizadorResumen);
+  temporizadorResumen = setTimeout(() => {
+    const g = { excede: [], cerca: [], cumple: [] };
+    picos.forEach((p, k) => g[clase(p)].push(k + 1));
+    const partes = [];
+    if (g.excede.length) partes.push(`${rango(g.excede)} exceden el límite`);
+    if (g.cerca.length) partes.push(`${rango(g.cerca)} quedan cerca`);
+    if (g.cumple.length) partes.push(g.cumple.length === PISOS ? "todos los pisos cumplen" : `${rango(g.cumple)} cumplen`);
+    const t = partes.join("; ");
+    document.getElementById("resumen").textContent = `${reforzada ? "Reforzada" : "Original"}, ${intensidad * 100} % del sismo de diseño: ${t.charAt(0).toUpperCase() + t.slice(1)}.`;
+  }, 400);
+}
+
+/* ---------- Estado e interacción ---------- */
+let intensidad = 1;
+const entrada = { t0: 0, activa: false, dur: 1.2 };
+const sismo = { activo: false, t0: 0, dur: 9, picos: new Array(PISOS).fill(0), muestras: [], ultimo: null };
+
+const rango_ = document.getElementById("intensidad");
+const salida = document.getElementById("salida-intensidad");
+rango_.addEventListener("input", () => {
+  intensidad = rango_.value / 100;
+  const txt = `${rango_.value} %${rango_.value === "100" ? " · sismo de diseño" : ""}`;
+  salida.textContent = txt; rango_.setAttribute("aria-valuetext", txt);
+  if (!sismo.activo) estatico();
+});
+function elegir(r) {
+  reforzada = r;
+  document.getElementById("estado-original").setAttribute("aria-pressed", String(!r));
+  document.getElementById("estado-reforzada").setAttribute("aria-pressed", String(r));
+  if (sismo.activo) detener();
+  transicion.desde = transicion.valor; transicion.hasta = r ? FACTOR_REFORZADA : 1; transicion.t0 = performance.now(); transicion.activa = !movReducido.matches;
+  if (!transicion.activa) transicion.valor = transicion.hasta;
+  estatico();
+}
+const transicion = { valor: 1, desde: 1, hasta: 1, t0: 0, activa: false, dur: 0.6 };
+document.getElementById("estado-original").addEventListener("click", () => elegir(false));
+document.getElementById("estado-reforzada").addEventListener("click", () => elegir(true));
+
+const botonSimular = document.getElementById("simular");
+botonSimular.addEventListener("click", () => (sismo.activo ? detener() : simular()));
+function simular() {
+  sismo.picos.fill(0); sismo.muestras = [];
+  if (movReducido.matches) {
+    /* Sin animación: se calcula el registro completo y se muestran los picos */
+    for (let t = 0; t <= sismo.dur; t += 1 / 60) registrar(t);
+    sismo.picos = derivasPara(U_DISENO * intensidad * factorActual()).map(Math.abs);
+    pintarTablero(sismo.picos, sismo.picos); resumir(sismo.picos); dibujarSismograma(); pedirCuadro();
+    return;
+  }
+  sismo.activo = true; sismo.t0 = performance.now();
+  botonSimular.querySelector("span").textContent = "Detener";
+  pedirCuadro();
+}
+function detener() {
+  sismo.activo = false;
+  botonSimular.querySelector("span").textContent = "Simular sismo";
+  estatico();
+}
+const factorActual = () => (reforzada ? FACTOR_REFORZADA : 1);
+
+/* Movimiento del suelo y respuesta (sintéticos, ilustrativos) */
+const envolvente = t => (t < 1.4 ? (t / 1.4) ** 2 : t < 4.2 ? 1 : Math.exp(-(t - 4.2) / 1.3));
+const aceleracion = t => envolvente(t) * (Math.sin(2 * Math.PI * t / 0.31) * 0.6 + Math.sin(2 * Math.PI * t / 0.53 + 1.3) * 0.4 + Math.sin(2 * Math.PI * t / 0.19 + 0.4) * 0.25);
+const sueloX = t => envolvente(t) * 0.22 * Math.sin(2 * Math.PI * t / 0.62 + 0.5);
+function respuesta(t) {
+  /* Retraso de 0,25 s: el edificio responde después de que llega la onda */
+  const tr = Math.max(0, t - 0.25);
+  const T = reforzada ? PERIODO.reforzada : PERIODO.original;
+  return envolvente(tr) * Math.sin(2 * Math.PI * tr / T);
+}
+function registrar(t) { sismo.muestras.push(aceleracion(t)); }
+
+const nivelesEstaticos = () => {
+  const U = U_DISENO * intensidad * transicion.valor * entradaFactor();
+  return Array.from({ length: PISOS + 1 }, (_, i) => U * modo(i));
+};
+let entradaValor = 0;
+const entradaFactor = () => entradaValor;
+function estatico() {
+  const niveles = nivelesEstaticos();
+  colocar(niveles.map(u => u * EXAGERACION));
+  const der = derivasPara(U_DISENO * intensidad * transicion.valor * entradaFactor());
+  colorearBandas(der);
+  pintarTablero(der, der.map(Math.abs));
+  resumir(der.map(Math.abs));
+  pedirCuadro();
+}
+function colorearBandas(derivas) {
+  for (let s = 0; s < PISOS; s++) {
+    const col = colores[clase(Math.abs(derivas[s]))];
+    for (let k = 0; k < 4; k++) bandas.setColorAt(s * 4 + k, col);
+  }
+  bandas.instanceColor.needsUpdate = true;
+}
+
+/* ---------- Sismógrafo ---------- */
+const sismograma = document.getElementById("sismograma");
+const ctx = sismograma.getContext("2d");
+function dibujarSismograma() {
+  const w = sismograma.clientWidth, h = sismograma.clientHeight, dpr = Math.min(devicePixelRatio, 2);
+  if (sismograma.width !== w * dpr) { sismograma.width = w * dpr; sismograma.height = h * dpr; }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = css("--borde"); ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let x = 0; x <= w; x += w / 9) { ctx.moveTo(Math.round(x) + 0.5, 0); ctx.lineTo(Math.round(x) + 0.5, h); }
+  ctx.moveTo(0, h / 2 + 0.5); ctx.lineTo(w, h / 2 + 0.5); ctx.stroke();
+  const total = Math.round(sismo.dur * 60), n = sismo.muestras.length;
+  if (!n) {
+    ctx.fillStyle = css("--texto-2"); ctx.font = "12px 'IBM Plex Mono', monospace";
+    ctx.fillText("Sin registro · pulse «Simular sismo»", 10, h / 2 - 8);
+    return;
+  }
+  ctx.strokeStyle = css("--acento"); ctx.lineWidth = 1.5; ctx.beginPath();
+  for (let i = 0; i < n; i++) {
+    const x = (i / total) * w, y = h / 2 - sismo.muestras[i] * (h * 0.36) * Math.max(intensidad, 0.15);
+    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  }
+  ctx.stroke();
+  const xf = ((n - 1) / total) * w, yf = h / 2 - sismo.muestras[n - 1] * (h * 0.36) * Math.max(intensidad, 0.15);
+  ctx.fillStyle = css("--excede"); ctx.beginPath(); ctx.arc(xf, yf, 3, 0, Math.PI * 2); ctx.fill();
+}
+
+/* ---------- Bucle de dibujo (solo cuando hace falta) ---------- */
+let pendiente = false;
+function pedirCuadro() { if (!pendiente) { pendiente = true; requestAnimationFrame(cuadro); } }
+let ultimaT = 0;
+function cuadro(ahora) {
+  pendiente = false;
+  let seguir = false;
+  const t = ahora / 1000;
+
+  if (entrada.activa) {
+    const k = Math.min((ahora - entrada.t0) / 1000 / entrada.dur, 1);
+    entradaValor = 1 - (1 - k) ** 3;
+    if (k >= 1) entrada.activa = false; else seguir = true;
+    if (!sismo.activo) estatico();
+  }
+  if (transicion.activa) {
+    const k = Math.min((ahora - transicion.t0) / 1000 / transicion.dur, 1);
+    const e = k < 0.5 ? 4 * k ** 3 : 1 - (-2 * k + 2) ** 3 / 2;
+    transicion.valor = transicion.desde + (transicion.hasta - transicion.desde) * e;
+    if (k >= 1) transicion.activa = false; else seguir = true;
+    if (!sismo.activo) estatico();
+  }
+
+  if (sismo.activo) {
+    const ts = (ahora - sismo.t0) / 1000;
+    const U = U_DISENO * intensidad * factorActual();
+    const r = respuesta(ts);
+    const g = sueloX(ts) * Math.max(intensidad, 0.2);
+    mundo.position.x = g;
+    const niveles = Array.from({ length: PISOS + 1 }, (_, i) => U * modo(i) * r);
+    colocar(niveles.map(u => u * EXAGERACION));
+    const der = derivasPara(U * r);
+    der.forEach((d, k) => (sismo.picos[k] = Math.max(sismo.picos[k], Math.abs(d))));
+    colorearBandas(der);
+    pintarTablero(der, sismo.picos);
+    while (sismo.muestras.length < Math.min(ts, sismo.dur) * 60) registrar(sismo.muestras.length / 60);
+    dibujarSismograma();
+    /* Ondas: una nueva cada 0,7 s durante la fase fuerte */
+    ondas.forEach((o, i) => {
+      const edad = ts - (Math.floor((ts - i * 0.7) / 3.5) * 3.5 + i * 0.7);
+      const viva = ts >= i * 0.7 && ts < 6.5;
+      o.m.visible = viva;
+      if (viva) { const rad = 1 + edad * 16; o.m.scale.set(rad, rad, 1); o.m.material.opacity = Math.max(0, 0.75 * (1 - edad / 3.5)) * Math.max(intensidad, 0.3); }
+    });
+    epicentro.material.opacity = ts < 6.5 ? 0.6 + 0.4 * Math.sin(ts * 8) : 0;
+    if (ts >= sismo.dur) {
+      sismo.activo = false; mundo.position.x = 0;
+      ondas.forEach(o => (o.m.visible = false)); epicentro.material.opacity = 0;
+      botonSimular.querySelector("span").textContent = "Simular de nuevo";
+      const der2 = derivasPara(U_DISENO * intensidad * transicion.valor);
+      colocar(Array.from({ length: PISOS + 1 }, (_, i) => U_DISENO * intensidad * transicion.valor * modo(i) * EXAGERACION));
+      colorearBandas(der2);
+      pintarTablero(der2.map(Math.abs), sismo.picos);
+      resumir(sismo.picos);
+    } else seguir = true;
+  } else {
+    ondas.forEach(o => (o.m.visible = false)); epicentro.material.opacity = 0; mundo.position.x = 0;
+  }
+
+  /* Cámara: un leve vaivén alrededor del edificio, salvo con movimiento reducido */
+  const ang = movReducido.matches ? 0 : Math.sin(t / 9) * 0.12;
+  const base = 0.78 + ang;
+  camara.position.set(Math.cos(base) * encuadre.radio, encuadre.alto, Math.sin(base) * encuadre.radio);
+  camara.lookAt(objetivo);
+  if (!movReducido.matches && visible && !document.hidden) seguir = true;
+
+  renderer.render(escena, camara);
+  if (seguir) pedirCuadro();
+}
+
+/* ---------- Tamaño y visibilidad ---------- */
+let visible = true;
+const encuadre = { radio: 92, alto: 40 };
+new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) pedirCuadro(); }).observe(escenario);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) pedirCuadro(); });
+new ResizeObserver(() => {
+  const w = escenario.clientWidth, h = escenario.clientHeight;
+  renderer.setSize(w, h, false);
+  camara.aspect = w / h;
+  const angosto = w / h < 1.3;
+  camara.fov = angosto ? 40 : 28;
+  encuadre.radio = angosto ? 82 : 92;
+  encuadre.alto = angosto ? 40 : 40;
+  objetivo.y = angosto ? 7 : 9.5;
+  camara.updateProjectionMatrix();
+  dibujarSismograma();
+  pedirCuadro();
+}).observe(escenario);
+
+/* ---------- Arranque: entrada única de 0 al sismo de diseño ---------- */
+aplicarTema();
+colocar(new Array(PISOS + 1).fill(0));
+if (movReducido.matches) { entradaValor = 1; estatico(); }
+else { estatico(); setTimeout(() => { entrada.t0 = performance.now(); entrada.activa = true; pedirCuadro(); }, 500); }
+dibujarSismograma();
+document.fonts?.ready.then(() => { pintarEtiquetas(); dibujarSismograma(); pedirCuadro(); });
+</script>
+</body>
+</html>
