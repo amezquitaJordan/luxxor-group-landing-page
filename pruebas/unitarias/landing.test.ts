@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { enlacesNavegacion } from "@/contenido/navegacion";
-import { archivosDescarga, idsSecciones, landing, resolverFoto, resolverTexto, type TextoCliente } from "@/contenido/landing";
+import { archivosDescarga, esResponsivo, idsSecciones, landing, resolverFoto, resolverResponsivo, resolverTexto, type Credencial, type TextoCliente } from "@/contenido/landing";
 
 /** Nombres de clientes sin autorización (auditoría §1 y plan §L.5). */
 const NOMBRES_CLIENTES = /interpl[aá]sticos|tecnoqu[ií]micas|farmatodo|super ?farma|yumbo|wan su lay/i;
@@ -38,10 +38,11 @@ describe("contenido de la landing", () => {
     expect(landing.servicios.principal.accion.href).toBe(`#${idsSecciones.metodologia}`);
   });
 
-  it("seis pasos de metodología, nueve ensayos y cuatro preguntas (Figma 03)", () => {
+  it("seis pasos de metodología, nueve ensayos y cinco preguntas (Figma 03 y 04)", () => {
     expect(landing.metodologia.pasos).toHaveLength(6);
     expect(landing.ensayos.lista).toHaveLength(9);
-    expect(landing.preguntas.items).toHaveLength(4);
+    expect(landing.preguntas.items).toHaveLength(5);
+    expect(landing.preguntas.items[4]?.respuesta).toContain("desde el sismo del 10 de agosto de 2026");
     expect(landing.ensayos.lista.every((e) => e.descripcion.length > 0)).toBe(true);
   });
 
@@ -72,5 +73,29 @@ describe("interruptor de nombres de clientes", () => {
   it("«Espacios comerciales» se pinta sin foto", () => {
     const fila = landing.complementarios.items.find((item) => item.titulo === "Espacios comerciales")!;
     expect(resolverFoto(fila.foto, false)).toBeNull();
+  });
+});
+
+describe("contenido de escritorio (Sesión 5)", () => {
+  it("credenciales: 4 en móvil y 5 en escritorio (ASTM solo desde lg)", () => {
+    const credenciales = landing.credenciales as readonly Credencial[];
+    expect(credenciales).toHaveLength(5);
+    expect(credenciales.filter((c) => !c.soloEscritorio).map((c) => c.cifra)).toEqual(["NSR-10", "+20", "130 t", "3"]);
+    expect(credenciales.find((c) => c.soloEscritorio)?.cifra).toBe("ASTM");
+  });
+
+  it("los textos responsivos tienen versión móvil y de escritorio distintas", () => {
+    for (const texto of [landing.hero.bajada, landing.metodologia.bajada, landing.obras.bajada]) {
+      expect(esResponsivo(texto)).toBe(true);
+      if (esResponsivo(texto)) expect(texto.movil).not.toBe(texto.escritorio);
+    }
+  });
+
+  it("resolverResponsivo aplica el interruptor de clientes a las dos versiones", () => {
+    const fila = landing.complementarios.items.find((item) => item.titulo === "Espacios comerciales")!;
+    const apagado = resolverResponsivo(fila.descripcion, false);
+    expect(esResponsivo(apagado) && apagado.movil + apagado.escritorio).not.toMatch(NOMBRES_CLIENTES);
+    const encendido = resolverResponsivo(fila.descripcion, true);
+    expect(esResponsivo(encendido) && encendido.escritorio).toContain("Super Farma, Farmatodo");
   });
 });

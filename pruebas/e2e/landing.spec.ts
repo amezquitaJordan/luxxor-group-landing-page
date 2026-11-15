@@ -58,6 +58,10 @@ test.describe("contenido apagado y datos", () => {
     expect(texto).not.toMatch(NOMBRES_CLIENTES);
     const html = await page.content();
     expect(html).not.toMatch(NOMBRES_CLIENTES);
+    // HTML completo servido (incluye los <span> ocultos de TextoResponsivo y la carga de RSC).
+    const servido = await (await page.request.get("/")).text();
+    expect(servido).toContain("Adecuación de locales y droguerías · fachadas, avisos y mobiliario.");
+    expect(servido).not.toMatch(NOMBRES_CLIENTES);
     await expect(page.getByRole("navigation", { name: "Legal" })).toHaveCount(0);
     await expect(page.getByText("Preguntar al asistente")).toHaveCount(0);
     await expect(page.locator('a[href="/politica-de-datos"], a[href="/terminos"]')).toHaveCount(0);
@@ -101,7 +105,9 @@ test.describe("contenido apagado y datos", () => {
   test("las fotos se sirven optimizadas (AVIF o WebP) y con texto alternativo", async ({ page }) => {
     await abrir(page, "/");
     const fotos = page.locator("main img");
-    await expect(fotos).toHaveCount(9); // las 9 fotos publicadas (la 18 no se procesa con los clientes apagados)
+    // 9 fotos publicadas (la 18 no se procesa con los clientes apagados) y 10 <img>: la 6 está en Obras y,
+    // desde la S5, en «Cuándo se necesita» (oculta en móvil).
+    await expect(fotos).toHaveCount(10);
     for (const foto of await fotos.all()) {
       expect((await foto.getAttribute("alt"))?.length).toBeGreaterThan(10);
       expect(await foto.getAttribute("src")).toMatch(/^\/_next\/image\?url=%2F_next%2Fstatic%2Fmedia%2F/);
@@ -162,7 +168,8 @@ test.describe("responsive (móvil)", () => {
 test("preguntas frecuentes: la primera abierta y se abren con el teclado", async ({ page }) => {
   await abrir(page, "/");
   const preguntas = page.locator("#preguntas-frecuentes details");
-  await expect(preguntas).toHaveCount(4);
+  await expect(preguntas).toHaveCount(5); // la quinta (Figma 04) va en todos los anchos
+  await expect(preguntas.last().locator("summary")).toHaveText("¿Trabajan fuera de Cali?");
   await expect(preguntas.first()).toHaveAttribute("open", "");
   const segunda = preguntas.nth(1);
   await segunda.locator("summary").focus();
@@ -175,6 +182,12 @@ test("preguntas frecuentes: la primera abierta y se abren con el teclado", async
  * Medido el 14-nov-2026 con next start, fuentes cargadas.
  */
 const ALTO_LIENZO: Record<number, number> = { 360: 533.7, 390: 534.0, 414: 550.4 };
+/** Escritorio (S5, 15-nov-2026): 1440×900, 1366×768 y la variante compacta (1366×650). */
+const ALTO_LIENZO_ESCRITORIO: { ancho: number; alto: number; lienzo: number }[] = [
+  { ancho: 1440, alto: 900, lienzo: 520 },
+  { ancho: 1366, alto: 768, lienzo: 519 },
+  { ancho: 1366, alto: 650, lienzo: 415 },
+];
 
 test("el lienzo reserva su caja y describe el dibujo", async ({ page }, info) => {
   test.skip(!esMovil(info), "alto medido en móvil");
@@ -185,6 +198,16 @@ test("el lienzo reserva su caja y describe el dibujo", async ({ page }, info) =>
     await expect(lienzo.getByRole("img")).toHaveAccessibleName(/Pórtico de cinco pisos/);
     const caja = (await lienzo.boundingBox())!;
     expect(caja.height, `alto del lienzo a ${ancho} px`).toBeCloseTo(alto, 0);
+  }
+});
+
+test("el lienzo de escritorio y el compacto reservan su caja", async ({ page }, info) => {
+  test.skip(info.project.name !== "escritorio-1440-claro", "alto medido en escritorio");
+  for (const { ancho, alto, lienzo } of ALTO_LIENZO_ESCRITORIO) {
+    await page.setViewportSize({ width: ancho, height: alto });
+    await abrir(page, "/");
+    const caja = (await page.locator("[data-lienzo]").boundingBox())!;
+    expect(Math.abs(caja.height - lienzo), `alto del lienzo a ${ancho}×${alto}: ${caja.height}`).toBeLessThanOrEqual(1);
   }
 });
 
@@ -222,10 +245,9 @@ test.describe("botón flotante", () => {
   const irA = (page: import("@playwright/test").Page, id: string) =>
     page.evaluate((i) => document.getElementById(i)!.scrollIntoView({ block: "start" }), id);
 
-  test("se oculta con el lienzo (móvil) y con Contacto en pantalla", async ({ page }, info) => {
+  test("se oculta con el lienzo (en todos los anchos) y con Contacto en pantalla", async ({ page }) => {
     await abrir(page, "/");
-    if (esMovil(info)) await esperarFlotanteOculto(page); // motivo «lienzo»
-    else await esperarFlotanteVisible(page);
+    await esperarFlotanteOculto(page); // motivo «lienzo»
     await irA(page, "servicios");
     await esperarFlotanteVisible(page);
     await irA(page, "contacto");
@@ -236,9 +258,20 @@ test.describe("botón flotante", () => {
     await esperarFlotanteVisible(page);
   });
 
+  const VISTAS_FOCO: Record<string, { width: number; height: number }[]> = {
+    "movil-390-claro": [{ width: 390, height: 844 }],
+    "escritorio-1440-claro": [
+      { width: 1440, height: 900 },
+      { width: 1366, height: 768 },
+    ],
+  };
+
   test("foco no oculto (WCAG 2.4.11): con Tab, nada enfocado queda debajo del botón flotante", async ({ page }, info) => {
-    test.skip(info.project.name !== "movil-390-claro", "una pasada a 390×844 basta");
-    await page.setViewportSize({ width: 390, height: 844 });
+    const vistas = VISTAS_FOCO[info.project.name];
+    test.skip(!vistas, "una pasada a 390×844 y otra a 1440×900 y 1366×768 bastan");
+    test.setTimeout(120_000);
+    for (const vista of vistas!) {
+    await page.setViewportSize(vista);
     await abrir(page, "/");
     const total = await page.evaluate(
       () =>
@@ -268,13 +301,14 @@ test.describe("botón flotante", () => {
       recorridos++;
       if (r.tapa) tapados.push(r.nombre);
     }
-    expect(recorridos).toBeGreaterThan(20);
-    expect(tapados).toEqual([]);
+    expect(recorridos, `${vista.width}×${vista.height}`).toBeGreaterThan(20);
+    expect(tapados, `${vista.width}×${vista.height}`).toEqual([]);
+    }
   });
 });
 
-test("oculto, el botón flotante no es una parada de Tab", async ({ page }, info) => {
-  test.skip(!esMovil(info), "en móvil, arriba de la página, el lienzo lo oculta");
+test("oculto, el botón flotante no es una parada de Tab", async ({ page }) => {
+  // Arriba de la página el lienzo lo oculta (en todos los anchos).
   await abrir(page, "/");
   await esperarFlotanteOculto(page);
   for (let i = 0; i < 12; i++) {
@@ -283,11 +317,24 @@ test("oculto, el botón flotante no es una parada de Tab", async ({ page }, info
   }
 });
 
-test("Complementarios: la fila sin foto conserva la columna y los títulos quedan alineados", async ({ page }) => {
+test("Complementarios: la fila sin foto conserva la columna y los títulos quedan alineados", async ({ page }, info) => {
   await abrir(page, "/");
   const vacia = page.locator("#complementarios [data-sin-foto]");
   await expect(vacia).toHaveCount(1);
   await expect(vacia).toHaveAttribute("aria-hidden", "true");
-  const izquierdas = await page.locator("#complementarios h3").evaluateAll((h) => h.map((e) => Math.round(e.getBoundingClientRect().left)));
-  expect(new Set(izquierdas).size).toBe(1);
+  const cajas = await page
+    .locator("#complementarios h3")
+    .evaluateAll((h) => h.map((e) => ({ x: Math.round(e.getBoundingClientRect().left), y: Math.round(e.getBoundingClientRect().top) })));
+  if (esMovil(info)) {
+    // Móvil: filas con la columna de foto de 112 px (vacía en «Espacios comerciales»).
+    expect(new Set(cajas.map((c) => c.x)).size).toBe(1);
+    await expect(page.locator("#complementarios svg")).toBeHidden();
+  } else {
+    // Escritorio: tres tarjetas en fila; la de «Espacios comerciales» lleva el dibujo de plano.
+    expect(new Set(cajas.map((c) => c.y)).size).toBe(1);
+    const dibujo = page.locator("#complementarios svg[aria-hidden='true']");
+    await expect(dibujo).toBeVisible();
+    const caja = (await dibujo.boundingBox())!;
+    expect(caja.width / caja.height).toBeCloseTo(411 / 300, 1);
+  }
 });

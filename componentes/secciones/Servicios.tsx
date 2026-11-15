@@ -3,12 +3,11 @@ import { Seccion } from "@/componentes/ui/Seccion";
 import { fotos } from "@/contenido/fotos";
 import { idsSecciones, landing } from "@/contenido/landing";
 
-/** Servicios (Figma 15:184): ficha principal (vulnerabilidad) y cuatro secundarias. */
+/** Servicios (Figma 15:184 móvil, 18:216 escritorio): ficha principal y cuatro secundarias (2×2 en md, 4 en lg). */
 export function Servicios() {
   const { titulo, bajada, principal, secundarios } = landing.servicios;
   return (
-    <Seccion id={idsSecciones.servicios} titulo={titulo} className="gap-6">
-      <p className="texto-cuerpo text-texto-secundario">{bajada}</p>
+    <Seccion id={idsSecciones.servicios} titulo={titulo} bajada={bajada} className="gap-6">
       <FichaServicio
         jerarquia="principal"
         norma={principal.norma}
@@ -18,9 +17,11 @@ export function Servicios() {
         accion={principal.accion}
         imagen={fotos[principal.foto]}
       />
-      {secundarios.map((servicio) => (
-        <FichaServicio key={servicio.titulo} jerarquia="secundaria" {...servicio} />
-      ))}
+      <div className="flex flex-col gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
+        {secundarios.map((servicio) => (
+          <FichaServicio key={servicio.titulo} jerarquia="secundaria" {...servicio} />
+        ))}
+      </div>
     </Seccion>
   );
 }

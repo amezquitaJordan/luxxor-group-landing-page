@@ -1,6 +1,9 @@
+import type { ReactNode } from "react";
+
 export interface PropsDato {
   cifra: string;
-  descripcion: string;
+  /** Texto o TextoAdaptable (descripción distinta en móvil y escritorio). */
+  descripcion: ReactNode;
 }
 
 /**

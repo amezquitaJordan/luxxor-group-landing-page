@@ -3,15 +3,35 @@ import type { IdFoto } from "./fotos";
 
 /*
  * Textos de la landing (Sesión 4). Única fuente de copy de las secciones.
- * Fuentes: Figma 7IEP7WM4lJvxi33qA0YIf0, página 03 · Landing — Móvil (nodo indicado en cada campo)
- * y el portafolio PDF 2026 (folio impreso). Los datos de contacto salen de config/sitio.ts.
- * Nada inventado: lo que no está literal en Figma lleva un comentario VALIDAR.
+ * Fuentes: Figma 7IEP7WM4lJvxi33qA0YIf0, páginas 03 · Landing — Móvil y 04 · Landing — Escritorio
+ * (nodo indicado en cada campo) y el portafolio PDF 2026 (folio impreso). Los datos de contacto salen
+ * de config/sitio.ts. Nada inventado: lo que no está literal en Figma lleva un comentario VALIDAR.
+ *
+ * Regla de la Sesión 5 (15-nov-2026): lo que solo está en Figma 04 se muestra desde lg (TextoResponsivo
+ * o `soloEscritorio`); la quinta pregunta frecuente va en todos los anchos.
  */
 
 /** Texto que nombra a un cliente: se usa `sinNombre` mientras funciones.nombresClientes sea false. */
 export interface TextoCliente {
   conNombre: string;
   sinNombre: string;
+}
+
+/**
+ * Texto que cambia entre Figma 03 (móvil) y Figma 04 (escritorio). Se pintan las dos versiones y
+ * cada una se oculta con display: none en el ancho que no le toca (el lector de pantalla solo lee una).
+ */
+export type TextoResponsivo<T = string> = T | { movil: T; escritorio: T };
+
+export function esResponsivo<T>(texto: TextoResponsivo<T>): texto is { movil: T; escritorio: T } {
+  return typeof texto === "object" && texto !== null && "movil" in texto && "escritorio" in texto;
+}
+
+export interface Credencial {
+  cifra: string;
+  descripcion: TextoResponsivo;
+  /** Solo en Figma 04: se muestra desde lg. */
+  soloEscritorio?: boolean;
 }
 
 export interface Pregunta {
@@ -22,9 +42,11 @@ export interface Pregunta {
 export interface ContenidoLanding {
   hero: {
     titular: string;
-    bajada: string;
+    bajada: TextoResponsivo;
     agendar: string;
     descargarPortafolio: string;
+    /** Solo con el lienzo a la derecha (xl). */
+    notaIlustrativa: string;
     lienzo: {
       titulo: string;
       leyenda: { cumple: string; cerca: string; excede: string; sinDeformar: string };
@@ -33,7 +55,7 @@ export interface ContenidoLanding {
       descripcionAccesible: string;
     };
   };
-  credenciales: readonly PropsDato[];
+  credenciales: readonly Credencial[];
   servicios: {
     titulo: string;
     bajada: string;
@@ -47,10 +69,17 @@ export interface ContenidoLanding {
     };
     secundarios: readonly { titulo: string; descripcion: string; entregable: string }[];
   };
-  cuandoSeNecesita: { titulo: string; casos: readonly string[] };
+  cuandoSeNecesita: {
+    titulo: string;
+    /** Solo en Figma 04 (desde lg). */
+    introduccion: string;
+    /** Foto solo en Figma 04 (desde lg): no se descarga en móvil. */
+    foto: IdFoto;
+    casos: readonly string[];
+  };
   metodologia: {
     titulo: string;
-    bajada: string;
+    bajada: TextoResponsivo;
     foto: IdFoto;
     pasos: readonly { titulo: string; descripcion: string }[];
   };
@@ -63,7 +92,7 @@ export interface ContenidoLanding {
   };
   obras: {
     titulo: string;
-    bajada: string;
+    bajada: TextoResponsivo;
     obras: readonly { foto: IdFoto; pie: string }[];
     controles: { anterior: string; siguiente: string };
   };
@@ -77,7 +106,7 @@ export interface ContenidoLanding {
     bajada: string;
     items: readonly {
       titulo: string;
-      descripcion: string | TextoCliente;
+      descripcion: TextoResponsivo<string | TextoCliente>;
       /** Foto según el interruptor de clientes; null = la fila se pinta sin columna de foto. */
       foto: { conNombre: IdFoto | null; sinNombre: IdFoto | null };
     }[];
@@ -87,7 +116,13 @@ export interface ContenidoLanding {
     titulo: string;
     archivos: readonly { id: "portafolio" | "tarjeta"; titulo: string; detalle: string }[];
   };
-  preguntas: { titulo: string; items: readonly Pregunta[]; asistente: string };
+  preguntas: {
+    titulo: string;
+    items: readonly Pregunta[];
+    /** Texto junto al botón del asistente (Figma 04); ambos con funciones.asistente. */
+    introAsistente: string;
+    asistente: string;
+  };
   contacto: {
     titulo: string;
     bajada: string;
@@ -100,10 +135,15 @@ export interface ContenidoLanding {
 export const landing = {
   hero: {
     titular: "Sabemos cómo se comporta su edificación ante un sismo.", // 15:15 · PDF p.1
-    bajada:
-      "Evaluación de vulnerabilidad sísmica, diseño y reforzamiento estructural bajo la NSR-10, en Cali y el suroccidente colombiano.", // 15:16
+    bajada: {
+      movil:
+        "Evaluación de vulnerabilidad sísmica, diseño y reforzamiento estructural bajo la NSR-10, en Cali y el suroccidente colombiano.", // 15:16
+      escritorio:
+        "Evaluación de vulnerabilidad sísmica, diseño y reforzamiento estructural bajo la NSR-10, en Cali y el suroccidente colombiano. Ingeniería que se mide, se calcula y se firma.", // 18:45 · PDF p.1
+    },
     agendar: "Agendar visita técnica", // I15:18
     descargarPortafolio: "Descargar portafolio (PDF, 1,9 MB)", // I15:20
+    notaIlustrativa: "El modelo de la derecha es ilustrativo: desplazamientos exagerados, no es un resultado de análisis.", // 20:5327
     lienzo: {
       titulo: "Deriva por piso · ilustrativo", // I16:190;15:576
       leyenda: {
@@ -121,12 +161,29 @@ export const landing = {
     },
   },
 
-  // 15:172, 15:175, 15:178, 15:181 · PDF p.1–2
+  // Móvil: 15:172, 15:175, 15:178, 15:181. Escritorio: 18:200 (cinco datos). PDF p.1–2.
   credenciales: [
     { cifra: "NSR-10", descripcion: "norma sismorresistente" },
-    { cifra: "+20", descripcion: "proyectos en el suroccidente" },
+    {
+      cifra: "ASTM",
+      descripcion: "ensayos de núcleos, esclerometría y ultrasonido",
+      soloEscritorio: true,
+    },
+    {
+      cifra: "+20",
+      descripcion: {
+        movil: "proyectos en el suroccidente",
+        escritorio: "proyectos de vivienda, comercio, industria y equipamiento",
+      },
+    },
     { cifra: "130 t", descripcion: "de estructura metálica diseñada y montada" },
-    { cifra: "3", descripcion: "departamentos: Valle, Cauca y Nariño" },
+    {
+      cifra: "3",
+      descripcion: {
+        movil: "departamentos: Valle, Cauca y Nariño",
+        escritorio: "departamentos: Valle del Cauca, Cauca y Nariño",
+      },
+    },
   ],
 
   servicios: {
@@ -172,6 +229,9 @@ export const landing = {
 
   cuandoSeNecesita: {
     titulo: "¿Cuándo necesita su edificación un estudio?", // 15:225 · PDF p.4
+    introduccion:
+      "Buena parte de las edificaciones de Cali se construyó antes de la NSR-10, con exigencias sísmicas menores a las actuales.", // 19:238 · PDF p.4
+    foto: "obraCimentacion", // 19:235 (foto 6, solo escritorio)
     casos: [
       "Construida antes de la NSR-10 o sin planos estructurales", // 15:228
       "Ampliaciones en altura, nuevos pisos o cambios de uso", // 15:231
@@ -183,8 +243,12 @@ export const landing = {
 
   metodologia: {
     titulo: "Cómo evaluamos una edificación", // 16:339
-    bajada:
-      "El estudio responde con números a tres preguntas: qué tan expuesta está la estructura, dónde están sus puntos débiles y qué intervención la lleva al nivel de seguridad requerido.", // 16:340 · PDF p.4
+    bajada: {
+      movil:
+        "El estudio responde con números a tres preguntas: qué tan expuesta está la estructura, dónde están sus puntos débiles y qué intervención la lleva al nivel de seguridad requerido.", // 16:340 · PDF p.4
+      escritorio:
+        "El estudio responde con números: qué tan expuesta está la estructura, dónde están sus puntos débiles y qué intervención la lleva al nivel de seguridad requerido.", // 19:257
+    },
     foto: "metodologia", // 16:341 (foto 13)
     // I16:342 … I16:392 · PDF p.4
     pasos: [
@@ -230,8 +294,12 @@ export const landing = {
 
   obras: {
     titulo: "Obras en ejecución", // 16:442
-    bajada:
-      "El ingeniero que diseña el reforzamiento supervisa su construcción. Nuestro equipo ejecuta la obra civil y la estructura metálica.", // 16:443 · PDF p.8
+    bajada: {
+      movil:
+        "El ingeniero que diseña el reforzamiento supervisa su construcción. Nuestro equipo ejecuta la obra civil y la estructura metálica.", // 16:443 · PDF p.8
+      escritorio:
+        "El ingeniero que diseña el reforzamiento supervisa su construcción. Nuestro equipo ejecuta la obra civil y la estructura metálica, con presupuesto por APU y cronograma por escrito.", // 19:373 · PDF p.8
+    },
     // 16:445–16:456 (fotos 6, 3, 4 y 5)
     obras: [
       { foto: "obraCimentacion", pie: "Cimentación: formaleta y acero de refuerzo" },
@@ -274,15 +342,25 @@ export const landing = {
     items: [
       {
         titulo: "Diseño arquitectónico", // 16:502
-        descripcion: "Renders 3D, recorridos 360° y trámites en curaduría.", // 16:503
+        descripcion: {
+          movil: "Renders 3D, recorridos 360° y trámites en curaduría.", // 16:503
+          escritorio: "Vivienda, locales e interiores · renders 3D y recorridos 360° · planos y trámites en curaduría.", // 19:431 · PDF p.10
+        },
         foto: { conNombre: "renderFachada", sinNombre: "renderFachada" }, // 16:500 (foto 1)
       },
       {
         titulo: "Espacios comerciales", // 16:507
         // Sin nombre: «Adecuación de locales y droguerías» (PDF p.10).
         descripcion: {
-          conNombre: "Adecuación de locales y droguerías (Super Farma, Farmatodo).", // 16:508
-          sinNombre: "Adecuación de locales y droguerías.",
+          movil: {
+            conNombre: "Adecuación de locales y droguerías (Super Farma, Farmatodo).", // 16:508
+            sinNombre: "Adecuación de locales y droguerías.",
+          },
+          escritorio: {
+            conNombre: "Adecuación de locales y droguerías · fachadas, avisos y mobiliario · Super Farma, Farmatodo.", // 19:435
+            // Sin nombre: la misma frase sin los clientes (PDF p.10).
+            sinNombre: "Adecuación de locales y droguerías · fachadas, avisos y mobiliario.",
+          },
         },
         // 16:505 (foto 18, con letrero del cliente). Sin autorización de nombres no se importa ni se
         // publica; la fila se pinta sin columna de foto. Al autorizarse: conNombre: "localComercial".
@@ -290,7 +368,10 @@ export const landing = {
       },
       {
         titulo: "Acabados y carpintería", // 16:512
-        descripcion: "Pisos, enchapes, cielos, iluminación, cocinas y muebles a la medida.", // 16:513
+        descripcion: {
+          movil: "Pisos, enchapes, cielos, iluminación, cocinas y muebles a la medida.", // 16:513
+          escritorio: "Pisos, enchapes, cielos, iluminación y baños · cocinas, closets y muebles a la medida.", // 19:439 · PDF p.10
+        },
         foto: { conNombre: "mobiliario", sinNombre: "mobiliario" }, // 16:510 (foto 23)
       },
     ],
@@ -342,7 +423,14 @@ export const landing = {
         respuesta:
           "El estudio parte de un levantamiento estructural en sitio: dimensiones de elementos, luces, alturas y ejes para construir el modelo con la edificación tal como está. El acero se ubica con escaneo de refuerzo, sin demoler.",
       },
+      {
+        pregunta: "¿Trabajan fuera de Cali?", // 20:367 (Figma 04; en todos los anchos)
+        // VALIDAR CON EL DUEÑO: borrador a partir del PDF p.2 (cobertura) y p.9 (peritajes post-sismo).
+        respuesta:
+          "Sí. Trabajamos en el Valle del Cauca, el Cauca y Nariño, y desde el sismo del 10 de agosto de 2026 hemos hecho peritajes en Cali, Palmira y Armenia.",
+      },
     ],
+    introAsistente: "¿No encuentra su respuesta? El asistente responde preguntas sobre nuestros servicios.", // 20:340 (con el asistente, S7)
     asistente: "Preguntar al asistente", // I17:318 (oculto hasta la Sesión 7)
   },
 
@@ -383,6 +471,17 @@ export const archivosDescarga = {
   portafolio: "/descargas/luxxor-portafolio-2026.pdf",
   tarjeta: "/descargas/luxxor-tarjeta.pdf",
 } as const;
+
+/** Resuelve un texto responsivo que además puede nombrar a un cliente. */
+export function resolverResponsivo(
+  texto: TextoResponsivo<string | TextoCliente>,
+  nombresClientes: boolean,
+): TextoResponsivo {
+  if (esResponsivo(texto)) {
+    return { movil: resolverTexto(texto.movil, nombresClientes), escritorio: resolverTexto(texto.escritorio, nombresClientes) };
+  }
+  return resolverTexto(texto, nombresClientes);
+}
 
 /** Resuelve un texto que puede nombrar a un cliente según el interruptor de autorización. */
 export function resolverTexto(texto: string | TextoCliente, nombresClientes: boolean): string {

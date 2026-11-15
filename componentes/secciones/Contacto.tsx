@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { BotonWhatsApp } from "@/componentes/ui/BotonWhatsApp";
-import { Seccion } from "@/componentes/ui/Seccion";
+import { Seccion, TituloSeccion } from "@/componentes/ui/Seccion";
 import { AVISO_PESTANA_NUEVA, TextoOculto } from "@/componentes/ui/TextoOculto";
 import { enlaceTelefono, enlaceWhatsApp, mensajesWhatsApp, sitio } from "@/config/sitio";
 import { idsSecciones, landing } from "@/contenido/landing";
@@ -16,7 +16,10 @@ function EnlaceExterno({ href, children }: { href: string; children: ReactNode }
   );
 }
 
-/** Contacto (Figma 17:320): sección en modo oscuro en ambos temas. Datos desde config/sitio.ts. */
+/**
+ * Contacto (Figma 17:320 móvil, 20:370 escritorio): sección en modo oscuro en ambos temas. Datos desde
+ * config/sitio.ts. Desde lg: llamado (600 px) a la izquierda y datos (600 px) a la derecha.
+ */
 export function Contacto() {
   const { titulo, bajada, botonWhatsApp, etiquetas } = landing.contacto;
   const { contacto, direccion, redes } = sitio;
@@ -58,19 +61,27 @@ export function Contacto() {
   ];
 
   return (
-    <Seccion id={idsSecciones.contacto} titulo={titulo} oscura>
-      <p className="texto-cuerpo text-texto-secundario">{bajada}</p>
-      <BotonWhatsApp
-        etiqueta={botonWhatsApp}
-        mensaje={mensajesWhatsApp.agendarVisita}
-        anchoCompleto
-        className="justify-center"
-      />
-      <dl className="flex flex-col gap-3.5 pt-3">
+    <Seccion
+      id={idsSecciones.contacto}
+      tituloPropio
+      oscura
+      className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-20"
+    >
+      <div className="flex flex-col gap-5 lg:gap-6">
+        <TituloSeccion id={idsSecciones.contacto}>{titulo}</TituloSeccion>
+        <p className="texto-cuerpo text-texto-secundario lg:max-w-[35rem]">{bajada}</p>
+        <BotonWhatsApp
+          etiqueta={botonWhatsApp}
+          mensaje={mensajesWhatsApp.agendarVisita}
+          anchoCompleto
+          className="justify-center lg:w-auto lg:self-start"
+        />
+      </div>
+      <dl className="flex flex-col gap-3.5 pt-3 lg:gap-5 lg:pt-0">
         {datos.map((dato) => (
-          <div key={dato.etiqueta} className="flex flex-col gap-0.5">
+          <div key={dato.etiqueta} className="flex flex-col gap-0.5 lg:gap-1">
             <dt className="texto-anotacion text-texto-laton">{dato.etiqueta}</dt>
-            <dd className="texto-cuerpo">{dato.valor}</dd>
+            <dd className="texto-cuerpo lg:texto-cuerpo-lg">{dato.valor}</dd>
           </div>
         ))}
       </dl>

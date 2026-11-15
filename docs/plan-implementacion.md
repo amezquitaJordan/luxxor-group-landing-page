@@ -17,7 +17,7 @@
 | `arquitectura.md` | Se **borra**. |
 | Endpoint del chat en la S1 | Se **retira** y se reconstruye en la S7. |
 | «Volver arriba» | **No** se implementa. |
-| Motion (15-nov-2026) | **Se retira.** Entradas y salidas con CSS (`@starting-style`, `transition-behavior: allow-discrete`). JS inicial: presupuesto **175 KB gz**. |
+| Motion (15-nov-2026) | **Se retira.** Entradas y salidas con CSS (`@starting-style`, `transition-behavior: allow-discrete`). JS inicial: presupuesto **175 KB gz**; techo de la prueba **165 KB** (3D y chat diferidos). |
 
 ---
 
@@ -339,13 +339,30 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 - `BotonFlotanteWhatsApp`: siempre montado; `data-visible` + `inert`; oculto queda con `visibility: hidden` al final de la transición (no enfocable, fuera del árbol de accesibilidad). Las pruebas usan `esperarFlotanteOculto`/`esperarFlotanteVisible` (`toBeHidden`, `inert` y ausencia en el árbol de accesibilidad) en lugar de `toHaveCount(0)`.
 - `prefers-reduced-motion: reduce`: `translate: none`; solo opacidad.
 - Fuera `motion` (`npm uninstall`), `componentes/movimiento/` y `ProveedorMovimiento` del layout. Prueba unitaria `sin-motion.test.ts`.
-- **JS inicial: 152,3 KB gz** (antes 197,7; −45,4 KB). Presupuesto nuevo: **175 KB gz** (base de Next+React ≈ 133 KB), en `presupuestos.spec.ts`.
+- **JS inicial: 152,3 KB gz** (antes 197,7; −45,4 KB). Presupuesto aprobado: 175 KB gz. **Techo de la prueba: 165 KB** (15-nov-2026): el 3D (S6) y el chat (S7) son diferidos y no deben sumar al JS inicial; el techo detecta si alguno entra por error.
 - Commit: `refactor(movimiento): reemplazar Motion por transiciones CSS`
 
 ### Sesión 5 — Escritorio y anchos intermedios
 - Layouts `md`/`lg`/`xl`, hero compacto, encabezado de escritorio.
 - Aceptación: 768, 1366×768, 1440×900, 1920, 2560 coherentes con Figma 04 y 06; hero completo en 1366×768.
 - Commit: `feat(landing): composición de escritorio y verificación de anchos`
+- **Decisiones (15-nov-2026):**
+  1. Lo que solo está en Figma 04 se muestra desde `lg` (`TextoResponsivo` = `{ movil, escritorio }` y `soloEscritorio`): bajadas del hero, Metodología y Obras; descripciones de credenciales y Complementarios; dato «ASTM»; introducción de «Cuándo se necesita»; nota ilustrativa del hero (solo `xl`, con el lienzo a la derecha). La quinta pregunta («¿Trabajan fuera de Cali?») va en todos los anchos; respuesta en borrador (VALIDAR CON EL DUEÑO, PDF p.2 y p.9).
+  2. Motivo «lienzo» del botón flotante en todos los anchos (a 1366×768 tapaba la esquina del lienzo).
+  3. «Espacios comerciales» en escritorio: dibujo decorativo de plano (`DibujoPlano`: retícula, ejes A–C y 1–2, y pórtico en planta con columnas en los cruces; tokens, `aria-hidden`) en la caja de 411×300. Sin cota (decisión del 15-nov-2026). En móvil sigue la columna vacía.
+  4. Hero en dos columnas desde `xl` (80rem); apilado entre `lg` y `xl` (lienzo de 34rem como máximo desde `md`). Variante `compacto` = `(min-width: 80rem) and (max-height: 43.75rem)`: menos relleno y dibujo de 200 px.
+  5. Flotante oculto = `toBeHidden()` + `inert` + fuera del árbol de accesibilidad (helpers `esperarFlotanteOculto`/`esperarFlotanteVisible`).
+  6. `CarruselObras` desde `lg`: cuadrícula de 4, sin controles y sin `role="region"` ni `tabindex` (`matchMedia`), sin parada de Tab vacía.
+- **Implementación:** `Seccion` con `bajada` (cabecera en dos columnas desde `lg`), `tituloPropio` (composiciones en columnas: Cuándo se necesita, Ensayos, Preguntas frecuentes, Contacto) y `enBanda` (Dirección técnica y Descargas comparten banda en escritorio); contenido a 80rem (contenedor de 90rem con márgenes 20/32/80 px), secciones con 120 px de relleno vertical desde `lg`. Foto 6 en «Cuándo se necesita» solo desde `lg` y foto 13 de Metodología solo hasta `lg` (`display: none`: la carga diferida no las descarga). Las capturas por sección ocultan el flotante con `display: none` (durante una transición CSS el navegador ignora `visibility: hidden !important`).
+- **Medidas (15-nov-2026):** hero a 1366×768: h1, CTA y lienzo dentro del pantallazo (lienzo hasta 666 px); a 1366×650 (compacto): hasta 598 px. Caja del lienzo para la S6: 520 px a 1440×900, 519 a 1366×768 y 415 en compacto (móvil sin cambios: 533,7 / 534,0 / 550,4).
+- **Presupuestos (`npm run test:presupuestos`, mediana de 3 cargas):**
+
+  | Perfil | LCP (h1) | CLS | Fotos en el 1.er pantallazo | Imágenes tras recorrer | JS inicial |
+  |---|---|---|---|---|---|
+  | Móvil 390×844 (CPU ×4, 4G lenta) | 2,16 s | 0 | 0 | 293,6 KB | 152,4 KB |
+  | Escritorio 1440×900 (CPU ×1, 40 ms, 10 Mbps) | 0,51 s | 0,0002 | 0 | 188,1 KB | 152,4 KB |
+  | Escritorio 1366×768 (ídem) | 0,53 s | 0,0002 | 0 | 188,1 KB | 152,4 KB |
+- **Pruebas nuevas:** `landing-escritorio.spec.ts` (columnas por sección a 1440, hero en dos columnas con ejes y nota, textos de Figma 04, Obras sin región ni parada de Tab, foto 13 no pedida a 1440, foto de «Cuándo» no pedida a 390, hero completo a 1366×768 y 1366×650, sin desplazamiento horizontal de 768 a 2560 y en 844×390, contenido de 1280 px centrado a 1920 y 2560, textos ≥ 14 px en escritorio); foco no oculto también a 1440×900 y 1366×768; nombres de clientes buscados en el HTML servido completo; capturas por sección a 1440 (claro/oscuro) y 768, y primer pantallazo de 1366×768.
 
 ### Sesión 6 — Lienzo 3D
 - Crea `lib/estructura/derivas.ts` (+ pruebas) y `componentes/lienzo-3d/*`.
@@ -372,7 +389,8 @@ Commit: `fix(seguridad): actualizar next a 16.4.6 y endurecer la API del chat`
 
 ### Sesión 9 — QA final
 - Matriz completa de Playwright, axe, Lighthouse móvil, bundle, checklist manual; E2E añadidas al workflow.
-- Aceptación: LCP < 2,5 s, CLS < 0,1, TBT < 200 ms; JS inicial ≤ 175 KB gz (presupuesto aprobado el 15-nov-2026 al retirar Motion; antes 150); axe 0; «Definición de terminado» (§11.5 de la investigación) completa.
+- Aceptación: LCP < 2,5 s, CLS < 0,1, TBT < 200 ms; JS inicial ≤ 175 KB gz (presupuesto aprobado el 15-nov-2026 al retirar Motion; antes 150) y techo de la prueba en 165 KB (el 3D y el chat no deben sumar al JS inicial); axe 0; «Definición de terminado» (§11.5 de la investigación) completa.
+- **LCP: desglosar antes de optimizar.** Quitar Motion bajó el JS de 197,7 a 152,3 KB pero el LCP móvil no mejoró (2,25 s frente a 2,12–2,30 s): el cuello de botella no es el JS. Antes de cualquier optimización, desglosar el LCP en TTFB, retraso de carga (fuentes y CSS en la ruta crítica), duración de carga y retraso de renderizado (p. ej., `font-display: swap` → nuevo candidato de LCP al cambiar la fuente).
 - **Requisitos bloqueantes antes de pasar a `main`** (14-nov-2026):
   1. Evidencia escrita, en poder del dueño, de la autorización de las personas que aparecen en las fotos 13, 15 y 16.
   2. Autorización de los nombres de clientes (Tecnoquímicas, Interplásticos, Farmatodo, Super Farma, Colegios de Yumbo, Wan Su Lay); sin ella, `funciones.nombresClientes` sigue en `false`.

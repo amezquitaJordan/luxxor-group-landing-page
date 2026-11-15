@@ -30,8 +30,13 @@ export default function Inicio() {
         <ObrasEnEjecucion />
         <Proyectos />
         <Complementarios />
-        <DireccionTecnica />
-        {funciones.descargas && <Descargas />}
+        {/* Escritorio (Figma 20:312): Dirección técnica y Descargas en una banda de dos columnas. */}
+        <div className="lg:bg-fondo-superficie">
+          <div className="lg:mx-auto lg:grid lg:max-w-[90rem] lg:grid-cols-2 lg:gap-20 lg:px-8 lg:py-30 xl:px-20">
+            <DireccionTecnica enBanda />
+            {funciones.descargas && <Descargas enBanda />}
+          </div>
+        </div>
         <PreguntasFrecuentes />
         {/* Con Contacto en pantalla el flotante sobra: la sección tiene su propio botón de WhatsApp. */}
         <OcultarFlotanteMientrasVisible motivo="contacto">

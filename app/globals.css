@@ -12,6 +12,9 @@
 /* El modo oscuro depende del atributo data-theme (next-themes), no de una clase. */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+/* Hero «Compacto» (Figma 06, 1366×768 real ≈ 650 px útiles): dos columnas y poca altura. */
+@custom-variant compacto (@media (min-width: 80rem) and (max-height: 43.75rem));
+
 /* ── Primitivos (no generan utilidades) ─────────────────────────────────── */
 :root {
   --prim-marino-900: #0b1b33;

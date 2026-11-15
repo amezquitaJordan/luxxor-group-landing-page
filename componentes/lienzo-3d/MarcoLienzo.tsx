@@ -16,23 +16,26 @@ const muestras = [
 ] as const;
 
 /**
- * Marco del lienzo del hero (Figma 16:190). Reserva la caja que ocupará Lienzo3D en la Sesión 6,
- * con filas de alto fijo para que el cambio no mueva nada (CLS 0):
- *   barra 76 px · dibujo 318:216 · leyenda · control 56 px · rótulo.
- * PROVISIONAL (Sesión 4): sin selector Original/Reforzada ni control deslizante; la fila del
- * control muestra en texto el estado dibujado.
+ * Marco del lienzo del hero (Figma 16:190 móvil, 20:4863 escritorio/compacto). Reserva la caja que
+ * ocupará Lienzo3D en la Sesión 6, con filas de alto fijo para que el cambio no mueva nada (CLS 0):
+ *   móvil: barra 76 px (título y selector apilados) · dibujo 318:216 · leyenda · control 56 px · rótulo
+ *   desde md: barra 38 px en fila · dibujo 448:304 (máx. 448 px) · …
+ *   compacto: dibujo de 200 px de alto.
+ * Desde xl el rótulo queda solo para lectores de pantalla: la nota ilustrativa de la columna de texto
+ * lo sustituye a la vista (Figma 04).
+ * PROVISIONAL (Sesión 4): sin selector Original/Reforzada ni control deslizante.
  */
 export function MarcoLienzo({ titulo, leyenda, control, rotulo, descripcionAccesible }: PropsMarcoLienzo) {
   return (
     <figure
       data-lienzo=""
-      className="flex w-full flex-col gap-4 rounded-md border border-borde-sutil bg-fondo-superficie p-4"
+      className="flex w-full flex-col gap-4 rounded-md border border-borde-sutil bg-fondo-superficie p-4 md:gap-3 md:px-5 md:py-4"
     >
-      <div className="min-h-[4.75rem]">
+      <div className="min-h-[4.75rem] md:flex md:min-h-[2.375rem] md:items-center">
         <p className="texto-anotacion text-texto-laton">{titulo}</p>
       </div>
 
-      <div className="aspect-[318/216] w-full">
+      <div className="aspect-[318/216] w-full md:mx-auto md:aspect-[448/304] md:max-w-[28rem] compacto:aspect-auto compacto:h-[12.5rem]">
         <RespaldoSvg descripcion={descripcionAccesible} />
       </div>
 
@@ -50,7 +53,7 @@ export function MarcoLienzo({ titulo, leyenda, control, rotulo, descripcionAcces
         <span className="texto-pequeno text-texto-secundario">{control.valor}</span>
       </p>
 
-      <figcaption className="texto-pequeno text-texto-secundario">{rotulo}</figcaption>
+      <figcaption className="texto-pequeno text-texto-secundario xl:sr-only">{rotulo}</figcaption>
     </figure>
   );
 }
